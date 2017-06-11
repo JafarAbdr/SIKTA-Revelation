@@ -27,7 +27,6 @@ class ControlSeminar extends LibrarySupport {
 		$tempMultiple->addTable($tempObjectDB);
 		$tempMultiple->addTable($tempMahasiswa);
 		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
-		//return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
 	}
 	//optimized
 	public function getAllData($tahunAk=null,$status="1", $dataproses = '2'){
@@ -51,6 +50,7 @@ class ControlSeminar extends LibrarySupport {
 		}
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
 	}
+	//optimized
 	public function getAllDataHaveATimeWithMahasiswa($tahunAk=null,$status="1"){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Seminar');
 		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');

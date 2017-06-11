@@ -113,7 +113,6 @@ class Baseseminar extends CI_Controller_Modified {
 		$controlDosen = new ControlDosen($gateControlModel);
 		$controlDetail = new ControlDetail($gateControlModel);
 		$tempSidangS = (new ControlSidang($gateControlModel))->getAllDataWithMahasiswa((new ControlTime($gateControlModel))->getYearNow());
-		
 		if($tempSidangS){
 			while($tempSidangS->getNextCursor()){
 				$tempSidang = $tempSidangS->getTableStack(0);

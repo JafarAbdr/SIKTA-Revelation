@@ -25,7 +25,7 @@ class ControlSidang extends LibrarySupport {
 		}
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
 	}
-	//try
+	//optimized
 	public function getAllDataWithMahasiswa($tahunAk=null,$status="1", $dataprosesd = '2'){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Sidang');
 		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
