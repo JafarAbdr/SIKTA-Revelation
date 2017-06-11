@@ -17,13 +17,32 @@ class ControlSidang extends LibrarySupport {
 		if(!is_null($tahunAk)){
 			$tempObjectDB->setTahunAk($tahunAk,true);
 			$tempObjectDB->setStatus($status,true);
-			$tempObjectDB->setWhere(13);	
+			$tempObjectDB->setWhere(14);	
 			if(!is_null($dataprosesd)){
-				$tempObjectDB->setDataProsesd($dataprosesd,true);
-				$tempObjectDB->setWhere(1);	
+				$tempObjectDB->setDataProsesD($dataprosesd,true);
+				$tempObjectDB->setWhere(2);	
 			}
 		}
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
+	}
+	//try
+	public function getAllDataWithMahasiswa($tahunAk=null,$status="1", $dataprosesd = '2'){
+		$tempObjectDB = $this->gateControlModel->loadObjectDB('Sidang');
+		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
+		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');
+		if(!is_null($tahunAk)){
+			$tempObjectDB->setTahunAk($tahunAk,true);
+			$tempObjectDB->setStatus($status,true);
+			$tempObjectDB->setWhere(21);	
+			if(!is_null($dataprosesd)){
+				$tempObjectDB->setDataProsesD($dataprosesd,true);
+				$tempObjectDB->setWhere(20);	
+			}
+		}
+		$tempObjectDB->setWhereMultiple(1);
+		$tempMultiple->addTable($tempObjectDB);
+		$tempMultiple->addTable($tempMahasiswa);
+		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
 	}
 	//optimized
 	public function getAllDataHaveATime($tahunAk=null,$ruang=null,$status="1"){

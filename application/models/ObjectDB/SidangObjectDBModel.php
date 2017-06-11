@@ -17,7 +17,7 @@ class SidangObjectDBModel extends ObjectDBModel {
 		$this->tempDataArrayWhere = array(
 			"",
 			"<%identifiedsi%>='<|identifiedsi|>'",
-			"<%tahunaksi%>='<|tahunaksi|>' AND <%statussi%>='<|statussi|>' AND <%dataprosesd%>='<|dataprosesd|>'",
+			"<%tahunaksi%>='<|tahunaksi|>' AND <%statussi%>='<|statussi|>' AND <%dataprosesdsi%>='<|dataprosesdsi|>'",
 			"<%tahunaksi%>='<|tahunaksi|>' AND <%statussi%>='<|statussi|>' AND waktusi<>'1000-01-01 00:00:00'",
 			"<%tahunaksi%>='<|tahunaksi|>' AND <%statussi%>='<|statussi|>' AND waktusi<>'1000-01-01 00:00:00' AND <%ruangsi%>='<|ruangsi|>'",
 			"<%statussi%>='<|statussi|>' AND waktusi<>'1000-01-01 00:00:00' AND <%ruangsi%>='<|ruangsi|>'",
@@ -35,7 +35,9 @@ class SidangObjectDBModel extends ObjectDBModel {
 			
 			"<%astable%>.<%tahunaksi%>='<|tahunaksi|>' AND <%astable%>.<%statussi%>='<|statussi|>'",
 			"<%astable%>.<%tahunaksi%>='<|tahunaksi|>' AND <%astable%>.<%statussi%>='<|statussi|>' AND <%astable%>.<%ruangsi%>='<|ruangsi|>'",
-			"<%astable%>.<%statussi%>='<|statussi|>' AND <%astable%>.<%ruangsi%>='<|ruangsi|>'"
+			"<%astable%>.<%statussi%>='<|statussi|>' AND <%astable%>.<%ruangsi%>='<|ruangsi|>'",
+			"<%astable%>.<%tahunaksi%>='<|tahunaksi|>' AND <%astable%>.<%statussi%>='<|statussi|>' AND <%astable%>.<%dataprosesdsi%>='<|dataprosesdsi|>'",
+			"<%astable%>.<%tahunaksi%>='<|tahunaksi|>' AND <%astable%>.<%statussi%>='<|statussi|>'",
 			
 		);
 		$this->tempCodeOfWhere = array(

@@ -12,13 +12,31 @@ class ControlSeminar extends LibrarySupport {
 		$this->gateControlModel = $tempGateControlModel;
 	}
 	//optimized
+	public function getAllDataWithMahasiswa($tahunAk=null,$status="1", $dataproses = '2'){
+		$tempObjectDB = $this->gateControlModel->loadObjectDB('Seminar');
+		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
+		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');
+		if(!is_null($tahunAk)){
+			$tempObjectDB->setTahunAk($tahunAk,true);
+			$tempObjectDB->setStatus($status,true);
+			$tempObjectDB->setDataProses($dataproses,true);
+			$tempObjectDB->setWhere(2);
+			
+		}
+		$tempObjectDB->setWhereMultiple(1);
+		$tempMultiple->addTable($tempObjectDB);
+		$tempMultiple->addTable($tempMahasiswa);
+		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
+		//return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
+	}
+	//optimized
 	public function getAllData($tahunAk=null,$status="1", $dataproses = '2'){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Seminar');
 		if(!is_null($tahunAk)){
 			$tempObjectDB->setTahunAk($tahunAk,true);
 			$tempObjectDB->setStatus($status,true);
 			$tempObjectDB->setDataProses($dataproses,true);
-			$tempObjectDB->setWhere(1);
+			$tempObjectDB->setWhere(2);
 			
 		}
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
