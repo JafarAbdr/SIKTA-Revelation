@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Print Invoice</title>
+    <style>
+        *{ margin:0;padding:0;font-family:Arial;font-size:10pt;color:#000;}
+        body{width:100%;font-family:Arial;font-size:10pt;margin:0;padding:0;}
+        p{ margin:0;padding:0;}
+        .wrapper{width:180mm;margin:0 15mm;}
+        .page{height:297mm;width:210mm;page-break-after:always;}
+
+        table{border-left: 1px solid #ccc;border-top: 1px solid #ccc;border-spacing:0;border-collapse: collapse; }
+        table td { border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;  padding: 2mm; }
+        table.heading { height:50mm;   }
+        h1.heading{            font-size:14pt; color:#000;            font-weight:normal; }
+        h2.heading {            font-size:9pt;  color:#000;            font-weight:normal; }
+        hr   {color:#ccc; background:#ccc;        }
+        #invoice_body {            height: 149mm;}
+        #invoice_body , #invoice_total       {               width:100%;        }
+        #invoice_body table , #invoice_total table        {            width:100%;            border-left: 1px solid #ccc;            border-top: 1px solid #ccc;                 border-spacing:0;            border-collapse: collapse;                          margin-top:5mm;        }         
+        #invoice_body table td , #invoice_total table td        {            text-align:center;            font-size:9pt;            border-right: 1px solid #ccc;            border-bottom: 1px solid #ccc;            padding:2mm 0;        }         
+        #invoice_body table td.mono  , #invoice_total table td.mono        {            font-family:monospace;            text-align:right;            padding-right:3mm;            font-size:10pt;        }        
+        #footer        {               width:180mm;            margin:0 15mm;            padding-bottom:3mm;        }
+        #footer table        {            width:100%;            border-left: 1px solid #ccc;            border-top: 1px solid #ccc;                         background:#eee;             border-spacing:0;            border-collapse: collapse;         }
+        #footer table td        {width:25%;          text-align:center;            font-size:9pt;            border-right: 1px solid #ccc;            border-bottom: 1px solid #ccc;        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <p style="text-align:right; font-weight:bold; padding-top:5mm;">
+		<img src="@GambarFUJ;" style="margin-right: 33px; margin-top: 25px; width: 230px;" ></p>
+        <br />
+        <div style="width: 100%;">
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 52px;">Kepada Yth:<br><b>Bapak / Ibu Calon Penguji<br>Sidang Tugas Akhir Mahasiswa</b><br>Di tempat.</p>
+            <br>
+            <br>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 52px; margin-bottom: 10px;">Dengan hormat,<br>Sehubungan dengan tugas pengujian Tugas Akhir mahasiswa berikut ini:</p>
+             <div style="margin-left: 52px; margin-right: 52px; border: : 1px solid #000; margin-top: 10px; margin-bottom: 5px;">
+             <table style="width: 100%; text-align: justify; font-family: 'Times New Roman';  border-color: #000;line-height: 12pt; border-width: 1px;font-size: 12pt;">
+                    <tr style="background: #fff; font-family: 'Times New Roman'; font-size: 12pt; ">
+                        <td style="width:100%; border-color: #000; border-width: 1px;">
+                            <p>Nama<span style="color: #fff; white-space: pre-line;"> /Tanggal/Jam-Sidang__</span>: @namaPeserta;</p>
+                        </td>
+                    </tr>
+                    <tr style="background: #fff; font-family: 'Times New Roman'; font-size: 12pt; ">
+                        <td style="width:100%; border-color: #000; border-width: 1px;">
+                            <p>Nim<span style="color: #fff; white-space: pre-line;">i / Tanggal / Jam---Sidang</span>: @nimPeserta;</p>
+                        </td>
+                    </tr>
+                    <tr style="background: #fff; font-family: 'Times New Roman'; font-size: 12pt; ">
+                        <td style="width:100%; border-color: #000; border-width: 1px;">
+                            <p>Hari / Tanggal / Jam Sidang<span style="color: #fff; white-space: pre-line;">__</span>: @dayStartPeserta;</p>
+                        </td>
+                    </tr>
+                    <tr style="background: #fff; font-family: 'Times New Roman'; font-size: 12pt; ">
+                        <td style="width:100%; border-color: #000; border-width: 1px;">
+                            <p>Judul TA<span style="color: #fff; white-space: pre-line;">Tanggal /-JamSidang</span>: @judulTAPeserta;</p>
+                        </td>
+                    </tr>
+                    </table>
+            </div>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 52px;margin-right: 52px; margin-bottom: 10px;">maka kami mohon kesediaan Bapak / Ibu untuk memberikan pernyataan kesiapan sebagai penguji pada Sidang Tugas Akhir mahasiswa tersebut di bawah ini:</p>
+            <div style="margin-left: 52px; margin-right: 52px; border: : 1px solid #000; margin-top: 10px; margin-bottom: 10px;">
+             <table style="width: 100%;text-align: center; font-family: 'Times New Roman';  border-color: #000; border-width: 1px;font-size: 12pt;">
+                    <tr style="background: #fff; ">
+                        <td style="width:5%; border-color: #000; border-width: 1px;"><b>No</b></td>
+                        <td style=" border-color: #000; border-width: 1px;"><b>Nama</b></td>
+                        <td style="width:40%; border-color: #000; border-width: 1px;"><b>Kesediaan</b></td>
+                        <td style="width:15%; border-color: #000; border-width: 1px;"><b>TTD</b></td>
+                    </tr>
+                    <tr style="background: #fff; font-family: 'Times New Roman'; font-size: 12pt;">
+                        <td style="width:5%; border-color: #000; border-width: 1px;">1</td>
+                        <td style=" border-color: #000; border-width: 1px;">@ketua;</td>
+                        <td style="width:40%; border-color: #000; border-width: 1px; text-align: justify;">
+                            <p><img src="@GambarSQUARE;" style="width:12px;"> Bersedia</p>
+                            <p><img src="@GambarSQUARE;" style="width:12px;"> Tidak Bersedia,dengan alasan: </p>
+                            <p>.......................</p>
+                            <p>.......................</p>
+                        </td>
+                        <td style="width:15%; border-color: #000; border-width: 1px;"></td>
+                    </tr>
+                    <tr style="background: #fff; font-family: 'Times New Roman'; font-size: 12pt;">
+                        <td style="width:7%; border-color: #000; border-width: 1px;">2</td>
+                        <td style=" border-color: #000; border-width: 1px;">@sekertaris;</td>
+                        <td style="width:40%; border-color: #000; border-width: 1px;text-align: justify;">
+                            <p style="text-align: justify;"><img src="@GambarSQUARE;" style="width:12px;"> Bersedia</p>
+                            <p><img src="@GambarSQUARE;" style="width:12px;"> Tidak Bersedia,dengan alasan: </p>
+                            <p>.......................</p>
+                            <p>.......................</p>
+                        </td>
+                        <td style="width:15%; border-color: #000; border-width: 1px;"></td>
+                    </tr>
+                    </table>
+            </div>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 52px;margin-right: 52px; margin-bottom: 10px;">Demikian atas kesediaannya kami ucapkan terima kasih.</p>
+            <br>
+            <br>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 346px;">Semarang, @tanggalTerbit;</p>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 346px;">Koordinator Tugas Akhir<br>Jurusan Ilmu Komputer / Informatika<br>Fakultas Sains dan Matematika UNDIP</p>
+            <br>
+            <br>
+            <br>
+            <br>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 346px;"><ins style="font-family: 'Times New Roman'; font-size: 12pt;">@namaKoor;</ins></p>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 346px;">Nip. @nipKoor;</p>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="width: 100%; height: 70px;">
+    </div>
+    <div class="wrapper">
+        <p style="text-align:center; font-weight:bold; padding-top:5mm; font-family: 'Times New Roman'; font-size: 12pt;">MATRIKS KETERSEDIAAN WAKTU UJIAN (SIDANG) TUGAS AKHIR</p>
+        <br>
+        <div style="width: 100%;">
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 52px;">1. Nama Dosen : @ketua;</p>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 67px;">
+                <img src="@GambarFUJ25Table;" style="width: 600px;">
+            </p>
+            <br>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 52px;">2. Nama Dosen : @sekertaris;</p>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 67px;">
+                <img src="@GambarFUJ25Table;" style="width: 600px;">
+            </p>
+            <br>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 52px;">3. Nama Dosen : @moderator;</p>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 67px;">
+                <img src="@GambarFUJ25Table;" style="width: 600px;">
+            </p>
+            <br>
+            <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 52px;"><span style="color:#fff; white-space: pre-line;">ke</span>Ket: Beri tanda check (<img src="@GambarCHECK;" style="width:12px;">) pada hari dan jam yang bisa dipenuhi</p>
+        </div>
+    </div>
+</body>
+</html>

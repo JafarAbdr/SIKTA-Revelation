@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Print Invoice</title>
+    <style>
+        *{ margin:0;padding:0;font-family:Arial;font-size:10pt;color:#000;}
+        body{width:100%;font-family:Arial;font-size:10pt;margin:0;padding:0;}
+        p{ margin:0;padding:0;}
+        #wrapper{width:180mm;margin:0 15mm;}
+        .page{height:297mm;width:210mm;page-break-after:always;}
+        table{border-left: 1px solid #ccc;border-top: 1px solid #ccc;border-spacing:0;border-collapse: collapse; }
+        table td { border-right: 1px solid #ccc; border-bottom: 1px solid #ccc;  padding: 2mm; }
+        table.heading { height:50mm;   }
+        h1.heading{            font-size:14pt; color:#000;            font-weight:normal; }
+        h2.heading {            font-size:9pt;  color:#000;            font-weight:normal; }
+        hr   {color:#ccc; background:#ccc;        }
+        #invoice_body {            height: 149mm;}
+        #invoice_body , #invoice_total       {               width:100%;        }
+        #invoice_body table , #invoice_total table        {            width:100%;            border-left: 1px solid #ccc;            border-top: 1px solid #ccc;                 border-spacing:0;            border-collapse: collapse;                          margin-top:5mm;        }         
+        #invoice_body table td , #invoice_total table td        {            text-align:center;            font-size:9pt;            border-right: 1px solid #ccc;            border-bottom: 1px solid #ccc;            padding:2mm 0;        }         
+        #invoice_body table td.mono  , #invoice_total table td.mono        {            font-family:monospace;            text-align:right;            padding-right:3mm;            font-size:10pt;        }        
+        #footer        {               width:180mm;            margin:0 15mm;            padding-bottom:3mm;        }
+        #footer table        {            width:100%;            border-left: 1px solid #ccc;            border-top: 1px solid #ccc;                         background:#eee;             border-spacing:0;            border-collapse: collapse;         }
+        #footer table td        {width:25%;          text-align:center;            font-size:9pt;            border-right: 1px solid #ccc;            border-bottom: 1px solid #ccc;        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div style="width: 100%; margin-bottom: 5px; padding-top: 50px;padding-left: 43px; padding-right: 43px;">
+        <div style="text-align: center; font-weight: bold; width: 85%; float: right; line-break: loose;">
+            <p style="font-family: Arial; font-size: 16pt;">DEPARTEMEN ILMU KOMPUTER / INFORMATIKA
+            <br>FAKULTAS SAINS DAN MATEMATIKA
+            <br>UNIVERSITAS DIPONEGORO</p>
+            <p style="font-family: Arial; font-size: 8pt;">Kampus Undip Tembalang Telp.(024) 70789493, 76480924, Fax.(024) 76480922, Semarang 50275</p>
+        </div>
+        <div style="width: 15%;">
+            <img src="@GambarUNDIPSymbol;" style="width: 80px; text-align: left;">
+        </div>
+    </div>
+    <div style="width: 100%; text-align: center;">
+        <img src="@GambarLine;" style="width: 605px; height: 10px; text-align: center;">
+    </div>
+    <br />
+    <div style="width: 100%;">
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px;">Lamp <span style="color:#fff; white-space: pre-line;">aa</span>: -</p>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px;">Perihal <span style="color:#fff; white-space: pre-line;">a</span>: Permohonan Cetak Transkrip</p>
+        <br>
+        <br>
+        <br>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px;">Kepada Yth:<br><b>Kasubag Akademik</b><br>Fakultas Sains dan Matematika<br>Universitas Diponegoro<br>Semarang</p>
+        <br>
+        <br>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px; margin-bottom: 10px;">Dengan ini kami sampaikan bahwa penulisan Tugas Akhir Mahasiswa:</p>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px; margin-bottom: 7px;"><span style="white-space: pre-line; color: rgba(255,255,255,0);">_ __</span>Nama <span style="white-space: pre-line; color: rgba(255,255,255,0);">__</span>: <span style="white-space: pre-line; color: rgba(255,255,255,0);">__</span>@namaPeserta;</p>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px;margin-bottom: 7px;"><span style="white-space: pre-line; color: rgba(255,255,255,0);">_ __</span>Nim <span style="white-space: pre-line; color: rgba(255,255,255,0);">_ s_</span>: <span style="white-space: pre-line; color: rgba(255,255,255,0);">__</span>@nimPeserta;</p>
+        <br>
+        <br>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px;">telas selesai dan layak diujikan.</p>
+        <br>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px;">Kami mohon agar diberikan transkrip nilai akademik sementara sebagai salah satu syarat dilaksanakannya ujian tugas akhir mahasiswa tersebut.</p>
+        <br>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 36px;">Demikian atas kerjasamanya kami ucapkan terima kasih.</p><br>
+        <br>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 316px;">Semarang, @tanggalTerbit;</p>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 316px;">Koordinator Tugas Akhir</p>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 316px;">Departemen Ilmu Komputer / Informatika</p>
+        <br>
+        <br>
+        <br>
+        <br>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 316px;"><ins style="font-family: 'Times New Roman'; font-size: 12pt;">@namaKoor;</ins></p>
+        <p style="font-family: 'Times New Roman'; font-size: 12pt;margin-left: 316px;">Nip. @nipKoor;</p>
+
+    </div>
+    </div>
+</body>
+</html>
