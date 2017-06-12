@@ -10,6 +10,8 @@ class ControlDosen extends LibrarySupport {
 		parent::__CONSTRUCT();
 		$this->gateControlModel = $tempGateControlModel;
 	}
+	//optimized
+	//use - III
 	public function getAllData($identified = null,$status = null){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Guru');
 		if(!is_null($identified)){
@@ -42,6 +44,8 @@ class ControlDosen extends LibrarySupport {
 			return false;
 		}
 	}
+	//optimized
+	//use - I
 	public function tryUpdate(ObjectDBModel $tempObjectDB){
 		$tempObjectDB->setWhere(1);
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->updateData();
@@ -73,75 +77,5 @@ class ControlDosen extends LibrarySupport {
 			return false;
 		}
 		return true;
-	}
-	public function tryToDeactivated($nip=null,$tahunak=null){
-		if(is_null($tahunak)) return false;
-		if(is_null($nip)) return false;
-		$tempObjectDB = $this->getDataByNip($nip,null);
-		
-		if(!$tempObjectDB->getNextCursor()) return false;
-		//is koordinator
-		$tempObjectDBD = $this->gateControlModel->loadObjectDB('Koordinator');
-		$tempObjectDBD->setStatus(1,true);
-		$tempObjectDBD->setWhere(3);
-		$tempObjectDBD = $this->gateControlModel->executeObjectDB($tempObjectDBD)->takeData();
-		$tempObjectDBD->getNextCursor();
-		if($tempObjectDBD->getDosenK() == $tempObjectDB->getIdentified())
-			return false;
-		//is wakil or kajur
-		$tempObjectDBD = $this->gateControlModel->loadObjectDB('Admin');
-		$tempObjectDBD = $this->gateControlModel->executeObjectDB($tempObjectDBD)->takeData();
-		$tempObjectDBD->getNextCursor();
-		if($tempObjectDBD->getKajur() == $tempObjectDB->getIdentified())
-			return false;
-		if($tempObjectDBD->getWakil() == $tempObjectDB->getIdentified())
-			return false;
-		//is have any member
-		$tempObjectDBD = $this->gateControlModel->loadObjectDB('Registrasi');
-		$tempObjectDBD->setTahunAk($tahunak,true);
-		$tempObjectDBD->setStatus(1,true);
-		$tempObjectDBD->setDataStatus(0,true);			
-		$tempObjectDBD->setDosen($tempObjectDB->getIdentified(),true);
-		$tempObjectDBD->setWhere(4);
-		$tempObjectDBD = $this->gateControlModel->executeObjectDB($tempObjectDBD)->takeData();
-		//if($tempObjectDBD->getCountData() <= 0) return true;
-		$error=0;
-		while($tempObjectDBD->getNextCursor()){
-			$tempObjectDBE = $this->gateControlModel->loadObjectDB('Seminar');
-			$tempObjectDBE->setTahunAk($tahunak,true);
-			$tempObjectDBE->setMahasiswa($tempObjectDBD->getIdentified(),true);
-			$tempObjectDBE->setStatus(1,true);
-			$tempObjectDBE->setDataStatus(0,true);
-			$tempObjectDBE->setWhere(4);
-			$tempObjectDBE = $this->gateControlModel->executeObjectDB($tempObjectDBE)->takeData();
-			if($tempObjectDBE->getNextCursor()) $error++;
-			$tempObjectDBE = $this->gateControlModel->loadObjectDB('Sidang');
-			$tempObjectDBE->setTahunAk($tahunak,true);
-			$tempObjectDBE->setMahasiswa($tempObjectDBD->getIdentified(),true);
-			$tempObjectDBE->setStatus(1,true);
-			$tempObjectDBE->setDataStatus(0,true);
-			$tempObjectDBE->setWhere(7);
-			$tempObjectDBE = $this->gateControlModel->executeObjectDB($tempObjectDBE)->takeData();
-			if($tempObjectDBE->getNextCursor()) $error++;
-		}
-		//exit("kkk");
-		if($error>0) return false;
-		$tempObjectDBD->resetSendRequest();
-		While($tempObjectDBD->getNextCursor()){
-			$tempObjectDBD->setDataProses(1);
-			$tempObjectDBD->setDosen("0");
-			$tempObjectDBD->setWhere(3);
-			$this->gateControlModel->executeObjectDB($tempObjectDBD)->updateData();
-		}
-		$tempObjectDB->setStatus(2);
-		$tempObjectDB->setWhere(1);
-		return $this->gateControlModel->executeObjectDB($tempObjectDB)->updateData();
-	}
-	public function ActivateDosen($nip){
-		$tempObjectDB = $this->getDataByNip($nip,null);
-		if(!$tempObjectDB->getNextCursor()) return false;
-		$tempObjectDB->setStatus(1);
-		$tempObjectDB->setWhere(1);
-		return $this->gateControlModel->executeObjectDB($tempObjectDB)->updateData();
 	}
 }

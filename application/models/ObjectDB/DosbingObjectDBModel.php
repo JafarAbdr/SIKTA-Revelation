@@ -13,34 +13,37 @@ class DosbingObjectDBModel extends ObjectDBModel {
 		$this->tempDataArrayWhere = array(
 			"",
 			"<%identifieddo%>='<|identifieddo|>'",
-			"<%registrasi%>='<|registrasi|>' AND <%statusdo%>='<|statusdo|>'",
-			"<%registrasi%>='<|registrasi|>' ORDER BY identifieddo",
-			"<%astable%>.<%dosen%>='<|dosen|>' AND <%astable%>.<%statusdo%>='<|statusdo|>'",
+			"<%registrasido%>='<|registrasido|>' AND <%statusdo%>='<|statusdo|>'",
+			"<%registrasido%>='<|registrasido|>' ORDER BY identifieddo",
+			"<%astable%>.<%dosendo%>='<|dosendo|>' AND <%astable%>.<%statusdo%>='<|statusdo|>'",
 			"<%astable%>.<%statusdo%>='<|statusdo|>'",
-			"<%astable%>.dosen<>'0' AND <%astable%>.dosen<>''"
+			"<%astable%>.dosendo<>'0' AND <%astable%>.dosendo<>''"
 		);
 		$this->tempDataArrayWhereMultiple = array(
 			"",
-			"<%astablem%>.registrasi=<%astable1%>.<%table1primary%>",
-			"<%astablem%>.registrasi=<%astable1%>.<%table1primary%> group by <%astablem%>.dosen asc) as y  order by y.identifieddo desc",
-			"<%astablem%>.registrasi=<%astable1%>.<%table1primary%> AND <%astablem%>.dosen=<%astable2%>.<%table2primary%>",
+			"<%astablem%>.registrasido=<%astable1%>.<%table1primary%>",
+			"<%astablem%>.registrasido=<%astable1%>.<%table1primary%> group by <%astablem%>.dosendo asc) as y  order by y.identifieddo desc",
+			"<%astablem%>.registrasido=<%astable1%>.<%table1primary%> AND <%astablem%>.dosendo=<%astable2%>.<%table2primary%>",
+			"<%astablem%>.registrasido=<%astable1%>.<%table1primary%> AND <%astable1%>.mahasisware=<%astable2%>.<%table2primary%>",
+			"<%astablem%>.registrasido=<%astable1%>.<%table1primary%> AND <%astable1%>.mahasisware=<%astable2%>.<%table2primary%> AND <%astable1%>.mahasisware=<%astable3%>.mahasiswasi",
+			"<%astablem%>.registrasido=<%astable1%>.<%table1primary%> AND <%astablem%>.dosendo=<%astable2%>.<%table2primary%> AND <%astable1%>.mahasisware=<%astable3%>.<%table3primary%>",
 		);
 		$this->tempCodeOfWhere = array(
-			"registrasi" => array(
-				'kode' => "<%registrasi%>",
-				'value' => "<|registrasi|>"
+			"registrasido" => array(
+				'kode' => "<%registrasido%>",
+				'value' => "<|registrasido|>"
 			),
-			"dosen" => array(
-				'kode' => "<%dosen%>",
-				'value' => "<|dosen|>"
+			"dosendo" => array(
+				'kode' => "<%dosendo%>",
+				'value' => "<|dosendo|>"
 			),
 			"statusdo" => array(
 				'kode' => "<%statusdo%>",
 				'value' => "<|statusdo|>"
 			),
-			"pesan" => array(
-				'kode' => "<%pesan%>",
-				'value' => "<|pesan|>"
+			"pesando" => array(
+				'kode' => "<%pesando%>",
+				'value' => "<|pesando|>"
 			),
 			"identifieddo" => array(
 				'kode' => "<%identifieddo%>",
@@ -51,10 +54,10 @@ class DosbingObjectDBModel extends ObjectDBModel {
 	public function resetValue(){
 		parent::resetValue();
 	}
-	public function getRegistrasi(){ return $this->getData('registrasi'); }
-	public function getDosen(){ return $this->getData('dosen'); }
+	public function getRegistrasi(){ return $this->getData('registrasido'); }
+	public function getDosen(){ return $this->getData('dosendo'); }
 	public function getStatus(){ return $this->getData('statusdo'); }
-	public function getPesan(){ return $this->getData('pesan'); }
+	public function getPesan(){ return $this->getData('pesando'); }
 	public function getIdentified(){ return $this->getData('identifieddo'); }
 	
 	public function setIdentified($tempData,$tempAsWhere = false){
@@ -66,7 +69,7 @@ class DosbingObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setRegistrasi($tempData,$tempAsWhere = false){
-		return $this->setData('registrasi',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('registrasido',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -74,7 +77,7 @@ class DosbingObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setDosen($tempData,$tempAsWhere = false){
-		return $this->setData('dosen',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('dosendo',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -90,7 +93,7 @@ class DosbingObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setPesan($tempData,$tempAsWhere = false){
-		return $this->setData('pesan',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('pesando',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/

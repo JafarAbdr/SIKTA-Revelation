@@ -7,14 +7,15 @@ class Baseseminar extends CI_Controller_Modified {
 	}
 	/*
 	dependencies:
-	-ControlDosen
-	-ControlDetail
-	-ControlMahasiswa
-	-ControlRegistrasi
+	-ControlDosen(-)
+	-ControlDetail(-)
+	-ControlMahasiswa(-)
+	-ControlRegistrasi(-)
 	-ControlSeminar
 	-ControlSidang
 	-ControlTime
 	-Inputjaservfilter
+	-GateControlModel(+)
 	*/
 	//optimized
 	//get page layout seminar
@@ -33,44 +34,32 @@ class Baseseminar extends CI_Controller_Modified {
 			}
 		}
 		$this->loadLib('ControlSeminar');
-		$this->loadLib('ControlRegistrasi');
-		$this->loadLib('ControlMahasiswa');
-		$this->loadLib('ControlDosen');
 		$this->loadLib('ControlTime');
-		$this->loadLib('ControlDetail');
 		$this->loadMod('GateControlModel');
 		$gateControlModel = new GateControlModel();
-		$controlRegistrasi = new ControlRegistrasi($gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($gateControlModel);
-		$controlDosen = new ControlDosen($gateControlModel);
-		$controlDetail = new ControlDetail($gateControlModel);
 		$kode = 1;
 		$string = "";
-		$tempSeminarS = (new ControlSeminar($gateControlModel))->getAllDataWithMahasiswa((new ControlTime($gateControlModel))->getYearNow());
+		$tempSeminarS = (new ControlSeminar($gateControlModel))->getAllDataWithMahasiswa((new ControlTime($gateControlModel))->getYearNow(),1,2,true);
 		if($tempSeminarS){
 			while($tempSeminarS->getNextCursor()){
 				$tempSeminar = $tempSeminarS->getTableStack(0);
 				$tempMahasiswa = $tempSeminarS->getTableStack(1);
-				$tempRegistrasiS = $controlRegistrasi->getAllDataWithDosbing($tempSeminar->getTahunAk(),$tempSeminar->getMahasiswa());
-				if($tempRegistrasiS->getNextCursor()){
-					$tempRegistrasi = $tempRegistrasiS->getTableStack(1); 
-					$tempDosen = $tempRegistrasiS->getTableStack(2); 
-					if($keyword == "*" || strpos($tempRegistrasi->getJudulTa(),$keyword) !== false){	
-						$tempRuang = $controlDetail->getDetail('ruang',$tempRegistrasi->getDataProses());
-						if($tempRuang->getNextCursor()){
-							$string .=
-							"<tr>
-								<td style='text-align : center;'>".$tempMahasiswa->getNim()."</td>
-								<td style='text-align : center;'>".$tempMahasiswa->getNama()."</td>
-								<td style='text-align : center;'>".$tempRegistrasi->getJudulTa()."</td>
-								<td style='text-align : center;'>".$tempRuang->getDetail()."</td>
-								<td style='text-align : center;'>".$tempSeminar->getWaktu()."</td>
-								<td style='text-align : center;'>".$tempDosen->getNama()."</td>
-							</tr>
-							";	
-						}
+				$tempRuang = $tempSeminarS->getTableStack(2);
+				$tempRegistrasi = $tempSeminarS->getTableStack(5);
+				$tempDosen = $tempSeminarS->getTableStack(7);
+				if($keyword == "*" || strpos($tempRegistrasi->getJudulTa(),$keyword) !== false){	
+					if(strlen($tempRuang->getDetail()) > 0){
+						$string .=
+						"<tr>
+							<td style='text-align : center;'>".$tempMahasiswa->getNim()."</td>
+							<td style='text-align : center;'>".$tempMahasiswa->getNama()."</td>
+							<td style='text-align : center;'>".$tempRegistrasi->getJudulTa()."</td>
+							<td style='text-align : center;'>".$tempRuang->getDetail()."</td>
+							<td style='text-align : center;'>".$tempSeminar->getWaktu()."</td>
+							<td style='text-align : center;'>".$tempDosen->getNama()."</td>
+						</tr>
+						";	
 					}
-					
 				}
 			}
 		}
@@ -101,42 +90,30 @@ class Baseseminar extends CI_Controller_Modified {
 		$kode = 1;
 		$string = "";
 		$this->loadLib('ControlSidang');
-		$this->loadLib('ControlRegistrasi');
-		$this->loadLib('ControlMahasiswa');
-		$this->loadLib('ControlDosen');
 		$this->loadLib('ControlTime');
-		$this->loadLib('ControlDetail');
 		$this->loadMod('GateControlModel');
 		$gateControlModel = new GateControlModel();
-		$controlRegistrasi = new ControlRegistrasi($gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($gateControlModel);
-		$controlDosen = new ControlDosen($gateControlModel);
-		$controlDetail = new ControlDetail($gateControlModel);
-		$tempSidangS = (new ControlSidang($gateControlModel))->getAllDataWithMahasiswa((new ControlTime($gateControlModel))->getYearNow());
+		$tempSidangS = (new ControlSidang($gateControlModel))->getAllDataWithMahasiswa((new ControlTime($gateControlModel))->getYearNow(),1,2,true);
 		if($tempSidangS){
 			while($tempSidangS->getNextCursor()){
 				$tempSidang = $tempSidangS->getTableStack(0);
 				$tempMahasiswa = $tempSidangS->getTableStack(1);
-				$tempRegistrasiS = $controlRegistrasi->getAllDataWithDosbing($tempSidang->getTahunAk(),$tempSidang->getMahasiswa());
-				if($tempRegistrasiS->getNextCursor()){
-					$tempRegistrasi = $tempRegistrasiS->getTableStack(1);
-					$tempDosen = $tempRegistrasiS->getTableStack(2);
-					if($keyword == "*" || !is_bool(strpos(strtolower($tempRegistrasi->getJudulTA()),strtolower($keyword)))){	
-						$tempRuang = $controlDetail->getDetail('ruang',$tempRegistrasi->getDataProses());
-						if($tempRuang->getNextCursor()){
-							$string .=
-							"<tr>
-								<td style='text-align : center;'>".$tempMahasiswa->getNim()."</td>
-								<td style='text-align : center;'>".$tempMahasiswa->getNama()."</td>
-								<td style='text-align : center;'>".$tempRegistrasi->getJudulTa()."</td>
-								<td style='text-align : center;'>".$tempRuang->getDetail()."</td>
-								<td style='text-align : center;'>".$tempSidang->getWaktu()."</td>
-								<td style='text-align : center;'>".$tempDosen->getNama()."</td>
-							</tr>
-							";	
-						}
+				$tempRuang = $tempSidangS->getTableStack(2);
+				$tempRegistrasi = $tempSidangS->getTableStack(4);
+				$tempDosen = $tempSidangS->getTableStack(6);
+				if($keyword == "*" || !is_bool(strpos(strtolower($tempRegistrasi->getJudulTA()),strtolower($keyword)))){	
+					if(strlen($tempRuang->getDetail()) > 0){
+						$string .=
+						"<tr>
+							<td style='text-align : center;'>".$tempMahasiswa->getNim()."</td>
+							<td style='text-align : center;'>".$tempMahasiswa->getNama()."</td>
+							<td style='text-align : center;'>".$tempRegistrasi->getJudulTa()."</td>
+							<td style='text-align : center;'>".$tempRuang->getDetail()."</td>
+							<td style='text-align : center;'>".$tempSidang->getWaktu()."</td>
+							<td style='text-align : center;'>".$tempDosen->getNama()."</td>
+						</tr>
+						";	
 					}
-					
 				}
 			}
 		}

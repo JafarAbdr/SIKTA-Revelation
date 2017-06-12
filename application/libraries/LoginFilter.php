@@ -31,13 +31,16 @@ class LoginFilter extends LibrarySupport {
 		$this->gateControlModel = $tempGateControlModel;
 		
 	}
+	//optimized
+	//use - every class server gate
 	public function getIdentifiedActive(){
 		if(is_null($this->session)) return false;
 		if(!$this->session->has_userdata('id_active_account')) return false;
 		$tempId = $this->session->userdata("id_active_account");
 		return $tempId;
 	}
-	//complex
+	//optimized - complex
+	//use - every class server gate
 	public function isLogin(Aktor $tempAktor=null){
 		if(is_null($this->session)) return false;
 		if(is_null($tempAktor)) return false;
@@ -46,7 +49,9 @@ class LoginFilter extends LibrarySupport {
 		if($tempId[0] != $tempAktor->getLevelCode()) return false;
 		return $this->filterIdentified($tempId);
 	}
+	//optimized
 	//complex - sequence ok
+	//use - I
 	public function isPasswordOfThisGuy($keyWord,$identified=null){
 		if(is_null($identified)){
 			$identified = $this->getIdentifiedActive();
@@ -64,7 +69,9 @@ class LoginFilter extends LibrarySupport {
 		else
 			return false;
 	}
+	//optimized
 	//complex - sequence ok
+	//use - I
 	public function setNewPassword($keyWord,$identified=null){
 		if(is_null($identified)){
 			$identified = $this->getIdentifiedActive();

@@ -15,97 +15,97 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		$this->tempDataArrayWhere = array(
 			"",
 			"<%identifiedre%>='<|identifiedre|>'",
-			"<%tahunak%>='<|tahunak|>' AND <%statusre%>='<|statusre|>' AND <%dataproses%>='<|dataproses|>'",
-			"<%tahunak%>='<|tahunak|>' AND <%mahasiswa%>='<|mahasiswa|>' AND <%statusre%>='<|statusre|>' AND <%dataproses%>='<|dataproses|>'",
-			"<%tahunak%>='<|tahunak|>' AND <%mahasiswa%>='<|mahasiswa|>' AND <%statusre%>='<|statusre|>'",
-			"<%tahunak%> LIKE '<|tahunak|>%' AND <%dosen%>='<|dosen|>' AND <%statusre%>='<|statusre|>'",
-			"<%tahunak%>='<|tahunak|>' AND <%statusre%>='<|statusre|>'",
-			"<%tahunak%>='<|tahunak|>' AND <%mahasiswa%>='<|mahasiswa|>'",
-			"<%mahasiswa%>='<|mahasiswa|>'",
-			"<%astable%>.<%tahunak%>='<|tahunak|>' AND <%astable%>.<%statusre%>='<|statusre|>'",
-			"<%astable%>.<%mahasiswa%>='<|mahasiswa|>' AND <%astable%>.<%tahunak%>='<|tahunak|>' AND <%astable%>.<%statusre%>='<|statusre|>'",
-			"<%astable%>.<%tahunak%>='<|tahunak|>' AND <%astable%>.<%statusre%>='<|statusre|>' AND <%astable%>.<%dataproses%>='<|dataproses|>'",
-			"<%astable%>.<%tahunak%>='<|tahunak|>' AND <%astable%>.<%mahasiswa%>='<|mahasiswa|>' AND <%astable%>.<%statusre%>='<|statusre|>' AND <%astable%>.<%dataproses%>='<|dataproses|>'",
-			"<%astable%>.<%tahunak%>='<|tahunak|>' AND <%astable%>.<%mahasiswa%>='<|mahasiswa|>' AND <%astable%>.<%statusre%>='<|statusre|>'",
-			"<%astable%>.<%tahunak%>='<|tahunak|>' AND <%astable%>.<%statusre%>='<|statusre|>'",
-			"<%astable%>.<%tahunak%>='<|tahunak|>' AND <%astable%>.<%mahasiswa%>='<|mahasiswa|>'",
-			"<%astable%>.<%mahasiswa%>='<|mahasiswa|>'",
-			/*"<%statusre%>='<|statusre|>' AND <%mahasiswa%>='<|mahasiswa|>' AND dosen<>'0' and dosen<>'' group by dosen) as x order by x.tahunak desc, x.datastatusre desc"*/
+			"<%tahunakre%>='<|tahunakre|>' AND <%statusre%>='<|statusre|>' AND <%dataprosesre%>='<|dataprosesre|>'",
+			"<%tahunakre%>='<|tahunakre|>' AND <%mahasisware%>='<|mahasisware|>' AND <%statusre%>='<|statusre|>' AND <%dataprosesre%>='<|dataprosesre|>'",
+			"<%tahunakre%>='<|tahunakre|>' AND <%mahasisware%>='<|mahasisware|>' AND <%statusre%>='<|statusre|>'",
+			"<%tahunakre%> LIKE '<|tahunakre|>%' AND <%statusre%>='<|statusre|>'",
+			"<%tahunakre%>='<|tahunakre|>' AND <%statusre%>='<|statusre|>'",
+			"<%tahunakre%>='<|tahunakre|>' AND <%mahasisware%>='<|mahasisware|>'",
+			"<%mahasisware%>='<|mahasisware|>'",
+			"<%astable%>.<%tahunakre%>='<|tahunakre|>' AND <%astable%>.<%statusre%>='<|statusre|>'",
+			"<%astable%>.<%mahasisware%>='<|mahasisware|>' AND <%astable%>.<%tahunakre%>='<|tahunakre|>' AND <%astable%>.<%statusre%>='<|statusre|>'",
+			"<%astable%>.<%tahunakre%>='<|tahunakre|>' AND <%astable%>.<%statusre%>='<|statusre|>' AND <%astable%>.<%dataprosesre%>='<|dataprosesre|>'",
+			"<%astable%>.<%tahunakre%>='<|tahunakre|>' AND <%astable%>.<%mahasisware%>='<|mahasisware|>' AND <%astable%>.<%statusre%>='<|statusre|>' AND <%astable%>.<%dataprosesre%>='<|dataprosesre|>'",
+			"<%astable%>.<%tahunakre%>='<|tahunakre|>' AND <%astable%>.<%mahasisware%>='<|mahasisware|>' AND <%astable%>.<%statusre%>='<|statusre|>'",
+			"<%astable%>.<%tahunakre%>='<|tahunakre|>' AND <%astable%>.<%statusre%>='<|statusre|>'",
+			"<%astable%>.<%tahunakre%>='<|tahunakre|>' AND <%astable%>.<%mahasisware%>='<|mahasisware|>'",
+			"<%astable%>.<%mahasisware%>='<|mahasisware|>'",
+			/*"<%statusre%>='<|statusre|>' AND <%mahasisware%>='<|mahasisware|>' AND dosen<>'0' and dosen<>'' group by dosen) as x order by x.tahunakre desc, x.datastatusre desc"*/
 		);
 		$this->tempCodeOfWhere = array(
 			"identifiedre" => array(
 				'kode' => "<%identifiedre%>",
 				'value' => "<|identifiedre|>"
 			),
-			"tahunak" => array(
-				'kode' => "<%tahunak%>",
-				'value' => "<|tahunak|>"
+			"tahunakre" => array(
+				'kode' => "<%tahunakre%>",
+				'value' => "<|tahunakre|>"
 			),
-			"mahasiswa" => array(
-				'kode' => "<%mahasiswa%>",
-				'value' => "<|mahasiswa|>"
+			"mahasisware" => array(
+				'kode' => "<%mahasisware%>",
+				'value' => "<|mahasisware|>"
 			),
-			"judulta" => array(
-				'kode' => "<%judulta%>",
-				'value' => "<|judulta|>"
+			"judultare" => array(
+				'kode' => "<%judultare%>",
+				'value' => "<|judultare|>"
 			),
-			"metode" => array(
-				'kode' => "<%metode%>",
-				'value' => "<|metode|>"
+			"metodere" => array(
+				'kode' => "<%metodere%>",
+				'value' => "<|metodere|>"
 			),
-			"refs" => array(
-				'kode' => "<%refs%>",
-				'value' => "<|refs|>"
+			"refsre" => array(
+				'kode' => "<%refsre%>",
+				'value' => "<|refsre|>"
 			),
-			"refd" => array(
-				'kode' => "<%refd%>",
-				'value' => "<|refd|>"
+			"refdre" => array(
+				'kode' => "<%refdre%>",
+				'value' => "<|refdre|>"
 			),
-			"reft" => array(
-				'kode' => "<%reft%>",
-				'value' => "<|reft|>"
+			"reftre" => array(
+				'kode' => "<%reftre%>",
+				'value' => "<|reftre|>"
 			),
-			"lokasi" => array(
-				'kode' => "<%lokasi%>",
-				'value' => "<|lokasi|>"
+			"lokasire" => array(
+				'kode' => "<%lokasire%>",
+				'value' => "<|lokasire|>"
 			),
-			"namakrs" => array(
-				'kode' => "<%namakrs%>",
-				'value' => "<|namakrs|>"
+			"namakrsre" => array(
+				'kode' => "<%namakrsre%>",
+				'value' => "<|namakrsre|>"
 			),
 			"statusre" => array(
 				'kode' => "<%statusre%>",
 				'value' => "<|statusre|>"
 			),
-			"kategori" => array(
-				'kode' => "<%kategori%>",
-				'value' => "<|kategori|>"
+			"kategorire" => array(
+				'kode' => "<%kategorire%>",
+				'value' => "<|kategorire|>"
 			),
-			"dataproses" => array(
-				'kode' => "<%dataproses%>",
-				'value' => "<|dataproses|>"
+			"dataprosesre" => array(
+				'kode' => "<%dataprosesre%>",
+				'value' => "<|dataprosesre|>"
 			)
 		);
 	}/* 
 	public function resetValue(){
 		parent::resetValue();
 	} */
-	public function getTahunAk(){ return $this->getData('tahunak'); }
-	public function getMahasiswa(){ return $this->getData('mahasiswa'); }
-	public function getJudulTA(){ return $this->getData('judulta'); }
-	public function getMetode(){ return $this->getData('metode'); }
-	public function getRefS(){ return $this->getData('refs'); }
-	public function getRefD(){ return $this->getData('refd'); }
-	public function getRefT(){ return $this->getData('reft'); }
-	public function getLokasi(){ return $this->getData('lokasi'); }
-	public function getNamaKRS(){ return $this->getData('namakrs'); }
+	public function getTahunAk(){ return $this->getData('tahunakre'); }
+	public function getMahasiswa(){ return $this->getData('mahasisware'); }
+	public function getJudulTA(){ return $this->getData('judultare'); }
+	public function getMetode(){ return $this->getData('metodere'); }
+	public function getRefS(){ return $this->getData('refsre'); }
+	public function getRefD(){ return $this->getData('refdre'); }
+	public function getRefT(){ return $this->getData('reftre'); }
+	public function getLokasi(){ return $this->getData('lokasire'); }
+	public function getNamaKRS(){ return $this->getData('namakrsre'); }
 	public function getStatus(){ return $this->getData('statusre'); }
 	public function getIdentified(){ return $this->getData('identifiedre'); }
-	public function getKategori(){ return $this->getData('kategori'); }
-	public function getDataProses(){ return $this->getData('dataproses'); }
+	public function getKategori(){ return $this->getData('kategorire'); }
+	public function getDataProses(){ return $this->getData('dataprosesre'); }
 	
 	public function setTahunAk($tempData,$tempAsWhere = false){
-		return $this->setData('tahunak',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('tahunakre',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -113,7 +113,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setMahasiswa($tempData,$tempAsWhere = false){
-		return $this->setData('mahasiswa',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('mahasisware',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -121,7 +121,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setJudulTA($tempData,$tempAsWhere = false){
-		return $this->setData('judulta',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('judultare',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -129,7 +129,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setMetode($tempData,$tempAsWhere = false){
-		return $this->setData('metode',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('metodere',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -137,7 +137,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setRefS($tempData,$tempAsWhere = false){
-		return $this->setData('refs',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('refsre',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -145,7 +145,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setRefD($tempData,$tempAsWhere = false){
-		return $this->setData('refd',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('refdre',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -153,7 +153,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setRefT($tempData,$tempAsWhere = false){
-		return $this->setData('reft',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('reftre',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -161,7 +161,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setLokasi($tempData,$tempAsWhere = false){
-		return $this->setData('lokasi',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('lokasire',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -169,7 +169,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setNamaKRS($tempData,$tempAsWhere = false){
-		return $this->setData('namakrs',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('namakrsre',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -193,7 +193,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setKategori($tempData,$tempAsWhere = false){
-		return $this->setData('kategori',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('kategorire',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/
@@ -201,7 +201,7 @@ class RegistrasiObjectDBModel extends ObjectDBModel {
 		});
 	}
 	public function setDataProses($tempData,$tempAsWhere = false){
-		return $this->setData('dataproses',$tempData,$tempAsWhere,function($x,$tempResult){
+		return $this->setData('dataprosesre',$tempData,$tempAsWhere,function($x,$tempResult){
 			/*
 			Your Code to Filter
 			*/

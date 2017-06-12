@@ -70,17 +70,6 @@ class Kingroom extends CI_Controller_Modified {
 				"resources/mystyle/js/Kingroom_pengaturan.js",
 				"resources/mystyle/js/Kingroom-bimbingan.js",
 				"resources/mystyle/js/Kingroom-penguji.js"
-				/* 
-				"resources/mystyle/js/bimbingan-dosen-view.js",
-				"resources/mystyle/js/penguji-dosen-view.js",
-				"resources/mystyle/js/dosen-pengaturan.js" */
-				/* "resources/mystyle/js/Controlroom.js",
-				"resources/mystyle/js/registrasi-pemerataan.js",
-				"resources/mystyle/js/dosen-koordinator.js",
-				"resources/mystyle/js/acara-koordinator.js",
-				"resources/mystyle/js/Seminar-ta1-ta2.js",
-				"resources/mystyle/js/pengaturan-koordinator.js",
-				"resources/Chart/Chart.js" */
 		);
 		$data['url_link'] = array(
 				"resources/taurus/css/stylesheets.css",

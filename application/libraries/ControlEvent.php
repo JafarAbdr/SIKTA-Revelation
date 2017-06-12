@@ -13,6 +13,7 @@ class ControlEvent extends LibrarySupport {
 	}
 	//dokumented - optimized
 	//take any data with by kode statue or title or three of it
+	//use - I
 	public function getAllData($kode=null, $status=null,$judul=null){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Kejadian');
 		if(!is_null($kode)){

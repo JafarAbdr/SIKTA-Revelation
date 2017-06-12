@@ -31,6 +31,8 @@ class Kingpengaturan extends CI_Controller_Modified {
 		$this->loadLib('ControlDosen');
 		$this->controlDosen = new ControlDosen($this->gateControlModel);
 	}
+	//optimized
+	//set new password dosen
 	public function setNewPassword(){
 		$passwordLama = $this->isNullPost("password-old");
 		$passwordNew = $this->isNullPost("password-new");
@@ -63,6 +65,8 @@ class Kingpengaturan extends CI_Controller_Modified {
 		}
 		exit("1Proses perubahan berhasil");
 	}
+	//optimized
+	//get information that last save
 	public function getJsonProfile(){
 		$tempObjectDB = $this->controlDosen->getAllData($this->loginFilter->getIdentifiedActive());
 		if($tempObjectDB->getNextCursor()){
@@ -77,6 +81,8 @@ class Kingpengaturan extends CI_Controller_Modified {
 		}
 		echo json_encode($data);
 	}
+	//optimized
+	//change value of dosen information
 	public function dataSupport(){
 		$email = $this->isNullPost("support-email");
 		$nohp = $this->isNullPost("support-nohp");

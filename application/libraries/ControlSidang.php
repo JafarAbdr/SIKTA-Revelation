@@ -26,8 +26,11 @@ class ControlSidang extends LibrarySupport {
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
 	}
 	//optimized
-	public function getAllDataWithMahasiswa($tahunAk=null,$status="1", $dataprosesd = '2'){
+	//use - I
+	public function getAllDataWithMahasiswa($tahunAk=null,$status="1", $dataprosesd = '2',$registrasiEx=false){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Sidang');
+		$tempRuang = $this->gateControlModel->loadObjectDB('Ruang');
+		$tempStatus = $this->gateControlModel->loadObjectDB('Status');
 		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
 		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');
 		if(!is_null($tahunAk)){
@@ -39,9 +42,31 @@ class ControlSidang extends LibrarySupport {
 				$tempObjectDB->setWhere(20);	
 			}
 		}
-		$tempObjectDB->setWhereMultiple(1);
+		$tempObjectDB->setWhereMultiple(2);
 		$tempMultiple->addTable($tempObjectDB);
 		$tempMultiple->addTable($tempMahasiswa);
+		$tempMultiple->addTable($tempRuang);
+		$tempMultiple->addTable($tempStatus);
+		if(!$registrasiEx)
+			return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
+		//prepare for temporary registrasi model
+		$tempRegistrasi = $this->gateControlModel->loadObjectDB('Registrasi');
+		$tempRegistrasi->setTahunAk($tahunAk,true);
+		$tempRegistrasi->setStatus(1,true);
+		$tempRegistrasi->setDataProses(2,true);
+		$tempRegistrasi->setWhere(11);
+		//prepare for temporary dosbing relation model
+		$tempDosbing = $this->gateControlModel->loadObjectDB('Dosbing');
+		$tempDosbing->setStatus(1,true);
+		$tempDosbing->setWhere(5);
+		//prepare for temporary dosen model
+		$tempGuru = $this->gateControlModel->loadObjectDB('Guru');
+		$tempMultiple->addTable($tempRegistrasi);
+		$tempMultiple->addTable($tempDosbing);
+		$tempMultiple->addTable($tempGuru);
+		$tempObjectDB->setWhereMultiple(3);
+		//echo $tempMultiple->getTableName()." WHERE ".$tempMultiple->getWhere();
+		//exit();
 		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
 	}
 	//optimized
@@ -86,7 +111,27 @@ class ControlSidang extends LibrarySupport {
 		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
 	}
 	//optimized
-	public function isTesterOfMahasiswa($kode = null,$tahunAk=null,$dosen=null,$status="1"){
+	public function getDataByMahasiswaFull($tahunAk=null,$mahasiswa=null,$status="1"){
+		if(is_null($tahunAk)) return false;
+		if(is_null($mahasiswa)) return false;
+		$tempObjectDB = $this->gateControlModel->loadObjectDB('Sidang');
+		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
+		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');
+		$tempObjectDB->setTahunAk($tahunAk,true);
+		$tempObjectDB->setMahasiswa($mahasiswa,true);
+		if(is_null($status)){
+			$tempObjectDB->setWhere(23);
+		}else{
+			$tempObjectDB->setStatus($status,true);
+			$tempObjectDB->setWhere(22);
+		}
+		$tempObjectDB->setWhereMultiple(1);
+		$tempMultiple->addTable($tempObjectDB);
+		$tempMultiple->addTable($tempMahasiswa);
+		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
+	}
+	//optimized
+	public function isTesterOfMahasiswa($kode = null,$tahunAk=null,$dosen=null,$status="1",$mahasiswa = false){
 		if(is_null($kode)) return false;
 		if(is_null($tahunAk)) return false;
 		if(is_null($dosen)) return false;
@@ -109,7 +154,14 @@ class ControlSidang extends LibrarySupport {
 			default:
 			return false;
 		}
-		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
+		if(!$mahasiswa)
+			return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
+		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
+		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');
+		$tempObjectDB->setWhereMultiple(1);
+		$tempMultiple->addTable($tempObjectDB);
+		$tempMultiple->addTable($tempMahasiswa);
+		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
 	}
 	//optimized
 	public function getDataByMahasiswa($tahunAk=null,$mahasiswa=null,$status="1"){

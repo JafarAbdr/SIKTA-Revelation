@@ -19,11 +19,14 @@ class SeminarObjectDBModel extends ObjectDBModel {
 			"<%tahunakse%>='<|tahunakse|>' AND <%mahasiswase%>='<|mahasiswase|>' AND <%statusse%>='<|statusse|>'",
 			"<%tahunakse%>='<|tahunakse|>' AND <%mahasiswase%>='<|mahasiswase|>'",
 			"<%astable%>.<%tahunakse%>='<|tahunakse|>' AND <%astable%>.<%statusse%>='<|statusse|>' AND <%astable%>.waktuse<>'1000-01-01 00:00:00'",
+			"<%astable%>.<%tahunakse%>='<|tahunakse|>' AND <%astable%>.<%statusse%>='<|statusse|>' AND <%astable%>.<%dataprosesse%>='<|dataprosesse|>'",
 			""
 		);
 		$this->tempDataArrayWhereMultiple = array(
 			"",
-			"<%astablem%>.mahasiswase=<%astable1%>.<%table1primary%>"
+			"<%astablem%>.mahasiswase=<%astable1%>.<%table1primary%>", //astable1 = mahasiswa;
+			"<%astablem%>.mahasiswase=<%astable1%>.<%table1primary%> AND <%astablem%>.ruangse=<%astable2%>.<%table2primary%> AND <%astablem%>.dataprosesse=<%astable3%>.<%table3primary%> AND <%astablem%>.statusse=<%astable4%>.<%table4primary%>", //astable1 = mahasiswa /astable1 = ruang /astable3 = dataproses /astable4 = status ;
+			"<%astablem%>.mahasiswase=<%astable1%>.<%table1primary%> AND <%astablem%>.ruangse=<%astable2%>.<%table2primary%> AND <%astablem%>.dataprosesse=<%astable3%>.<%table3primary%> AND <%astablem%>.statusse=<%astable4%>.<%table4primary%> AND <%astablem%>.mahasiswase=<%astable5%>.mahasisware AND <%astable5%>.identifiedre=<%astable6%>.registrasido AND <%astable6%>.dosendo=<%astable7%>.<%table7primary%>", //astable1 = mahasiswa /astable1 = ruang /astable3 = dataproses /astable4 = status ;
 		);
 		$this->tempCodeOfWhere = array(
 			"identifiedse" => array(

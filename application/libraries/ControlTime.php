@@ -36,6 +36,7 @@ class ControlTime extends LibrarySupport {
 	/*
 	added to sequence diagram
 	*/
+	//Use - I
 	public function getYearNow(){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Koordinator');
 		$tempObjectDB->setWhere(2);

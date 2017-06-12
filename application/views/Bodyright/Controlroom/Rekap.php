@@ -18,10 +18,7 @@ if(!defined('BASEPATH'))
 			<label style="margin : 10px; float: right;">
 				<select id="tahun-ajaran" onchange="checkSemesterOnRekap(this)">
 					<?php 
-					if(intval(date("m")) > 6)
-						$year = intval(date("Y"));
-					else
-						$year = intval(date("Y"))-1;
+					$year= intval(substr($srt,0,4));
 					for($i=2013; $i<= $year;$i++){
 						if($i == $year)
 							echo "<option value='".$i."' selected>Tahun ajaran ".$i."-".($i+1)."</option>";

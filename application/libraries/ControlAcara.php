@@ -11,6 +11,7 @@ class ControlAcara extends LibrarySupport {
 		parent::__CONSTRUCT();
 		$this->gateControlModel = $tempGateControlModel;
 	}
+	//use - I
 	public function getAllData($tahunAk=null,$ruang=null,$mulai = null){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Acara');
 		if(!is_null($tahunAk)){

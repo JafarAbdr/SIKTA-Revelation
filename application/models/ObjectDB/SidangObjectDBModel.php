@@ -12,7 +12,9 @@ class SidangObjectDBModel extends ObjectDBModel {
 		);
 		$this->tempDataArrayWhereMultiple = array(
 			"",
-			"<%astablem%>.mahasiswasi=<%astable1%>.<%table1primary%>"
+			"<%astablem%>.mahasiswasi=<%astable1%>.<%table1primary%>",
+			"<%astablem%>.mahasiswasi=<%astable1%>.<%table1primary%> AND <%astablem%>.ruangsi=<%astable2%>.<%table2primary%> AND <%astablem%>.statussi=<%astable3%>.<%table3primary%>", //astable1 = mahasiswa /astable1 = ruang /astable3 = dataproses /astable3 = status ;
+			"<%astablem%>.mahasiswasi=<%astable1%>.<%table1primary%> AND <%astablem%>.ruangsi=<%astable2%>.<%table2primary%> AND <%astablem%>.statussi=<%astable3%>.<%table3primary%> AND <%astablem%>.mahasiswasi=<%astable4%>.mahasisware AND <%astable4%>.identifiedre=<%astable5%>.registrasido AND <%astable5%>.dosendo=<%astable6%>.<%table6primary%>", //astable1 = mahasiswa /astable1 = ruang /astable3 = dataproses /astable3 = status ;
 		);
 		$this->tempDataArrayWhere = array(
 			"",
@@ -38,6 +40,9 @@ class SidangObjectDBModel extends ObjectDBModel {
 			"<%astable%>.<%statussi%>='<|statussi|>' AND <%astable%>.<%ruangsi%>='<|ruangsi|>'",
 			"<%astable%>.<%tahunaksi%>='<|tahunaksi|>' AND <%astable%>.<%statussi%>='<|statussi|>' AND <%astable%>.<%dataprosesdsi%>='<|dataprosesdsi|>'",
 			"<%astable%>.<%tahunaksi%>='<|tahunaksi|>' AND <%astable%>.<%statussi%>='<|statussi|>'",
+			"<%astable%>.<%tahunaksi%> LIKE '<|tahunaksi|>%' AND <%astable%>.<%mahasiswasi%>='<|mahasiswasi|>' AND <%astable%>.<%statussi%>='<|statussi|>'",
+			"<%astable%>.<%tahunaksi%> LIKE '<|tahunaksi|>%' AND <%astable%>.<%mahasiswasi%>='<|mahasiswasi|>'",
+			"<%astable%>.<%tahunaksi%> LIKE '<|tahunaksi|>%' AND <%astable%>.<%nilaisi%><<|nilaisi|> AND <%astable%>.<%statussi%>='<|statussi|>'",
 			
 		);
 		$this->tempCodeOfWhere = array(

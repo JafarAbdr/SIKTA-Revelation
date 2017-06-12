@@ -8,7 +8,6 @@ dependencie:
 -GateControlModel
 -Inputjaservfilter
 -ControlDosen
--ControlMahasiswa
 -ControlRegistrasi
 -ControlSidang
 -ControlTime
@@ -26,7 +25,6 @@ class Controlrekap extends CI_Controller_Modified {
 		$this->loadLib('Inputjaservfilter');
 		$this->inputJaservFilter = new Inputjaservfilter();
 		$this->koordinator->initial($this->inputJaservFilter);
-		//$this->load->model('sc_ea');
 		$this->load->helper('html');
 		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		if(!$this->loginFilter->isLogin($this->koordinator)){
@@ -39,8 +37,6 @@ class Controlrekap extends CI_Controller_Modified {
 		$this->load->view("Bodyright/Controlroom/Rekap",$srt);
 	}
 	public function getListDataRekap(){
-		/* $_POST['kode'] = 'JASERVCONTROL';
-		$_POST['key'] = ''; */
 		$kode = $this->isNullPost('kode');
 		if($kode!="JASERVCONTROL")
 			exit("0maaf, anda melakukan debugging");
@@ -92,18 +88,18 @@ class Controlrekap extends CI_Controller_Modified {
 					$tempObjectDBD = $controlRegistrasi->getAllDataByDosen($srt,$tempObjectDB->getIdentified());
 					$totalUji = 0;
 					$tempObjectDBT = $controlSidang->isTesterOfMahasiswa(1,$srt,$tempObjectDB->getIdentified());
-					$totalUji += intval($tempObjectDBT->getCountData());
+					$totalUji += $tempObjectDBT->getCountData();
 					$tempObjectDBT = $controlSidang->isTesterOfMahasiswa(2,$srt,$tempObjectDB->getIdentified());
-					$totalUji += intval($tempObjectDBT->getCountData());
+					$totalUji += $tempObjectDBT->getCountData();
 					$tempObjectDBT = $controlSidang->isTesterOfMahasiswa(3,$srt,$tempObjectDB->getIdentified());
-					$totalUji += intval($tempObjectDBT->getCountData());
+					$totalUji += $tempObjectDBT->getCountData();
 					
 					$totalLulus = 0;
-					
 					while($tempObjectDBD->getNextCursor()){
-						//echo $this->sc_st->getNip()." ".$this->sc_st->getNim()." ".$totalLulus."<br>";
-						if($controlSidang->getDataByMahasiswa($srt,$tempObjectDBD->getMahasiswa())->getNextCursor())
-							$totalLulus++;
+						$tempSidang = $controlSidang->getDataByMahasiswa($srt,$tempObjectDBD->getTableStack(1)->getMahasiswa());
+						if($tempSidang->getNextCursor()){
+							if($tempSidang->getNilai() < 3) $totalLulus++;
+						}
 					}
 					$semester = 2;
 					//echo "total = ".$totalLulus."<br>";
@@ -156,7 +152,10 @@ class Controlrekap extends CI_Controller_Modified {
 		$result['output'] = $rest; 
 		echo "1".json_encode($result);
 	}
-	public function getJsonJumlahLulus(){
+	public function getJsonJumlahLulus(){/* 
+		$_POST['kode'] = 'JASERVCONTROL';
+		$_POST['year'] = '20171';
+		$_POST['nip'] = '198203092006041002'; */
 		$kode = $this->isNullPost('kode');
 		if($kode!="JASERVCONTROL")
 			exit("0maaf, anda melakukan debugging");
@@ -171,25 +170,17 @@ class Controlrekap extends CI_Controller_Modified {
 			}
 		}
 		$this->loadLib('ControlDosen');
-		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlRegistrasi');
-		$this->loadLib('ControlMahasiswa');
 		$tempObjectDB = (new ControlDosen($this->gateControlModel))->getDataByNip($nip,null);
 		if(!$tempObjectDB->getNextCursor()) exit("0maaf nip ini tidak terdaftar");
-		$tempObjectDBD = (new ControlRegistrasi($this->gateControlModel))->getAllDataByDosen($srt,$tempObjectDB->getIdentified());
+		$tempObjectDBD = (new ControlRegistrasi($this->gateControlModel))->getAllDataByDosen($srt,$tempObjectDB->getIdentified(),1,true,true);
 		$temp2="";
 		$temp=0;
-		$controlSidang = new ControlSidang($this->gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		if($tempObjectDBD){
 			while($tempObjectDBD->getNextCursor()){
-				$tempObjectDBT = $controlSidang->getDataByMahasiswa($srt,$tempObjectDBD->getMahasiswa());
-				if($tempObjectDBT->getNextCursor()){
-					$tempObjectDBE = $controlMahasiswa->getAllData($tempObjectDBT->getMahasiswa());
-					$tempObjectDBE->getNextCursor();
-					$temp++;
-					$temp2.='["'.$tempObjectDBE->getNama().'",'.$tempObjectDBE->getNim().',"upload/foto/'.$tempObjectDBE->getNamaFoto().'"],';	
-				}
+				$tempObjectDBE = $tempObjectDBD->getTableStack(2);
+				$temp++;
+				$temp2.='["'.$tempObjectDBE->getNama().'",'.$tempObjectDBE->getNim().',"upload/foto/'.$tempObjectDBE->getNamaFoto().'"],';					
 			}
 		}
 		if($temp2 != "")
@@ -200,6 +191,8 @@ class Controlrekap extends CI_Controller_Modified {
 		$json .= "]]}";
 		echo "1".$json;
 	}
+	//optimized
+	//get list mahasiswa yang diuji, baik dengan status ketua penguji maupun 
 	public function getJsonJumlahMenguji(){
 		$kode = $this->isNullPost('kode');
 		if($kode!="JASERVCONTROL")
@@ -216,45 +209,28 @@ class Controlrekap extends CI_Controller_Modified {
 		}
 		$this->loadLib('ControlDosen');
 		$this->loadLib('ControlSidang');
-		$this->loadLib('ControlMahasiswa');
 		$temp2="";
 		$temp=0;
 		$tempObjectDB = (new ControlDosen($this->gateControlModel))->getDataByNip($nip,null);
 		$controlSidang = new ControlSidang($this->gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		if(!$tempObjectDB->getNextCursor()) exit("0maaf nip ini tidak terdaftar");
-		$tempObjectDBD = $controlSidang->isTesterOfMahasiswa(1,$srt,$tempObjectDB->getIdentified());
+		$tempObjectDBD = $controlSidang->isTesterOfMahasiswa(1,$srt,$tempObjectDB->getIdentified(),1,true);
 		while($tempObjectDBD->getNextCursor()){
-			$tempObjectDBT = $controlSidang->getDataByMahasiswa($srt,$tempObjectDBD->getMahasiswa());
-			if($tempObjectDBT->getNextCursor()){
-				$tempObjectDBE = $controlMahasiswa->getAllData($tempObjectDBT->getMahasiswa());
-				$tempObjectDBE->getNextCursor();
-				$temp2.='["'.$tempObjectDBE->getNama().'",'.$tempObjectDBE->getNim().',"upload/foto/'.$tempObjectDBE->getNamaFoto().'"],';	
-				$temp++;
-			}
-			
+			$tempObjectDBE = $tempObjectDBD->getTableStack(1);
+			$temp2.='["'.$tempObjectDBE->getNama().'",'.$tempObjectDBE->getNim().',"upload/foto/'.$tempObjectDBE->getNamaFoto().'"],';	
+			$temp++;
 		}
-		$tempObjectDBD = $controlSidang->isTesterOfMahasiswa(2,$srt,$tempObjectDB->getIdentified());
+		$tempObjectDBD = $controlSidang->isTesterOfMahasiswa(2,$srt,$tempObjectDB->getIdentified(),1,true);
 		while($tempObjectDBD->getNextCursor()){
-			$tempObjectDBT = $controlSidang->getDataByMahasiswa($srt,$tempObjectDBD->getMahasiswa());
-			if($tempObjectDBT->getNextCursor()){
-				$tempObjectDBE = $controlMahasiswa->getAllData($tempObjectDBT->getMahasiswa());
-				$tempObjectDBE->getNextCursor();
-				$temp2.='["'.$tempObjectDBE->getNama().'",'.$tempObjectDBE->getNim().',"upload/foto/'.$tempObjectDBE->getNamaFoto().'"],';	
-				$temp++;
-			}
-			
+			$tempObjectDBE = $tempObjectDBD->getTableStack(1);
+			$temp2.='["'.$tempObjectDBE->getNama().'",'.$tempObjectDBE->getNim().',"upload/foto/'.$tempObjectDBE->getNamaFoto().'"],';	
+			$temp++;
 		}
-		$tempObjectDBD = $controlSidang->isTesterOfMahasiswa(3,$srt,$tempObjectDB->getIdentified());
+		$tempObjectDBD = $controlSidang->isTesterOfMahasiswa(3,$srt,$tempObjectDB->getIdentified(),1,true);
 		while($tempObjectDBD->getNextCursor()){
-			$tempObjectDBT = $controlSidang->getDataByMahasiswa($srt,$tempObjectDBD->getMahasiswa());
-			if($tempObjectDBT->getNextCursor()){
-				$tempObjectDBE = $controlMahasiswa->getAllData($tempObjectDBT->getMahasiswa());
-				$tempObjectDBE->getNextCursor();
-				$temp2.='["'.$tempObjectDBE->getNama().'",'.$tempObjectDBE->getNim().',"upload/foto/'.$tempObjectDBE->getNamaFoto().'"],';	
-				$temp++;
-			}
-			
+			$tempObjectDBE = $tempObjectDBD->getTableStack(1);
+			$temp2.='["'.$tempObjectDBE->getNama().'",'.$tempObjectDBE->getNim().',"upload/foto/'.$tempObjectDBE->getNamaFoto().'"],';	
+			$temp++;
 		}
 		if($temp2 != "")
 			$temp2 = substr($temp2, 0,strlen($temp2)-1);
@@ -264,7 +240,7 @@ class Controlrekap extends CI_Controller_Modified {
 		$json .= "]]}";
 		echo "1".$json;
 	}
-	//fix
+	//optimized - fix
 	public function getJsonJumlahBimbingan(){
 		$kode = $this->isNullPost('kode');
 		if($kode!="JASERVCONTROL")
@@ -281,20 +257,17 @@ class Controlrekap extends CI_Controller_Modified {
 		}
 		$this->loadLib('ControlDosen');
 		$this->loadLib('ControlRegistrasi');
-		$this->loadLib('ControlMahasiswa');
 		$tempObjectDB = (new ControlDosen($this->gateControlModel))->getDataByNip($nip,null);
 		if(!$tempObjectDB->getNextCursor()) exit("0maaf nip ini tidak terdaftar");
 		$tempObjectDB = (new ControlDosen($this->gateControlModel))->getDataByNip($nip);
 		if(!$tempObjectDB->getNextCursor()) exit("0maaf nip ini tidak terdaftar");
-		$tempObjectDBD = (new ControlRegistrasi($this->gateControlModel))->getAllDataByDosen($srt,$tempObjectDB->getIdentified());
+		$tempObjectDBD = (new ControlRegistrasi($this->gateControlModel))->getAllDataByDosen($srt,$tempObjectDB->getIdentified(),1,true);
 		//echo $srt."";
 		$temp2="";
 		$temp=0;
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		if($tempObjectDBD){
 			while($tempObjectDBD->getNextCursor()){
-				$tempObjectDBT = $controlMahasiswa->getAllData($tempObjectDBD->getMahasiswa());
-				$tempObjectDBT->getNextCursor();
+				$tempObjectDBT = $tempObjectDBD->getTableStack(2);
 				$temp2.='["'.$tempObjectDBT->getNama().'",'.$tempObjectDBT->getNim().',"upload/foto/'.$tempObjectDBT->getNamaFoto().'"],';	
 				$temp++;
 			}
@@ -382,8 +355,7 @@ class Controlrekap extends CI_Controller_Modified {
 			$totalUji += intval($tempObjectDBT->getCountData());
 			$totalLulus = 0;
 			while($tempObjectDBD->getNextCursor()){
-				//echo $this->sc_st->getNip()." ".$this->sc_st->getNim()." ".$totalLulus."<br>";
-				if($controlSidang->getDataByMahasiswa($srt,$tempObjectDBD->getMahasiswa())->getNextCursor())
+				if($controlSidang->getDataByMahasiswa($srt,$tempObjectDBD->getTableStack(1)->getMahasiswa())->getNextCursor())
 					$totalLulus++;
 			}
 			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $tempObjectDBD->getCountData());

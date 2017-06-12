@@ -3,8 +3,8 @@
 	/*
 	dependencies
 	-ControlDetail
-	-ControlDosen
-	-ControlMahasiswa
+	-ControlDosen(-)
+	-ControlMahasiswa(-)
 	-ControlRegistrasi
 	-ControlTime
 	-inputjaservfilter
@@ -38,59 +38,44 @@ class Baseregistrasi extends CI_Controller_Modified {
 				$page = 1;	
 		}
 		$this->loadLib('ControlRegistrasi');
-		$this->loadLib('ControlMahasiswa');
-		$this->loadLib('ControlDosen');
 		$this->loadLib('ControlTime');
 		$this->loadLib('ControlDetail');
 		$this->loadMod('GateControlModel');
 		$gateControlModel = new GateControlModel();
 		$controlRegistrasi = new ControlRegistrasi($gateControlModel);
-		$controlDosen = new ControlDosen($gateControlModel);
 		$controlDetail = new ControlDetail($gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($gateControlModel);
-		$tempRegistrasi = $controlRegistrasi->getAllData((new ControlTime($gateControlModel))->getYearNow());
+		$tempRegistrasiS = $controlRegistrasi->getAllDataWithDosbing((new ControlTime($gateControlModel))->getYearNow(),null,1,2,true);
 		$n = 1;
 		$z = 1;
 		$koko = 0;
 		$string = "";
 		$i = 1;
-		if($tempRegistrasi){
-			while($tempRegistrasi->getNextCursor()){
-				if($tempRegistrasi->getDataProses() == '2'){
-					$tempMahasiswa = $controlMahasiswa->getAllData($tempRegistrasi->getMahasiswa());
-					if($tempMahasiswa->getNextCursor()){
-						if($keyword == "*" || !is_bool(strpos(strtolower($tempMahasiswa->getNim()),strtolower($keyword)))){
-							$tempDosbing = $controlRegistrasi->getDosenPembimbing($tempRegistrasi->getIdentified());
-							$tempDosbing->getNextCursor();
-							if(strlen($tempDosbing->getDosen()) == 40 ){
-								$tempDosen = $controlDosen->getAllData($tempDosbing->getDosen());
-								if($tempDosen->getNextCursor()){
-									if($n <= 15 && $z == $page){ 
-										$tempDataProses = $controlDetail->getDetail('dataproses',$tempRegistrasi->getDataProses());
-										$string .=
-										"<tr>".
-											"<td style='text-align : center;'>".$i."</td>".
-											"<td style='text-align : center;'>".$tempMahasiswa->getNim()."</td>".
-											"<td style='text-align : center;'>".$tempMahasiswa->getNama()."</td>".
-											"<td style='text-align : center;'>".$tempRegistrasi->getJudulTa()."</td>".
-											"<td style='text-align : center;'>".$tempDosen->getNama()."</td>".
-											"<td style='text-align : center;'>".$tempDataProses->getDetail()."</td>".
-										"</tr>";
-										
-										$koko ++;
-										$n++;
-									}else if($n == 15 && $z < $page){
-										$n = 1;
-										$z++;
-									}else{
-										$n++;
-									} 
-									$i++;
-								}
-							}	
-						}
-					}
-				}
+		if($tempRegistrasiS){
+			while($tempRegistrasiS->getNextCursor()){
+				$tempRegistrasi = $tempRegistrasiS->getTableStack(1);
+				$tempDosen = $tempRegistrasiS->getTableStack(2);
+				$tempMahasiswa = $tempRegistrasiS->getTableStack(3);
+				if($n <= 15 && $z == $page){ 
+					$tempDataProses = $controlDetail->getDetail('dataproses',$tempRegistrasi->getDataProses());
+					$string .=
+					"<tr>".
+						"<td style='text-align : center;'>".$i."</td>".
+						"<td style='text-align : center;'>".$tempMahasiswa->getNim()."</td>".
+						"<td style='text-align : center;'>".$tempMahasiswa->getNama()."</td>".
+						"<td style='text-align : center;'>".$tempRegistrasi->getJudulTa()."</td>".
+						"<td style='text-align : center;'>".$tempDosen->getNama()."</td>".
+						"<td style='text-align : center;'>".$tempDataProses->getDetail()."</td>".
+					"</tr>";
+					
+					$koko ++;
+					$n++;
+				}else if($n == 15 && $z < $page){
+					$n = 1;
+					$z++;
+				}else{
+					$n++;
+				} 
+				$i++;
 			}
 		}
 		$result['left'] = 1;

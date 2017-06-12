@@ -51,7 +51,7 @@ class Controlresultseminar extends CI_Controller_Modified {
 		$year = intval($year);
 		$this->loadLib("ControlTime");
 		$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
-		if($year >= 20131 && $year <= intval($tahunAk))
+		if($year >= 20131 && $year <= 99999)
 			$tahunAk = $year."";
 		$tahunAk = "".$tahunAk."";
 		$this->load->library("phpexcel");
@@ -194,7 +194,6 @@ class Controlresultseminar extends CI_Controller_Modified {
 		$controlDetail = new ControlDetail($this->gateControlModel);
 		$controlDosen = new ControlDosen($this->gateControlModel);
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
-		//$tempObjectDB = (new ControlSeminar($this->gateControlModel))->getAllDataHaveATime($tahunAk);
 		$tempObjectDB = (new ControlSeminar($this->gateControlModel))->getAllDataHaveATimeWithMahasiswa($tahunAk);
 		$data="";
 		if($tempObjectDB){
@@ -310,11 +309,12 @@ class Controlresultseminar extends CI_Controller_Modified {
 		
 		
 	}
+	//optimized
 	public function getDataWithExcelSid($year){
 		$year = intval($year);
 		$this->loadLib("ControlTime");
 		$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
-		if($year >= 20131 && $year <= intval($tahunAk))
+		if($year >= 20131 && $year <= 99999)
 			$tahunAk = $year."";
 		$tahunAk = "".$tahunAk."";
 		$this->load->library("phpexcel");
@@ -351,7 +351,7 @@ class Controlresultseminar extends CI_Controller_Modified {
 		$controlDetail = new ControlDetail($this->gateControlModel);
 		$controlDosen = new ControlDosen($this->gateControlModel);
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
-		///$tempObjectDB = (new ControlSidang($this->gateControlModel))->getAllDataHaveATime($tahunAk);
+		
 		$tempObjectDBs = (new ControlSidang($this->gateControlModel))->getAllDataHaveATimeWithMahasiswa($tahunAk);
 		
 		$tempObjectDBEn = $controlDosen->getDataByStatus();
@@ -366,7 +366,8 @@ class Controlresultseminar extends CI_Controller_Modified {
 				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(2, $row, $tempObjectDBD->getNim());
 				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(3, $row, $tempObjectDBD->getNama());			
 				$isExist = true;
-				$tempObjectDBEs = $controlRegistrasi->getAllDataWithDosbing($tahunAk, $tempObjectDB->getIdentified());
+				$tempObjectDBEs = $controlRegistrasi->getAllDataWithDosbing($tahunAk, $tempObjectDBD->getIdentified());
+				$tempObjectDBEs->getNextCursor();
 				$tempObjectDBE = $tempObjectDBEs->getTableStack(1);
 				$tempObjectDBL = $tempObjectDBEs->getTableStack(2);
 				$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow(4, $row, $tempObjectDBE->getJudulTA());	

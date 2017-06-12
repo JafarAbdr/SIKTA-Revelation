@@ -12,20 +12,51 @@ class ControlSeminar extends LibrarySupport {
 		$this->gateControlModel = $tempGateControlModel;
 	}
 	//optimized
-	public function getAllDataWithMahasiswa($tahunAk=null,$status="1", $dataproses = '2'){
+	//use - I
+	public function getAllDataWithMahasiswa($tahunAk=null,$status="1", $dataproses = '2',$registrasiFull=false){
+		//prepare for temporary seminar model
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Seminar');
+		//prepare for temporary ruang model
+		$tempRuang = $this->gateControlModel->loadObjectDB('Ruang');
+		//prepare for temporary dataproses model
+		$tempDataProses = $this->gateControlModel->loadObjectDB('DataProses');
+		//prepare for temporary status model
+		$tempStatus = $this->gateControlModel->loadObjectDB('Status');
+		//prepare for temporary mahasiswa model
 		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
+		//prepare for temporary instrumen multiple model
 		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');
 		if(!is_null($tahunAk)){
 			$tempObjectDB->setTahunAk($tahunAk,true);
 			$tempObjectDB->setStatus($status,true);
 			$tempObjectDB->setDataProses($dataproses,true);
-			$tempObjectDB->setWhere(2);
+			$tempObjectDB->setWhere(8);
 			
 		}
-		$tempObjectDB->setWhereMultiple(1);
+		$tempObjectDB->setWhereMultiple(2);
 		$tempMultiple->addTable($tempObjectDB);
 		$tempMultiple->addTable($tempMahasiswa);
+		$tempMultiple->addTable($tempRuang);
+		$tempMultiple->addTable($tempDataProses);
+		$tempMultiple->addTable($tempStatus);
+		if(!$registrasiFull)
+			return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
+		//prepare for temporary registrasi model
+		$tempRegistrasi = $this->gateControlModel->loadObjectDB('Registrasi');
+		$tempRegistrasi->setTahunAk($tahunAk,true);
+		$tempRegistrasi->setStatus(1,true);
+		$tempRegistrasi->setDataProses(2,true);
+		$tempRegistrasi->setWhere(11);
+		//prepare for temporary dosbing relation model
+		$tempDosbing = $this->gateControlModel->loadObjectDB('Dosbing');
+		$tempDosbing->setStatus(1,true);
+		$tempDosbing->setWhere(5);
+		//prepare for temporary dosen model
+		$tempGuru = $this->gateControlModel->loadObjectDB('Guru');
+		$tempMultiple->addTable($tempRegistrasi);
+		$tempMultiple->addTable($tempDosbing);
+		$tempMultiple->addTable($tempGuru);
+		$tempObjectDB->setWhereMultiple(3);
 		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
 	}
 	//optimized

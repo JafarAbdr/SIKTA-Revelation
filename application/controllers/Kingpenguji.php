@@ -25,9 +25,7 @@ class Kingpenguji extends CI_Controller_Modified{
 		$this->gateControlModel = new GateControlModel();
 		$this->loadLib('LoginFilter');
 		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
-		//$this->load->library("Mahasiswa");
 		$this->load->helper('url');
-		//$this->load->model('sc_eah
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->dosen))
 			redirect(base_url().'Gateinout.jsp');

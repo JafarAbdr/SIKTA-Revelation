@@ -39,7 +39,8 @@ class ControlRegistrasi extends LibrarySupport {
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
 	}
 	//reverse
-	public function getAllDataWithDosbing($tahunAk=null,$mahasiswa = null,$status="1" , $dataproses = '2'){
+	//use - I
+	public function getAllDataWithDosbing($tahunAk=null,$mahasiswa = null,$status="1" , $dataproses = '2',$mahasiswaEx = false){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Registrasi');
 		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');
 		$tempDosbing = $this->gateControlModel->loadObjectDB('Dosbing');
@@ -72,6 +73,11 @@ class ControlRegistrasi extends LibrarySupport {
 		$tempMultiple->addTable($tempDosbing);
 		$tempMultiple->addTable($tempObjectDB);
 		$tempMultiple->addTable($tempGuru);
+		if(!$mahasiswaEx)
+			return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
+		$tempDosbing->setWhereMultiple(6);
+		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
+		$tempMultiple->addTable($tempMahasiswa);
 		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
 	}
 	//end of reverse
@@ -101,17 +107,9 @@ class ControlRegistrasi extends LibrarySupport {
 		$tempMultiple->addTable($tempObjectDBS);
 		$tempMultiple->addTable($tempObjectDB);
 		$tempMultiple->setCaseData(1);
-		//exit($tempObjectDBS->getWhere());
 		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
-		/* $tempObjectDB = $this->gateControlModel->loadObjectDB('Registrasi');
-		$tempObjectDB->setMahasiswa($mahasiswa,true);
-		$tempObjectDB->setStatus($status,true);
-		$tempObjectDB->setWhere(8);
-		$tempObjectDB->setCaseData(1);
-		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData(); */
-		
 	}
-	/* //complex - sequence ok
+	//complex - sequence ok
 	public function tryLog($tahunAk=null,$mahasiswa=null){
 		if(is_null($tahunAk)) return false;
 		if(is_null($mahasiswa)) return false;
@@ -130,12 +128,11 @@ class ControlRegistrasi extends LibrarySupport {
 		//data edit
 		if(!$this->gateControlModel->executeObjectDB($tempObjectDBL)->updateData($tempObjectDBE)) return false;
 		return $this->gateControlModel->executeObjectDB($tempObjectDBD)->updateData($tempObjectDBS);
-	} */
+	} 
 	//complex - sequence ok
 	public function addNew($array){
 		if(!is_array($array)) return false;
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Registrasi');
-		
 		$regIdentified = $this->generateIdentified("R",2);
 		$tempObjectDB->setIdentified($regIdentified,true);
 		$tempObjectDB->setTahunAk($array['codeRegist']);
@@ -147,7 +144,7 @@ class ControlRegistrasi extends LibrarySupport {
 		$pesan = "Mendaftar baru";
 		if(array_key_exists("pesan",$array))
 			$pesan = $array['pesan'];
-		if(!$this->addNewDosbing($regIdentifie,$pesan,$dosbing)){
+		if(!$this->addNewDosbing($regIdentified,$pesan,$dosbing)){
 			return false;
 		}
 		$tempObjectDB->setJudulTA($array['judulta']);
@@ -163,7 +160,7 @@ class ControlRegistrasi extends LibrarySupport {
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->addData();
 	}
 	//fixed with new return table stack
-	public function getAllDataByDosen($tahunAk=null,$dosen = null,$status="1"){
+	public function getAllDataByDosen($tahunAk=null,$dosen = null,$status="1",$mahasiswa = false,$sidang=false){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Registrasi');
 		$tempObjectDBS = $this->gateControlModel->loadObjectDB('Dosbing');
 		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');
@@ -178,11 +175,21 @@ class ControlRegistrasi extends LibrarySupport {
 		}else return false;
 		$tempMultiple->addTable($tempObjectDBS);
 		$tempMultiple->addTable($tempObjectDB);
+		if(!$mahasiswa)
+			return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
+		$tempObjectDBS->setWhereMultiple(4);
+		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
+		$tempMultiple->addTable($tempMahasiswa);
+		if(!$sidang)
+			return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
+		$tempObjectDBS->setWhereMultiple(5);
+		$tempSidang = $this->gateControlModel->loadObjectDB('Sidang');
+		$tempSidang->setNilai(3,true);
+		$tempSidang->setTahunAk($tahunAk,true);
+		$tempSidang->setStatus(1,true);
+		$tempSidang->setWhere(24);
+		$tempMultiple->addTable($tempSidang);
 		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
-		/* $tempMultiple->getNextCursor();
-		var_dump($tempMultiple->getCountData());
-		exit();
-		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData(); */
 	}
 	//complex - sequence ok
 	public function getCodeRegLastTA(ObjectDBModel $tempMahasiswa = null,$tahunAk = null,$now = false){
@@ -207,14 +214,12 @@ class ControlRegistrasi extends LibrarySupport {
 		$tempObjectDB->setMahasiswa($tempMahasiswa->getIdentified(),true);
 		$tempObjectDB->setStatus(1,true);
 		$tempObjectDB->setWhere(4);
-		//echo $tempEnd." ".$tempStart."<br>";
 		for($i=$tempEnd; $i>= $tempStart;$i--){
 			for($j=2;$j>=1;$j--){
 				$tempIdBefore = intval($i."".$j);
 				if($tempIdBefore < $tempEndKV && $tempIdBefore >= $tempStartKV){
 					$tempTotalLoor+=1;
 				}
-				//echo $tempIdBefore." ".$tempEndKV."<br>";
 				if($tempIdBefore <= $tempEndKV && $tempIdBefore >= $tempStartKV){
 					$tempObjectDB->setTahunAk($tempIdBefore,true);
 					if($this->gateControlModel->executeObjectDB($tempObjectDB)->takeData()->getNextCursor()){ //getHaveLastTAInfo
@@ -227,8 +232,6 @@ class ControlRegistrasi extends LibrarySupport {
 	}
 	//optimized
 	public function setDospemForTA($mahasiswa,$dosen,$tahunAk,$NamaDosen=false){
-		//$tempObjectDBS = $this->getAllData($tahunAk,$mahasiswa,1,null);
-		//get multiple data dosbing with registered
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Registrasi');
 		$tempObjectDBS = $this->gateControlModel->loadObjectDB('Dosbing');
 		$tempMultiple = $this->gateControlModel->loadObjectDB('Multiple');

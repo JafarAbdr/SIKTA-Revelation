@@ -29,20 +29,20 @@ dependencies:
 				redirect(base_url()."Gateinout.jsp");
 			}
 		}
+		//optimized
 		public function getLayoutDosen(){
 			echo"1";
 			$this->load->view("Bodyright/Controlroom/Dosen.php");
 		}
+		//optimized
 		public function setNewStatusDosen(){
 			$kode = $this->isNullPost('kode');
 			if($kode!="JASERVCONTROL")
 				exit("0maaf, anda melakukan debugging");
 			$nip = $this->isNullPost('nip');
-			$stat = $this->isNullPost('status');
-			if(intval($stat) != 2){
-				if(intval($stat) != 1){
-					exit("0maaf, anda melakukan debugging");
-				}
+			$stat = intval($this->isNullPost('status'));
+			if($stat > 2 || $stat < 1){
+				exit("0maaf, anda melakukan debugging");
 			}
 			
 			$this->load->library('datejaservfilter');
@@ -54,19 +54,49 @@ dependencies:
 				return;
 			}
 			$this->loadLib('ControlDosen');
+			$this->loadLib('ControlKoordinator');
+			$this->loadLib('ControlAdmin');
+			$this->loadLib('ControlRegistrasi');
+			$this->loadLib('ControlSidang');
 			$this->loadLib('ControlTime');
-			$tahunak = (new ControlTime($this->gateControlModel))->getYearNow();
+			$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
 			$errorChangeStatus = 0;
-			
+			//check is dosen aktif
 			$controlDosen = new ControlDosen($this->gateControlModel);
-			if($stat == 2){
-				if($controlDosen->tryToDeactivated($nip,$tahunak)) exit("1Berhasil menonaktifkan dosen");
-			}else{
-				if($controlDosen-> ActivateDosen($nip)) exit("1Berhasil mengaktifkan dosen");
+			$tempObjectDB = $controlDosen->getDataByNip($nip);
+			if(!$tempObjectDB || !$tempObjectDB->getNextCursor()) exit("0Dosen tidak aktif / tidak terdaftar");
+			//check is Admin
+			$tempControl = new ControlAdmin($this->gateControlModel);
+			$tempObjectDBs = $tempControl->getDataByStatus(1);
+			if($tempObjectDBs && $tempObjectDBs->getNextCursor()) {
+				if($tempObjectDBs->getKajur() == $tempObjectDB->getIdentified()) exit("0Dosen aktif sebagai Ketua Departemen");
+				if($tempObjectDBs->getWakil() == $tempObjectDB->getIdentified()) exit("0Dosen aktif sebagai Wakil Departemen");
 			}
-			exit('0Gagal melakukan proses, check dosen apa kah sedang menjabat atau memiliki kegiatan lain');
+			//check is koordinator
+			$tempControl = new ControlKoordinator($this->gateControlModel);
+			$tempObjectDBs = $tempControl->getDataByStatus(1);
+			if($tempObjectDBs && $tempObjectDBs->getNextCursor()) {
+				if($tempObjectDBs->getDosenK() == $tempObjectDB->getIdentified()) exit("0Dosen aktif sebagai koordinator");
+			}
+			//is dosbing
+			$tempControl = new ControlRegistrasi($this->gateControlModel);
+			$tempObjectDBs = $tempControl->getAllDataByDosen($tahunAk,$tempObjectDB->getIdentified());
+			if($tempObjectDBs && $tempObjectDBs->getNextCursor()) exit("0Dosen aktif sebagai dosen pembimbing");
+			//is tester
+			$tempControl = new ControlSidang($this->gateControlModel);
+			$tempObjectDBs = $tempControl->isTesterOfMahasiswa(1,$tahunAk,$tempObjectDB->getIdentified());
+			if($tempObjectDBs && $tempObjectDBs->getNextCursor()) exit("0Dosen aktif sebagai ketua penguji pada proses sidang");
+			$tempObjectDBs = $tempControl->isTesterOfMahasiswa(2,$tahunAk,$tempObjectDB->getIdentified());
+			if($tempObjectDBs && $tempObjectDBs->getNextCursor()) exit("0Dosen aktif sebagai penguji 1 pada proses sidang");
+			$tempObjectDBs = $tempControl->isTesterOfMahasiswa(3,$tahunAk,$tempObjectDB->getIdentified());
+			if($tempObjectDBs && $tempObjectDBs->getNextCursor()) exit("0Dosen aktif sebagai penguji 2 pada proses sidang");
+			
+			//try process
+			$tempObjectDB->setStatus($stat);
+			if($controlDosen->tryUpdate($tempObjectDB)) exit("1Berhasil menonaktifkan dosen");
+			else exit('0Gagal melakukan proses, check dosen apa kah sedang menjabat atau memiliki kegiatan lain');
 		}
-		//valid
+		//optimized - valid
 		public function getJsonListMahasiswa(){
 			$nip = $this->isNullPost('nip');
 			$this->loadLib('Aktor/Dosen');
@@ -88,7 +118,7 @@ dependencies:
 				$this->loadLib('ControlMahasiswa');
 				$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 				while($tempObjectDBD->getNextCursor()){
-					$tempObjectDBT = $controlMahasiswa->getAllData($tempObjectDBD->getMahasiswa());
+					$tempObjectDBT = $controlMahasiswa->getAllData($tempObjectDBD->getTableStack(1)->getMahasiswa());
 					$tempObjectDBT->getNextCursor();
 					$temp2.='["'.$tempObjectDBT->getNama().'",'.$tempObjectDBT->getNim().',"upload/foto/'.$tempObjectDBT->getNamaFoto().'"],';
 				}
@@ -102,8 +132,6 @@ dependencies:
 		}
 		//true on new
 		public function getTableDosen(){
-			$_POST['kode'] ="JASERVCONTROL";
-			/* $_POST[''] */
 			$kode = $this->isNullPost('kode');
 			if($kode!="JASERVCONTROL")
 				exit("0maaf, anda melakukan debugging");
@@ -197,7 +225,7 @@ dependencies:
 			$result['string'] = $rest;
 			echo "1".json_encode($result);
 		}
-		//vlaid
+		//optimized - valid
 		public function addNewDosen(){
 			$nama = $this->isNullPost('nama'); 
 			$nip = $this->isNullPost('nip'); 
@@ -226,7 +254,7 @@ dependencies:
 			else
 				exit("0Gagal menambahkan Dosen");
 		}
-		//valid
+		//optimized - valid
 		public function getCheck($value=null,$kode=null,$cat=null){
 			
 			if($value == null){
