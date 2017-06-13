@@ -24,17 +24,26 @@ class ControlMahasiswa extends LibrarySupport {
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
 	}
 	//complex - sequence ok
-	public function getDataByNama($nama = null,$status=1){
+	//use - II
+	public function getDataByNama($nama = null,$status=1,$dosenId=null){
 		$tempObjectDB = $this->gateControlModel->loadObjectDB('Murid');
 		$status = intval($status);
 		if(!is_null($nama)){
 			$tempObjectDB->setNama($nama,true);
 			$tempObjectDB->setStatus($status,true);
 			$tempObjectDB->setWhere(5);
+			if(!is_null($dosenId)){
+				$tempObjectDB->setDosenS($dosenId,true);
+				$tempObjectDB->setDosenD($dosenId,true);
+				$tempObjectDB->setDosenT($dosenId,true);
+				$tempObjectDB->setWhere(6);
+			}
 		}else{
 			return false;
 		}
 		return $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
+		
+		
 	}
 	//complex - sequence ok
 	public function getDataByNim($nim = null){

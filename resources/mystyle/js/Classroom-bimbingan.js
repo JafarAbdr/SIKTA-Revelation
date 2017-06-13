@@ -6,7 +6,7 @@ function seeAllCadetThisGuys(g){
 	j("#setAjax").setAjax(
 	{
 		methode : 'POST',
-		url : 'Classbimbingan/getJsonListMahasiswa.jsp',
+		url : 'Classbimbingan/getJsonListMahasiswa',
 		bool : true,
 		content : "nip="+g,
 		sucOk : function(a){
@@ -26,7 +26,7 @@ function seeAllCadetThisGuys(g){
 			setTimeout(function(){
 				closeLoadingBar();
 				openModalContact(message,"daftar mahasiswa bimbingan");
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"status refreshing list mahasiswa");

@@ -41,7 +41,7 @@
 								<th style='text-align : center;'>Operasi</th> 
 							</tr> 
 						</thead> 
-						<tbody id="tabel-bimbingan-dosen" style="overflow-y : auto; height: 200px;">   
+						<tbody id="tabel-bimbingan-dosen" style="overflow-y : auto;">   
 							<tr>
 								<td style='text-align : center;'>-</td>
 								<td style='text-align : center;'>-</td>
@@ -83,7 +83,7 @@
 										<th style='text-align : center;'>Operasi</th> 
 									</tr> 
 								</thead> 
-								<tbody id="tabel-notifikasi-cup" style="overflow-y : auto; height: 200px;">   
+								<tbody id="tabel-notifikasi-cup" style="overflow-y : auto;">   
 									<tr>
 										<td style='text-align : center;'>-</td>
 										<td style='text-align : center;'>-</td>
@@ -121,7 +121,7 @@
 										<th style='text-align : center;'>Operasi</th> 
 									</tr> 
 								</thead> 
-								<tbody id="tabel-proses-cup" style="overflow-y : auto; height: 200px;">   
+								<tbody id="tabel-proses-cup" style="overflow-y : auto;">   
 									<tr>
 										<td style='text-align : center;'>-</td>
 										<td style='text-align : center;'>-</td>
@@ -131,8 +131,6 @@
 							</table>
 						</div> 
 					</div>
-
-					
 				</div>
 			</div>
 		</div> 

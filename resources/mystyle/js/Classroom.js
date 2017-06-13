@@ -11,7 +11,7 @@ $(document).ready(function(){
 	},function(){},function(){});	
 	$('#keluar-confirm-exe').on('click',function(){
 		modalStaticMultipleButton('Apakah anda yakin ingin keluar',function(){
-			$(location).attr('href', "Classroom/signOut.jsp");
+			$(location).attr('href', "Classroom/signOut");
 		});
 	});
 	setTimeout(function(){
@@ -57,13 +57,13 @@ $(document).ready(function(){
 								j("#content-intern").setInHtml();
 								j("#setAjax").setAjax({
 									methode : 'POST',
-									url : "Classregistrasibaru.jsp",
+									url : "Classregistrasibaru",
 									bool : true,
 									content : "force=trueJaserv",
 									sucOk : function(a){
 										j("#content-intern").setInHtml(a.substr(1,a.length-1));
 										if(a[0] == '='){
-											window.location = base_url+"Gateinout.jsp";
+											window.location = base_url+"Gateinout";
 										}else if(a[0] == '1'){
 											$('#content-intern').slideDown('slow',function(){
 												reLoadFormBaru();
@@ -103,12 +103,12 @@ $(document).ready(function(){
 								j("#content-intern").setInHtml();
 								j("#setAjax").setAjax({
 									methode : 'POST',
-									url : "Classregistrasilama.jsp",
+									url : "Classregistrasilama",
 									bool : true,
 									content : "force=trueJaserv",
 									sucOk : function(a){
 										j("#content-intern").setInHtml(a.substr(1,a.length-1));if(a[0] == '3'){
-											window.location = base_url+"Gateinout.jsp";
+											window.location = base_url+"Gateinout";
 										}else if(a[0] == '='){
 											$('#content-intern').slideDown('slow',function(){
 												reLoadFormLama();
@@ -269,7 +269,7 @@ function setNewContentInternSeminar(data,aa){
 			sucOk : function(a){
 				j("#content-intern").setInHtml(a.substr(2,a.length-2));
 				if(a[0] == '='){
-					window.location = base_url+"Gateinout.jsp";
+					window.location = base_url+"Gateinout";
 				}else{
 					$('#content-intern').slideDown('slow',function(){
 						aa(a[0]+""+a[1]);
@@ -292,7 +292,7 @@ function setNewContentIntern(data,aa,yes,not){
 			sucOk : function(a){
 				j("#content-intern").setInHtml(a.substr(1,a.length-1));
 				if(a[0] == '='){
-					window.location = base_url+"Gateinout.jsp";
+					window.location = base_url+"Gateinout";
 				}else if(a[0] == '1'){
 					$('#content-intern').slideDown('slow',function(){
 						aa();
@@ -330,7 +330,7 @@ function setNewContentIntern2(data,aa){
 			sucOk : function(a){
 				j("#content-intern").setInHtml(a.substr(1,a.length-1));
 				if(a[0] == '='){
-					window.location = base_url+"Gateinout.jsp";
+					window.location = base_url+"Gateinout";
 				}else 
 				if(a[0] == '1'){
 					$('#content-intern').slideDown('slow',function(){

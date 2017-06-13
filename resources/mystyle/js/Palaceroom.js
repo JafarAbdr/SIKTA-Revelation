@@ -23,7 +23,7 @@ $(document).ready(function(){
 	},function(){},function(){});	
 	$('#keluar-confirm-exe').on('click',function(){
 		modalStaticMultipleButton('Apakah anda yakin ingin keluar',function(){
-			$(location).attr('href', "Palaceroom/signOut.jsp");
+			$(location).attr('href', "Palaceroom/signOut");
 		});
 	});
 	setTimeout(function(){
@@ -37,24 +37,6 @@ $(document).ready(function(){
 	$('#go-to-pengaturan').on('click',function(){
 		openPengaturans();
 	});
-	/*
-	$('#registrasi-layout').on('click',function(){
-		closePengaturans();
-		setBreadCrumb({0:'Registrasi'});
-		if(navbarNavigation['registrasi'] == 0){
-			if(navbarNavigation['form-control'] == 1){
-				modalStaticSingleWarning('Terdapat form yang aktif, tolong legkapi terlebih dahulu sebelum melanjutkan pindah form yang lain.');
-			}else{
-				resetControlNavigasi();
-				navbarNavigation['registrasi']=1;
-				setBreadCrumb({0:'Registrasi'});
-				setNewContentIntern("Palaceregistrasi/getLayoutRegistrasi",function(){
-					registrasiAkademikMahasiswa();
-				},function(){},function(){});	
-			}
-		}
-	});
-	*/
 	$('#seminar-layout').on('click',function(){
 		closePengaturans();
 		setBreadCrumb({0:'Tabel Acara'});
@@ -118,7 +100,7 @@ function setNewContentIntern(data,aa,yes,not){
 		j("#content-intern").setInHtml();
 		j("#setAjax").setAjax({
 			methode : 'POST',
-			url : base_url+data+".jsp",
+			url : base_url+data+"",
 			bool : true,
 			content : "",
 			sucOk : function(a){

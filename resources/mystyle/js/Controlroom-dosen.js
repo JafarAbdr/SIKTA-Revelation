@@ -2,7 +2,7 @@ function statusDosen(a,b){
 	openLoadingBar("melakukan perubahan data");
 	j("#setajax").setAjax({
 		methode : 'POST',
-		url : 'Controldosens/setNewStatusDosen.jsp',
+		url : 'Controldosens/setNewStatusDosen',
 		bool : true,
 		content : "kode=JASERVCONTROL&nip="+a+"&status="+b,
 		sucOk : function(a){
@@ -70,7 +70,7 @@ function addNewDosen(){
 					j('#setAjax').setAjax({
 						methode : "POST",
 						bool : true,
-						url : "Controldosens/addNewDosen.jsp",
+						url : "Controldosens/addNewDosen",
 						content : 
 						"nama="+$('#add-nama-dosen').val()+
 						"&nip="+$('#add-nip-dosen').val()+
@@ -107,7 +107,7 @@ function addNewDosen(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controldosens/getCheck.jsp",
+				url : "Controldosens/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=NAMA&cat=0",
 				sucOk : function(a){
@@ -137,7 +137,7 @@ function addNewDosen(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controldosens/getCheck.jsp",
+				url : "Controldosens/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=NIP&cat=0",
 				sucOk : function(a){
@@ -167,7 +167,7 @@ function showListMahasiswaAmpuan(g){
 	j("#setAjax").setAjax(
 	{
 		methode : 'POST',
-		url : 'Controldosens/getJsonListMahasiswa.jsp',
+		url : 'Controldosens/getJsonListMahasiswa',
 		bool : true,
 		content : "nip="+g,
 		sucOk : function(a){
@@ -200,7 +200,7 @@ function refreshTable(page){
 	openLoadingBar("refreshing tabel ...");
 	j("#setajax").setAjax({
 		methode : 'POST',
-		url : 'Controldosens/getTableDosen.jsp',
+		url : 'Controldosens/getTableDosen',
 		bool : true,
 		content : "kode=JASERVCONTROL&key="+keyDosenSearch+"&page="+page,
 		sucOk : function(a){

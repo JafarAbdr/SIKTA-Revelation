@@ -1,7 +1,6 @@
 $(document).ready(function(){
 	$("#ubah-password").on('click',function(){
 		openLoadingBar("Check password ...");
-		
 		if($("#support-old-password").val() == ""){
 			failedTask("password lama tidak boleh kosong ...");
 			return;
@@ -20,7 +19,7 @@ $(document).ready(function(){
 		}
 		j("#setAjax").setAjax({
 			methode : "POST",
-			url : "Classpengaturan/setNewPassword.jsp",
+			url : "Classpengaturan/setNewPassword",
 			bool : true,
 			content : "password-old="+$("#support-old-password").val()+"&"+
 			"password-new="+$("#support-new-password").val()+"&"+
@@ -62,7 +61,7 @@ $(document).ready(function(){
 		}
 		j("#setAjax").setAjax({
 			methode : "POST",
-			url : "Classpengaturan/dataSupport.jsp",
+			url : "Classpengaturan/dataSupport",
 			bool : true,
 			content : "support-email="+$("#support-email").val()+"&"+
 			"support-no-hp="+$("#support-no-hp").val()+"&"+
@@ -82,9 +81,6 @@ $(document).ready(function(){
 			}
 		});
 	});
-	$("#ubah-gambar").on('click',function(){
-		
-	});
 	$("#picture-exe").on('click',function(){
 		$("").trigger("click");
 	})
@@ -93,7 +89,7 @@ function failedTask(a){
 	setLoadingBarMessage(a);
 	setTimeout(function(){
 		closeLoadingBar();
-	},2000);
+	},750);
 }
 function pengaturanMahasiswaDefault(){
 	resetValueSupport();
@@ -123,7 +119,7 @@ function resetValueSupport(){
 		methode : "POST",
 		bool : true,
 		content : "",
-		url : "Classpengaturan/getJsonProfile.jsp",
+		url : "Classpengaturan/getJsonProfile",
 		sucOk : function(a){
 			var data = JSON.parse(a);
 			if(data.state){
@@ -151,7 +147,7 @@ function resetValueSupport(){
 }
 function lihatTranskrip(){
 	modalStaticSingleInformation("PDF viewer",
-	"<iframe src='"+base_url+"Filesupport/getTranskrip.jsp' style='width : 100%;  height : 500px;'></iframe>"
+	"<iframe src='"+base_url+"Filesupport/getTranskrip' style='width : 100%;  height : 500px;'></iframe>"
 	);
 }
 function updateTranskrip(){
@@ -201,7 +197,7 @@ function uploadTranskrip(){
 						response.html('');
 						setTimeout(function(){
 							closeLoadingBar();
-						},2000);
+						},750);
 					}, 1);
 				});
 				tempTransSes.unbind('submit');
@@ -266,7 +262,7 @@ function uploadGambar(){
 						response.html('');
 						setTimeout(function(){
 							closeLoadingBar();
-						},2000);
+						},750);
 					}, 1);
 				});
 				tempTransSes.unbind('submit');

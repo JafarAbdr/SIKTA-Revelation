@@ -13,7 +13,7 @@ function refreshKodeTA21(a){
 			iframe.unbind('load');
 			
 			if(returnResponse[0] ==  "="){
-				window.location = base_url+"Gateinout.jsp";
+				window.location = base_url+"Gateinout";
 			}else if(parseInt(returnResponse[0]) == 1){
 				$("#content-intern").slideUp('slow',function(){
 					j("#content-intern").setInHtml(returnResponse.substr(1,returnResponse.length-1));
@@ -120,7 +120,7 @@ function refreshKodeTA23(a){
 			iframe.unbind('load');
 			
 			if(returnResponse[0] ==  "="){
-				window.location = base_url+"Gateinout.jsp";
+				window.location = base_url+"Gateinout";
 			}else if(parseInt(returnResponse[0]) == 1){
 				$("#content-intern").slideUp('slow',function(){
 					j("#content-intern").setInHtml(returnResponse.substr(1,returnResponse.length-1));
@@ -288,7 +288,7 @@ function refreshKodeTA25(a){
 			iframe.unbind('load');
 			
 			if(returnResponse[0] ==  "="){
-				window.location = base_url+"Gateinout.jsp";
+				window.location = base_url+"Gateinout";
 			}else if(parseInt(returnResponse[0]) == 1){
 				$("#content-intern").slideUp('slow',function(){
 					j("#content-intern").setInHtml(returnResponse.substr(1,returnResponse.length-1));
@@ -371,11 +371,11 @@ function getDataOnForCalendar(){
 	j("#setAjax").setAjax({
 		methode : "GET",
 		bool : true,
-		url :"Classseminartad/getJSONDataSeminarTA2.jsp",
+		url :"Classseminartad/getJSONDataSeminarTA2",
 		content : "",
 		sucOk : function(a){
 			if(a[0] ==  "="){
-				window.location = base_url+"Gateinout.jsp";
+				window.location = base_url+"Gateinout";
 			}else if(a[0] == "0"){
 				setLoadingBarMessage("Refresh halaman ...");
 			}else{
@@ -399,7 +399,7 @@ function getDataOnForCalendar(){
 			setTimeout(function(){
 				closeLoadingBar();
 				//reloadTable();
-			},2000);	
+			},750);	
 		},
 		sucEr : function(a,b){
 			template(a,b,"get all table");
@@ -450,12 +450,12 @@ function createCalenderOn(data){
 					TEMP_DATE_TIME = tanggalSewaRuangTA1_TEMP.format("YYYY-MM-DD HH:mm:ss");
 					j("#ajax").setAjax({
 						methode: "POST",
-						url:"Classseminartad/getCheck.jsp",
+						url:"Classseminartad/getCheck",
 						bool : true,
 						content: "variabel="+data.room+"&value="+TEMP_DATE_TIME,
 						sucOk : function(a){
 							if(a[0] ==  "="){
-								window.location = base_url+"Gateinout.jsp";
+								window.location = base_url+"Gateinout";
 							}else if(parseInt(a[0]) ==  1){
 								setLoadingBarMessage(a.substr(1,a.length-1)+" ...");
 								tanggalSewaRuangTA1 = tanggalSewaRuangTA1_TEMP;
@@ -717,7 +717,7 @@ function inputFormSeinarta1danta2(){
 			setTimeout(function(){
 				closeLoadingBar();
 				return;
-			},2000);
+			},750);
 			return;
 		}else{
 			$("#s_tanggald").val(RUANGIFTIME);
@@ -730,7 +730,7 @@ function inputFormSeinarta1danta2(){
 			setTimeout(function(){
 				closeLoadingBar();
 				return;
-			},2000);
+			},750);
 			return;
 		}else{
 			$("#s_tanggald").val(RUANGMATHTIME);
@@ -890,7 +890,7 @@ function rebuildCalenderStillGetOne(DATA){
 					//alert(TEMP_DATE_TIME);
 					j("#ajax").setAjax({
 						methode: "POST",
-						url:"Classseminartad/getCheck.jsp",
+						url:"Classseminartad/getCheck",
 						bool : true,
 						content: "variabel="+DATA.KEY+"&value="+TEMP_DATE_TIME,
 						sucOk : function(a){

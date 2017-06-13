@@ -12,7 +12,7 @@ $(document).ready(function(){
 	},function(){},function(){});	
 	$('#keluar-confirm-exe').on('click',function(){
 		modalStaticMultipleButton('Apakah anda yakin ingin keluar',function(){
-			$(location).attr('href', base_url+"Kingroom/signOut.jsp");
+			$(location).attr('href', base_url+"Kingroom/signOut");
 		});
 	});
 	setTimeout(function(){

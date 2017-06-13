@@ -11,7 +11,7 @@ $(document).ready(function(){
 	},function(){},function(){});	
 	$('#keluar-local').on('click',function(){
 		modalStaticMultipleButton('Apakah anda yakin ingin keluar',function(){
-			$(location).attr('href', "Baseroom/signOutLocalLogin.jsp");
+			$(location).attr('href', "Baseroom/signOutLocalLogin");
 		});
 	});
 	setTimeout(function(){

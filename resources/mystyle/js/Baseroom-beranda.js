@@ -13,12 +13,11 @@ var keyNameInfoEventBeranda=null;
 var pageDefaultBerandaBase = 1;
 function reloadTableInfoPublicBeranda(){
 	j("#setAjax").setAjax({
-		url : base_url+"Baseberanda/getTableAcara.jsp",
+		url : base_url+"Baseberanda/getTableAcara",
 		methode : "post",
 		content : "key="+pageDefaultBerandaBase,
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0]=="1")
 				$("#tabel-list-beranda-acara").html(a.substr(1,a.length-1));
 		},
@@ -39,7 +38,7 @@ function refreshFileList(){
 	openLoadingBar('refresh list file ...');
 	j("#setAjax").setAjax({
 		methode : "POST",
-		url : "Baseberanda/getListRecord.jsp",
+		url : "Baseberanda/getListRecord",
 		bool : true,
 		content : "kode=JASERVCONTROL",
 		sucOk : function(a){

@@ -94,7 +94,7 @@ function refreshKode1(a){
 			iframe.unbind('load');
 			
 			if(returnResponse[0] ==  "="){
-				window.location = base_url+"Gateinout.jsp";
+				window.location = base_url+"Gateinout";
 			}else if(parseInt(returnResponse[0]) == 1){
 				$("#content-intern").slideUp('slow',function(){
 					j("#content-intern").setInHtml(returnResponse.substr(1,returnResponse.length-1));
@@ -170,7 +170,7 @@ function refreshKode3(){
 			iframe.unbind('load');
 			
 			if(returnResponse[0] ==  "="){
-				window.location = base_url+"Gateinout.jsp";
+				window.location = base_url+"Gateinout";
 			}else if(parseInt(returnResponse[0]) == 1){
 				$("#content-intern").slideUp('slow',function(){
 					j("#content-intern").setInHtml(returnResponse.substr(1,returnResponse.length-1));
@@ -290,12 +290,12 @@ function refreshCalendarSeminarTa1(){
 					TEMP_DATE_TIME = tanggalSewaRuangTA1_TEMP.format("YYYY-MM-DD HH:mm:ss");
 					j("#ajax").setAjax({
 						methode: "POST",
-						url:"Classseminartas/getCheck.jsp",
+						url:"Classseminartas/getCheck",
 						bool : true,
 						content: "variabel=TA1&value="+TEMP_DATE_TIME,
 						sucOk : function(a){
 							if(a[0] ==  "="){
-								window.location = base_url+"Gateinout.jsp";
+								window.location = base_url+"Gateinout";
 							}else if(parseInt(a[0]) ==  1){
 								setLoadingBarMessage(a.substr(1,a.length-1)+" ...");
 								tanggalSewaRuangTA1 = tanggalSewaRuangTA1_TEMP;
@@ -460,11 +460,11 @@ function refreshCalendarSeminarTa1(){
 		j("#setAjax").setAjax({
 			methode : "GET",
 			bool : true,
-			url :"Classseminartas/getJSONDataSeminarTA1.jsp",
+			url :"Classseminartas/getJSONDataSeminarTA1",
 			content : "",
 			sucOk : function(a){
 				if(a[0] ==  "="){
-					window.location = base_url+"Gateinout.jsp";
+					window.location = base_url+"Gateinout";
 				}else if(a[0] == "0"){
 					setLoadingBarMessage("Refresh halaman ...");
 				}else{
@@ -485,7 +485,7 @@ function refreshCalendarSeminarTa1(){
 				setTimeout(function(){
 					closeLoadingBar();
 					//reloadTable();
-				},2000);	
+				},750);	
 			},
 			sucEr : function(a,b){
 				template(a,b,"get all table");

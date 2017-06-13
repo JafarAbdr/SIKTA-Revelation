@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 			echo '
 			<div class="form-row"> 
 				<div class="col-md-12"> 
-					<a href="'.base_url().'Gateinout.jsp" class="btn btn-default btn-block btn-clean">Masuk ke Sistem Akun</a> 
+					<a href="'.base_url().'Gateinout" class="btn btn-default btn-block btn-clean">Masuk ke Sistem Akun</a> 
 				</div> 
 			</div>
 			<div class="form-row"> 

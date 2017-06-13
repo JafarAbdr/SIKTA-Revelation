@@ -78,22 +78,11 @@ function tableTA1TA2Seminar(){
 		}
 	});
 	Chart.defaults.global.responsive = true;
-	//reloadChartSeminarAll();
-	/*
-	 var ctx = document.getElementById("canvas1").getContext("2d");
 	window.myLines = null;
-	window.myLines = new Chart(ctx).Line(lineChartDataS);
-	var ctx = document.getElementById("canvas2").getContext("2d");
-	window.myLines = new Chart(ctx).Line(lineChartDataS);
-	var ctx = document.getElementById("canvas3").getContext("2d");
-	window.myLines = new Chart(ctx).Line(lineChartDataS); */
-	window.myLines = null;
-	//alert("");
 	startSeminarPage = true;
 	var ff = function(){
 		if(startSeminarPage){
 			startSeminarPage = false;
-			//alert("");
 			reloadChartSeminar("canvas1","getJsonTableNow","controller-diagram-1");
 			refreshTableSeminarTA2();
 			$("#seminar-ta2-pemerataan").unbind('click',ff);
@@ -139,19 +128,14 @@ var lineChartDataS = {
 	}]
 }
 function reloadChartSeminar(id,url,dia){
-	//alert(id+" "+url+" "+dia);
-	//return ;
 	$('#'+dia).html("");
 	$('#'+dia).html("<canvas id='"+id+"' height='500' width='2048'  style='color: rgba(220,220,200,1);'></canvas>");
-	//alert($('#'+dia).html());
-	//return;
 	tahunForSidang = $("#tahun-sidang").val();
 	semesterForSidang = $("#semester-sidang").val();
-	//alert(tahunForSidang+" "+semesterForSidang);
 	openLoadingBar("mengambil diagram ...");
 	j('#setAjax').setAjax({
 		methode : 'POST',
-		url : 'Controlresultseminar/'+url+'.jsp',
+		url : 'Controlresultseminar/'+url+'',
 		bool : true,
 		content : "kode=JASERVCONTROL&"+
 					"tahun="+tahunForSidang+"&"+
@@ -166,13 +150,11 @@ function reloadChartSeminar(id,url,dia){
 				
 				var ctk = document.getElementById(id).getContext("2d");
 				window.myLines = new Chart(ctk).Line(lineChartDataS);
-				//alert(dia);
 			}else{
 				setLoadingBarMessage("response diagram gagal  ...");
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-				//zzzz();
 			},500);
 		},
 		sucEr : function(a,b){
@@ -197,7 +179,7 @@ function reloadChartSeminar(id,url,dia){
 				setTimeout(function(){
 					closeLoadingBar();
 					reloadTable();
-				},2000);	
+				},750);	
 			}
 			if(parseInt(b) == 404){
 				console.log("server not found chart");
@@ -205,7 +187,7 @@ function reloadChartSeminar(id,url,dia){
 				setTimeout(function(){
 					closeLoadingBar();
 					reloadTable();
-				},2000);	
+				},750);	
 			}
 			if(parseInt(b) >= 301 && parseInt(b) <= 303){
 				console.log("page has been removed chart");
@@ -213,7 +195,7 @@ function reloadChartSeminar(id,url,dia){
 				setTimeout(function(){
 					closeLoadingBar();
 					reloadTable();
-				},2000);	
+				},750);	
 			}
 		}
 	});
@@ -221,28 +203,18 @@ function reloadChartSeminar(id,url,dia){
 function showImageTA1(namafile,md5source){
 	data="<div style='max-width:100%; text-align:center; margin-left : auto; margin-right:auto;'><img style='max-width : 100%;' src='Filesupport/"+md5source+"/"+namafile+".jsp'></div>";
 	modalStaticSingleInformation("Melihat gambar",data);
-	//alert("image "+url);
 }
 function showPdfTA1(namafile,md5source){
 	data = '<div id="pdf-preview" style="max-width : 100%; text-align : center; margin-left : auto; margin-right:auto;">'+
-	//'<iframe src="http://docs.google.com/gview?url=http://infolab.stanford.edu/pub/papers/google.pdf&embedded=true" style="width:600px; height:500px;" frameborder="0"></iframe>'+
-	//'<object data="'+"Filesupport/"+md5source+"/"+namafile+".jsp"+'"></object>'+
 	'<object type="application/pdf" data="'+"Filesupport/"+md5source+"/"+namafile+".jsp"+'" style="width : 100%; height : 540px" ><p>Browser anda tidak support pdf</p></object>'+
 	'</div>';
-	//data="<div width='max-width:100%; text-align:center;'><img style='max-width : 100%;' src='Filesupport/"+md5source+"/"+namafile+".jsp'></div>";
 	modalStaticSingleInformation("Melihat PDF",data);
-	/*
-	setTimeout(function(){
-		PDFObject.embed("Filesupport/"+md5source+"/"+namafile+".jsp", "#pdf-preview");
-	},2000);
-	*/
-	//alert("pdf "+namafile);
 }
 function seminarTA1Agreement(a,b){
 	openLoadingBar("merubah status seminar ...");
 	j("#setAjax").setAjax({
 		methode : "POST",
-		url : "Controlresultseminar/setNewStatusSeminarTA.jsp",
+		url : "Controlresultseminar/setNewStatusSeminarTA",
 		content : "nim="+a+"&status="+$(b).val()+"&ta=1&symbolize=JASERVTECH-SET-NEW-STATUS-SEMINAR-TA",
 		bool : true,
 		sucOk : function(a){
@@ -251,7 +223,7 @@ function seminarTA1Agreement(a,b){
 				setLoadingBarMessage(a.substr(1,a.length-1));
 				setTimeout(function(){
 					closeLoadingBar();
-				},2000);
+				},750);
 			}else{
 				setLoadingBarMessage(a.substr(1,a.length-1));
 				setTimeout(function(){
@@ -269,21 +241,20 @@ function approveThisPenguji(a,b){
 	openLoadingBar("merubah status seminar ...");
 	j("#setAjax").setAjax({
 		methode : "POST",
-		url : "Controlresultseminar/setStatusProsesTester.jsp",
+		url : "Controlresultseminar/setStatusProsesTester",
 		content : "nim="+a+"&status="+b+"&symbolize=JASERVTECH-SET-STATUS-PROSES-TESTER",
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0] == '1'){
 				setLoadingBarMessage(a.substr(1,a.length-1));
 				setTimeout(function(){
 					closeLoadingBar();
-				},2000);
+				},750);
 			}else{
 				setLoadingBarMessage(a.substr(1,a.length-1));
 				setTimeout(function(){
 					refreshTableSeminarTA2();
-				},2000);
+				},750);
 			}
 		},
 		sucEr : function(a,b){
@@ -295,11 +266,10 @@ function seminarTA2Agreement(a,b){
 	openLoadingBar("merubah status seminar ...");
 	j("#setAjax").setAjax({
 		methode : "POST",
-		url : "Controlresultseminar/setNewStatusSeminarTA.jsp",
+		url : "Controlresultseminar/setNewStatusSeminarTA",
 		content : "nim="+a+"&status="+$(b).val()+"&ta=2&symbolize=JASERVTECH-SET-NEW-STATUS-SEMINAR-TA",
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0] == '1'){
 				setLoadingBarMessage(a.substr(1,a.length-1));
 				refreshTableSeminarTA2();
@@ -309,7 +279,7 @@ function seminarTA2Agreement(a,b){
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			
@@ -320,15 +290,13 @@ function seminarTA2Agreement(a,b){
 function changePenguji1(a,b){
 	openLoadingBar("kontak server ...");
 	j("#setAjax").setAjax({
-		url : "Controlresultseminar/setNewPenguji.jsp",
+		url : "Controlresultseminar/setNewPenguji",
 		bool : true,
 		methode : "POST",
 		content : "nim="+a+"&nip="+$(b).val()+"&penguji=1",
 		sucOk : function(a){
-			//alert(a);
 			if(a[0] == '1'){
 				setLoadingBarMessage(a.substr(1,a.length-1));
-				//alert(activecanvasnow);
 				if(activecanvasnow == 2){
 					activecanvasnow = 5;	
 					reloadChartSeminarAll(lastActive);	
@@ -339,7 +307,7 @@ function changePenguji1(a,b){
 			refreshTableSeminarTA2();
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"Seminar TA 1 Session ...");
@@ -349,15 +317,13 @@ function changePenguji1(a,b){
 function changePenguji2(a,b){
 	openLoadingBar("kontak server ...");
 	j("#setAjax").setAjax({
-		url : "Controlresultseminar/setNewPenguji.jsp",
+		url : "Controlresultseminar/setNewPenguji",
 		bool : true,
 		methode : "POST",
 		content : "nim="+a+"&nip="+$(b).val()+"&penguji=2",
 		sucOk : function(a){
-			//alert(a);
 			if(a[0] == '1'){
 				setLoadingBarMessage(a.substr(1,a.length-1));
-				//alert(activecanvasnow);
 				if(activecanvasnow == 3){
 					activecanvasnow = 5;
 					reloadChartSeminarAll(lastActive);
@@ -368,7 +334,7 @@ function changePenguji2(a,b){
 			refreshTableSeminarTA2();
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"Seminar TA 1 Session ...");
@@ -378,15 +344,13 @@ function changePenguji2(a,b){
 function changePenguji3(a,b){
 	openLoadingBar("kontak server ...");
 	j("#setAjax").setAjax({
-		url : "Controlresultseminar/setNewPenguji.jsp",
+		url : "Controlresultseminar/setNewPenguji",
 		bool : true,
 		methode : "POST",
 		content : "nim="+a+"&nip="+$(b).val()+"&penguji=3",
 		sucOk : function(a){
-			//alert(a);
 			if(a[0] == '1'){
 				setLoadingBarMessage(a.substr(1,a.length-1));
-				//alert(activecanvasnow);
 				if(activecanvasnow == 4){
 					activecanvasnow = 5;
 					reloadChartSeminarAll(lastActive);	
@@ -397,7 +361,7 @@ function changePenguji3(a,b){
 			refreshTableSeminarTA2();
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"Seminar TA 1 Session ...");
@@ -411,15 +375,13 @@ function refreshTableSeminarTA1(){
 	namaForSeminar = $("#search-name-seminar").val();
 	openLoadingBar("kontak server ...");
 	j("#setAjax").setAjax({
-		url : "Controlresultseminar/getTableSeminarTA1.jsp",
+		url : "Controlresultseminar/getTableSeminarTA1",
 		bool : true,
 		methode : "POST",
 		content : "key="+namaForSeminar+"&"+
 					"semester="+semesterForSeminar+"&"+
 					"tahun="+tahunForSeminar,
 		sucOk : function(a){
-			//alert(a);
-			
 			if(a[0] == '1'){
 				$("#tabel-pemerataan-seminar-ta1").html("");
 				setLoadingBarMessage('proses respon server ...');
@@ -428,7 +390,7 @@ function refreshTableSeminarTA1(){
 			
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"Seminar TA 1 Session ...");
@@ -442,14 +404,13 @@ function refreshTableSeminarTA2(){
 	namaForSidang = $("#search-name-sidang").val();
 	openLoadingBar("kontak server ...");
 	j("#setAjax").setAjax({
-		url : "Controlresultseminar/getTableSeminarTA2.jsp",
+		url : "Controlresultseminar/getTableSeminarTA2",
 		bool : true,
 		methode : "POST",
 		content : "key="+namaForSidang+"&"+
 					"semester="+semesterForSidang+"&"+
 					"tahun="+tahunForSidang,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0] == '1'){
 				$("#tabel-pemerataan-seminar-ta2").html("");
 				setLoadingBarMessage('proses respon server ...');
@@ -457,7 +418,7 @@ function refreshTableSeminarTA2(){
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"Seminar TA 2 Session ...");
@@ -468,12 +429,11 @@ function giviTA1Seminar(nim, value){
 	//alert(nim+' '+value);
 	openLoadingBar("Mencoba merubah nilai ...");
 	j("#setAjax").setAjax({
-		url : "Controlresultseminar/setValueSeminarTA1.jsp",
+		url : "Controlresultseminar/setValueSeminarTA1",
 		bool : true,
 		methode : "POST",
 		content : "value="+value+"&nim="+nim+"&symbolize=JASERVTECH-SET-VALUE-SEMINAR-TA1",
 		sucOk : function(a){
-			//alert(a);
 			setLoadingBarMessage(a.substr(1,a.length-1));
 			if(a[0] == '0'){
 				setTimeout(function(){
@@ -482,24 +442,21 @@ function giviTA1Seminar(nim, value){
 			}else{
 				setTimeout(function(){
 					closeLoadingBar();
-				},2000);	
+				},750);	
 			}
 		},
 		sucEr : function(a,b){
-			//template(a,b," ...");
 		}
 	});
 }
 function giviTA2Seminar(nim, value){
-	//alert(nim+' '+value);
 	openLoadingBar("Mencoba merubah nilai ...");
 	j("#setAjax").setAjax({
-		url : "Controlresultseminar/setValueSeminarTA2.jsp",
+		url : "Controlresultseminar/setValueSeminarTA2",
 		bool : true,
 		methode : "POST",
 		content : "value="+value+"&nim="+nim+"&symbolize=JASERVTECH-SET-VALUE-SEMINAR-TA2",
 		sucOk : function(a){
-			//alert(a);
 			setLoadingBarMessage(a.substr(1,a.length-1));
 			if(a[0] == '0'){
 				setTimeout(function(){
@@ -508,11 +465,11 @@ function giviTA2Seminar(nim, value){
 			}else{
 				setTimeout(function(){
 					closeLoadingBar();
-				},2000);	
+				},750);	
 			}
 		},
 		sucEr : function(a,b){
-			//template(a,b," ...");
+			
 		}
 	});
 }

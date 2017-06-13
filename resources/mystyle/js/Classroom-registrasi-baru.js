@@ -73,7 +73,7 @@ function reLoadFormBaru(){
 					setLoadingBarMessage("Mengirim Data...");
 					setTimeout(function(){
 						$('#validate').trigger('submit');
-					},2000);
+					},750);
 				}
 				else{
 					$('#registrasi-baru-submit').removeAttr('disabled');
@@ -87,7 +87,7 @@ function reLoadFormBaru(){
 				closeLoadingBar();
 				modalStaticSingleWarning("Tolong lengkapi form sebelum melakukan Registrasi Baru");
 			}
-		},2000);
+		},750);
 	});
 	$('#baru-nama').on('change',function(){
 		checkInput('baru-nama',$(this).val(),'Classregistrasibaru/getCheck',true);
@@ -308,7 +308,7 @@ function resetForm(){
 	
 	j('#setAjax').setAjax({
 		methode : 'GET',
-		url : "Classregistrasibaru/getJsonDataPersonal.jsp",
+		url : "Classregistrasibaru/getJsonDataPersonal",
 		bool : true,
 		content : "",
 		sucOk : function(a){

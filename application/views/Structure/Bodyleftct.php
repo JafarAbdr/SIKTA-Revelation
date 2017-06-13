@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
         </div>
         <div class="content list-group list-group-icons"> 
         	<a href=<?php echo base_url();?> class=list-group-item><span class=icon-windows></span> Ke Halaman Pengunjung</a> 
-        	<a id="go-to-pengaturan" href=# class=list-group-item><span class=icon-cogs></span> pengaturan</a> 
+        	<a id="go-to-pengaturan" class='list-group-item pointer'><span class=icon-cogs></span> pengaturan</a> 
         	<a id='keluar-confirm-exe' class='list-group-item pointer'><span class=icon-off></span> keluar</a> 
         </div>
       </div>

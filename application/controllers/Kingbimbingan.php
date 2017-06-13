@@ -49,6 +49,7 @@ class Kingbimbingan extends CI_Controller_Modified{
 		$this->load->view("Bodyright/Kingroom/Bimbingan.php");
 	}
 	//fixx
+	//optimized
 	public function getListNotifikasiCup(){
 		$keyword = "*";
 		if($this->input->post("keyword")!==NULL){
@@ -61,43 +62,30 @@ class Kingbimbingan extends CI_Controller_Modified{
 		}
 		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		$controlDosen = new ControlDosen($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNama($keyword);
+		$tempObjectDB = $controlMahasiswa->getDataByNama($keyword,1,$this->loginFilter->getIdentifiedActive());
 		$tempObjectDBD = $controlDosen->getAllData($this->loginFilter->getIdentifiedActive());
-		//$tempObjectDB
 		$string = "";
 		$kode = 1;
 		if($tempObjectDB){
 			while($tempObjectDB->getNextCursor()){
-				$nipExist = false;
-				if($tempObjectDB->getDosenS() == $this->loginFilter->getIdentifiedActive()){
-					$nipExist = true;
-				}
-				if($tempObjectDB->getDosenD() == $this->loginFilter->getIdentifiedActive()){
-					$nipExist = true;
-				}
-				if($tempObjectDB->getDosenT() == $this->loginFilter->getIdentifiedActive()){
-					$nipExist = true;
-				}
-				if($nipExist){
-					if(strlen($tempObjectDB->getDosenRespon()) != 40){
-						$string .=
-						"<tr>
-							<td style='text-align : center;'>".$tempObjectDB->getNim()."</td>
-							<td style='text-align : center;'>".$tempObjectDB->getNama()."</td>
-							<td style='text-align : center;'><span style='font-size : 14pt; color : green; margin-right : 10px;' class='icon-star-empty'></span><span onclick='cupThisGuys(".'"'.$tempObjectDB->getNim().'"'.")' style='font-size : 14pt ; color : green;' class='icon-arrow-right'></span></td>
-						</tr>
-						";
-						
-					}else if($tempObjectDB->getDosenRespon() != $this->loginFilter->getIdentifiedActive()){
-						$string .=
-						"<tr>
-							<td style='text-align : center;'>".$tempObjectDB->getNim()."</td>
-							<td style='text-align : center;'>".$tempObjectDB->getName()."</td>
-							<td style='text-align : center;'><span style='color : red;' class='icon-star-empty'></span><span style='color : red;' class='icon-arrow-right'></span></td>
-						</tr>
-						";
-						
-					}
+				if(strlen($tempObjectDB->getDosenRespon()) != 40){
+					$string .=
+					"<tr>
+						<td style='text-align : center;'>".$tempObjectDB->getNim()."</td>
+						<td style='text-align : center;'>".$tempObjectDB->getNama()."</td>
+						<td style='text-align : center;'><span style='font-size : 14pt; color : grey; margin-right : 10px;font-weight : bolder;' class='icon-star-empty'></span><span onclick='cupThisGuys(".'"'.$tempObjectDB->getNim().'"'.")' style='font-size : 14pt ; color : green;' class='icon-arrow-right'></span></td>
+					</tr>
+					";
+					
+				}else if($tempObjectDB->getDosenRespon() != $this->loginFilter->getIdentifiedActive()){
+					$string .=
+					"<tr>
+						<td style='text-align : center;'>".$tempObjectDB->getNim()."</td>
+						<td style='text-align : center;'>".$tempObjectDB->getNama()."</td>
+						<td style='text-align : center;'><span style='font-size : 14pt;margin-right : 10px; color : grey;font-weight : bolder;' class='icon-star-empty'></span><span style='color : red;font-size : 14pt ;' class='icon-arrow-right'></span></td>
+					</tr>
+					";
+					
 				}
 			}
 		}
@@ -112,6 +100,7 @@ class Kingbimbingan extends CI_Controller_Modified{
 		}
 		echo $kode."".$string;
 	}
+	//optimized
 	public function getListProsesCup(){
 		$keyword = "*";
 		if($this->input->post("keyword")!==NULL){
@@ -124,32 +113,20 @@ class Kingbimbingan extends CI_Controller_Modified{
 		}
 		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		$controlDosen = new ControlDosen($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNama($keyword);
+		$tempObjectDB = $controlMahasiswa->getDataByNama($keyword,1,$this->loginFilter->getIdentifiedActive());
 		$string = "";
 		$kode = 1;
 		if($tempObjectDB){
 			while($tempObjectDB->getNextCursor()){
-				$nipExist = false;
-				if($tempObjectDB->getDosenS() == $this->loginFilter->getIdentifiedActive()){
-					$nipExist = true;
-				}
-				if($tempObjectDB->getDosenD() == $this->loginFilter->getIdentifiedActive()){
-					$nipExist = true;
-				}
-				if($tempObjectDB->getDosenT() == $this->loginFilter->getIdentifiedActive()){
-					$nipExist = true;
-				}
-				if($nipExist){
-					if($tempObjectDB->getDosenRespon() == $this->loginFilter->getIdentifiedActive()){
-						$string .=
-						"<tr>
-							<td style='text-align : center;'>".$tempObjectDB->getNim()."</td>
-							<td style='text-align : center;'>".$tempObjectDB->getNama()."</td>
-							<td style='text-align : center;'><span onclick='unCupThisGuys(".'"'.$tempObjectDB->getNim().'"'.")'  style='color : green;' class='icon-remove'></span></td>
-						</tr>
-						";
-						
-					}
+				if($tempObjectDB->getDosenRespon() == $this->loginFilter->getIdentifiedActive()){
+					$string .=
+					"<tr>
+						<td style='text-align : center;'>".$tempObjectDB->getNim()."</td>
+						<td style='text-align : center;'>".$tempObjectDB->getNama()."</td>
+						<td style='text-align : center;'><span style='font-size : 14pt;margin-right : 10px; color : orange; font-weight : bolder;' class='icon-star-empty'></span><span onclick='unCupThisGuys(".'"'.$tempObjectDB->getNim().'"'.")'  style='color : green; font-size : 14pt ;' class='icon-remove'></span></td>
+					</tr>
+					";
+					
 				}
 			}
 		}
@@ -166,7 +143,6 @@ class Kingbimbingan extends CI_Controller_Modified{
 	}
 	//fix
 	public function getTableInfoPublicRegistrasi(){
-		//$_POST['keyword'] = 'koko';
 		$keyword = "*";
 		
 		if($this->input->post("keyword")!==NULL){
@@ -179,7 +155,6 @@ class Kingbimbingan extends CI_Controller_Modified{
 		$string = "";
 		
 		$bool = false;
-		//echo $keyword;
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
 		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		$controlSeminar = new ControlSeminar($this->gateControlModel);

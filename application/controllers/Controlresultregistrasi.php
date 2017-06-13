@@ -208,19 +208,19 @@ class Controlresultregistrasi extends CI_Controller_Modified {
 								$tempSelectTwo = $tempSelectTwo."<option value='".$tempObjectDBT->getNip()."'>".$tempObjectDBT->getNama()."</option>";
 								if($tempObjectDBT->getIdentified() == $tempObjectDBD->getDosenS()){
 									if($tempObjectDBD->getDosenS() == $tempObjectDBD->getDosenRespon())
-										$nipreview.="<li>".$tempObjectDBT->getNama()."<span style='font-size : 16px; color : green;'><i class='icon-ok'></i></span></li>";
+										$nipreview.="<li>".$tempObjectDBT->getNama()." <span style='font-size : 16px; color : green;'> (<i class='icon-ok'>)</i></span></li>";
 									else
 										$nipreview.="<li>".$tempObjectDBT->getNama()."</li>";
 									$tempssN++;
 								}else if($tempObjectDBT->getIdentified() == $tempObjectDBD->getDosenD()){
 									if($tempObjectDBD->getDosenD() == $tempObjectDBD->getDosenRespon())
-										$nipreview.="<li>".$tempObjectDBT->getNama()."<span style='font-size : 16px; color : green;'><i class='icon-ok'></i></span></li>";
+										$nipreview.="<li>".$tempObjectDBT->getNama()." <span style='font-size : 16px; color : green;'> (<i class='icon-ok'>)</i></span></li>";
 									else
 										$nipreview.="<li>".$tempObjectDBT->getNama()."</li>";
 									$tempssN++;
 								}else if($tempObjectDBT->getIdentified() == $tempObjectDBD->getDosenT()){
 									if($tempObjectDBD->getDosenT() == $tempObjectDBD->getDosenRespon())
-										$nipreview.="<li>".$tempObjectDBT->getNama()."<span style='font-size : 16px; color : green;'><i class='icon-ok'></i></span></li>";
+										$nipreview.="<li>".$tempObjectDBT->getNama()." <span style='font-size : 16px; color : green;'> (<i class='icon-ok'>)</i></span></li>";
 									else
 										$nipreview.="<li>".$tempObjectDBT->getNama()."</li>";
 									$tempssN++;
@@ -263,7 +263,7 @@ class Controlresultregistrasi extends CI_Controller_Modified {
 								$tempss.="<li>".substr($tempos, 0,strlen($tempos)-4)."</li>";
 							}
 							$tempss.="</ul>";
-							$dataTemp .= "<td><div style='width : 200px;'>".$tempss."</div></td><td><div style='width : 200px;'>";
+							$dataTemp .= "<td><div style='width : 200px;'>".$tempss."</div></td><td><div style='width : 250px;'>";
 							
 							if($nipreview == "")
 								$dataTemp .= "<ul style='list-style:none; margin-left : 0; left : 0; padding :0;'><li >Belum review dosen</li></ul>";

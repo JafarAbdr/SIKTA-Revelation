@@ -269,10 +269,7 @@ class Kingpenguji extends CI_Controller_Modified{
 		echo $kode."".$string;
 	}
 	public function banishLeaderOrMember(){
-		//$_POST['kode'] = 'ketua';
-		//$_POST['nim'] = '24010313130128';
 		$kode = $this->isNullPost("kode");
-		//$kode = "pembantu";
 		$data = false;
 		switch($kode){
 			case 'ketua' :
@@ -319,7 +316,8 @@ class Kingpenguji extends CI_Controller_Modified{
 		if(!$data){
 			exit("0Mohon maaf, nim ini bukan bimbingan yang anda uji");
 		}
-		
+		//reset to wait mode
+		$tempObjectDBT->setDataProsesS(1);
 		if($this->controlSidang->tryUpdate($tempObjectDBT)){
 			exit("1Data berhasil dirubah");
 		}else{

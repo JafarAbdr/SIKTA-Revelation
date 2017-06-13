@@ -63,7 +63,7 @@ function reLoadFormLama(){
 				setLoadingBarMessage("Mengirim Data...");
 				setTimeout(function(){
 					$('#validate').trigger('submit');
-				},2000);
+				},750);
 			}else{
 				//alert();
 				$('#lama-submit-exe').removeAttr('disabled');
@@ -71,7 +71,7 @@ function reLoadFormLama(){
 				closeLoadingBar();
 				modalStaticSingleWarning("Tolong lengkapi form sebelum melakukan Registrasi Lama");
 			}
-		},2000);
+		},750);
 	});
 	$('#validate').submit(function(){
 		iframe = $('#frame-layout').load(function (){
@@ -180,7 +180,7 @@ function resetFormLama(){
 	}
 	j('#setAjax').setAjax({
 		methode : 'GET',
-		url : "Classregistrasilama/getJsonDataPersonal.jsp",
+		url : "Classregistrasilama/getJsonDataPersonal",
 		bool : true,
 		content : "",
 		sucOk : function(a){
@@ -219,7 +219,7 @@ function resetFormLama(){
 	});
 	j('#setAjax').setAjax({
 		methode : 'GET',
-		url : "Classregistrasilama/getJsonDataTA.jsp",
+		url : "Classregistrasilama/getJsonDataTA",
 		bool : true,
 		content : "",
 		sucOk : function(a){

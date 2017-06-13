@@ -17,7 +17,8 @@ class MuridObjectDBModel extends ObjectDBModel {
 			"<%nimmu%>='<|nimmu|>'",
 			"<%kodecookiemu%>='<|kodecookiemu|>' AND statusmu='1'",
 			"<%statusmu%>='<|statusmu|>'",
-			"<%nama%> LIKE '%<|namamu|>%' AND <%statusmu%>='<|statusmu|>'"
+			"<%namamu%> LIKE '%<|namamu|>%' AND <%statusmu%>='<|statusmu|>'",
+			"<%namamu%> LIKE '%<|namamu|>%' AND <%statusmu%>='<|statusmu|>' AND (<%dosensmu%>='<|dosensmu|>' OR <%dosendmu%>='<|dosendmu|>' OR <%dosentmu%>='<|dosentmu|>')"
 		);
 		$this->tempCodeOfWhere = array(
 			"identifiedmu" => array(

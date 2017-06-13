@@ -10,37 +10,8 @@ function homeOfMahasiswa(){
 
 function lihatKRS(){
 	modalStaticSingleInformation("PDF viewer",
-	"<iframe src='"+base_url+"Filesupport/getKRS.jsp' style='width : 100%;  height : 500px;'></iframe>"
+	"<iframe src='"+base_url+"Filesupport/getKRS' style='width : 100%;  height : 500px;'></iframe>"
 	);
-}
-function reloadInfoSeminar(){
-	/*
-	j("#setAjax").setAjax({
-		methode : "POST",
-		url : "Classroom/getJsonInfoFastSeminar.jsp",
-		bool : true,
-		content : "",
-		sucOk : function(a){
-			var jsonData = JSON.parse(a);
-			setValSemi({
-				kategori : parseInt(jsonData.kategori),
-				nama : jsonData.name,
-				nim : jsonData.nim,
-				judul : jsonData.ta,
-				waktu  : jsonData.waktu,
-				ruang : jsonData.ruang,
-				dosen : jsonData.dosen,
-				pengujis : jsonData.penguji1,
-				pengujid : jsonData.penguji2,
-				status : jsonData.status,
-				pendukungDokumen : jsonData.pendukungDokumen
-			});
-		},
-		sucEr : function(a,b){
-			template(a,b,"sesi info fast ...");
-		}
-	});
-	*/
 }
 function setValRegist(a){
 	var temp = document.getElementById('info-cepat-registrasi');
@@ -67,36 +38,15 @@ function printFUJ(a){
 	"</div>"+
 	"");
 	setTimeout(function(){
-		$("#frame-dokemen-preview-fuj").attr("src",base_url+"Classroom/printPdfAcara/"+a+".jsp");
-	},2000);
-}
-function reloadInfoFastRegister(){
-	j("#setAjax").setAjax({
-		methode : "POST",
-		url : "Classroom/getJsonInfoFastRegistrasi.jsp",
-		bool : true,
-		content : "",
-		sucOk : function(a){
-			var jsonData = JSON.parse(a);
-			/* setValRegist({
-				nama : jsonData.name,
-				nim : jsonData.nim,
-				judul : jsonData.ta,
-				dosen : jsonData.dosen,
-				statusta : jsonData.statusta
-			}); */
-		},
-		sucEr : function(a,b){
-			template(a,b,"sesi info fast ...");
-		}
-	});
+		$("#frame-dokemen-preview-fuj").attr("src",base_url+"Classroom/printPdfAcara/"+a+"");
+	},750);
 }
 function reloadInfoFastRegisterReference(){
 	
 	$('#save-as-a').attr('disabled','true');
 	j("#setAjax").setAjax({
 		methode : "POST",
-		url : "Classroom/getJsonInfoFastRegistrasi.jsp",
+		url : "Classroom/getJsonInfoFastRegistrasi",
 		bool : true,
 		content : "",
 		sucOk : function(a){
@@ -167,11 +117,10 @@ function ubahDataOnetoSix(kode,isi){
 	openLoadingBar("Mengirim data request ...");
 	j("#setAjax").setAjax({
 		methode : "POST",
-		url : "Classroom/setReferences.jsp",
+		url : "Classroom/setReferences",
 		bool : true,
 		content : "kode="+kode+"&referensi="+isi,
 		sucOk : function(a){
-			//alert(a);
 			setLoadingBarMessage(a.substr(1,a.length-1));
 			if(a[0] == "0"){
 				reloadInfoFastRegisterReference();
@@ -205,7 +154,7 @@ function uploadKRS(kode,referensi){
 		setTimeout(function(){
 		   uploadVideo = false;
 		   closeLoadingBar();
-		},4000);
+		},750);
 	}else{
 		var TEMP_VIDEO_SIZE = kk.files[0].size/(1024*1024);
 		//size maksimum 500 mb
@@ -213,7 +162,7 @@ function uploadKRS(kode,referensi){
 			setLoadingBarMessage("Ukuran maksimal 1 MB");
 			setTimeout(function(){
 				closeLoadingBar();
-			},4000);
+			},750);
 		}else{
 			// if true do submit on background
 			console.log(kk.files);
@@ -229,7 +178,7 @@ function uploadKRS(kode,referensi){
 						response.html('');
 						setTimeout(function(){
 							closeLoadingBar();
-						},2000);
+						},750);
 					}, 1);
 				});
 				tempTransSes.unbind('submit');

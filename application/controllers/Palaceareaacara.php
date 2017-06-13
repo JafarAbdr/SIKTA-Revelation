@@ -751,21 +751,18 @@ class Palaceareaacara extends CI_Controller_Modified {
 				}
 				$nipChoice=true;
 			}
-			$dosPenS = $controlDosen->getAllData($tempObjectDB->getDosen());
-			if($dosPenS && $dosPenS->getNextCursor()){
-				$TEMP_ARRAY['pengujiE'] = $dosPenS->getNama();
-				if($tempAdmin->getKajur() == $dosPenS->getIdentified()){
-					$typeKetua = false;
+			$TEMP_ARRAY['pengujiE'] = $dosenPembimbing->getNama();
+			if($tempAdmin->getKajur() == $dosenPembimbing->getIdentified()){
+				$typeKetua = false;
+			}
+			if($dosenPembimbing->getNip() == $data['nip']){
+				$TEMP_ARRAY['kodeDosenYangDituju'] = 4;
+				if($dosenPembimbing->getKelamin() == '0' || $dosenPembimbing->getKelamin() == '1'){
+					$TEMP_ARRAY['kelamin'] = "Bapak";
+				}else{
+					$TEMP_ARRAY['kelamin'] = "Ibu";
 				}
-				if($dosPenS->getNip() == $data['nip']){
-					$TEMP_ARRAY['kodeDosenYangDituju'] = 4;
-					if($dosPenS->getKelamin() == '0' || $dosPenS->getKelamin() == '1'){
-						$TEMP_ARRAY['kelamin'] = "Bapak";
-					}else{
-						$TEMP_ARRAY['kelamin'] = "Ibu";
-					}
-					$nipChoice=true;
-				}
+				$nipChoice=true;
 			}
 		}else{
 			if(strlen($dosenPembimbing->getIdentified()) == 40){

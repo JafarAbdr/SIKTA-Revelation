@@ -10,7 +10,6 @@ function baseRegistrasi(){
 	tempRegistrasiNextPreControl = new NextPreControlClass({
 		id : "table-registrasi-next-prev",
 		func : function(a){
-			//alert(a);
 			reloadTableInfoPublicRegistrasi(a);
 		}
 	});
@@ -24,14 +23,12 @@ function reloadTableInfoPublicRegistrasi(page){
 	}else{
 		$("#search-name-info-public").val(keyNameInfoRegistrasipublic);
 	}
-	//alert(keyNameInfoRegistrasipublic);
 	j("#setAjax").setAjax({
-		url : base_url+"Baseregistrasi/getTableInfoPublicRegistrasi.jsp",
+		url : base_url+"Baseregistrasi/getTableInfoPublicRegistrasi",
 		methode : "post",
 		content : "keyword="+keyNameInfoRegistrasipublic+"&page="+page,
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			var tempJson = JSON.parse(a.substr(1,a.length-1));
 			if(a[0]=="1"){
 				$("#tabel-imfo-public-registrasi").html(tempJson.string);

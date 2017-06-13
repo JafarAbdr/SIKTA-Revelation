@@ -2,7 +2,7 @@
 function ubahPasswordAdmin(){
 	openLoadingBar("mencoba merubah password");
 	j("#setAjax").setAjax({
-		url : "Palacepengaturan/changePasswordAdmin.jsp",
+		url : "Palacepengaturan/changePasswordAdmin",
 		bool : true,
 		content : "oldpass="+$("#support-old-password").val()+"&newpass="+$("#support-new-password").val()+"&conpass="+$("#support-con-password").val(),
 		methode : "POST",
@@ -35,7 +35,7 @@ function setUpdateInfoAdmin(gg){
 	yy = parseInt($('#info-menit-ta1-durasi').val());
 	
 	j('setAjax').setAjax({
-		url : base_url+'Palacepengaturan/getUpdateInfoDiri.jsp',
+		url : base_url+'Palacepengaturan/getUpdateInfoDiri',
 		methode : "POST",
 		bool : true,
 		content : "symbolize=JASERVTECH-GET-JSON-DATA-ADMIN&"+
@@ -63,7 +63,7 @@ function setUpdateInfoAdmin(gg){
 }
 function getDataDiriJson(){
 	j('setAjax').setAjax({
-		url : base_url+'Palacepengaturan/getJSONDataAdmin.jsp',
+		url : base_url+'Palacepengaturan/getJSONDataAdmin',
 		methode : "POST",
 		bool : true,
 		content : "symbolize=JASERVTECH-GET-JSON-DATA-ADMIN",

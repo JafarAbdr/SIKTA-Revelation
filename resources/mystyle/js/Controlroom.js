@@ -23,7 +23,7 @@ $(document).ready(function(){
 	//default load end
 	$('#keluar-confirm-exe').on('click',function(){
 		modalStaticMultipleButton('Apakah anda yakin ingin keluar',function(){
-			$(location).attr('href', "Controlroom/signOut.jsp");
+			$(location).attr('href', "Controlroom/signOut");
 		});
 	});
 	$('#acara-layout').on('click',function(){
@@ -42,7 +42,6 @@ $(document).ready(function(){
 
 							showPlugin();
 						});
-						//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 					}
 				}				
 			});
@@ -60,7 +59,6 @@ $(document).ready(function(){
 
 						showPlugin();
 					});
-					//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 				}
 			}	
 		}
@@ -82,7 +80,6 @@ $(document).ready(function(){
 						function(){
 							
 						});
-						//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 					}
 				}				
 			});
@@ -101,7 +98,6 @@ $(document).ready(function(){
 					function(){
 						
 					});
-					//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 				}
 			}	
 		}
@@ -123,7 +119,6 @@ $(document).ready(function(){
 						function(){
 							
 						});
-						//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 					}
 				}				
 			});
@@ -142,7 +137,6 @@ $(document).ready(function(){
 					function(){
 						
 					});
-					//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 				}
 			}	
 		}
@@ -165,7 +159,6 @@ $(document).ready(function(){
 						function(){
 							
 						});
-						//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 					}
 				}				
 			});
@@ -184,24 +177,12 @@ $(document).ready(function(){
 					function(){
 						
 					});
-					//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 				}
 			}	
 		}
 	});
 	$('#bantuan-layout').on('click',function(){
-		/*
-		if(navbarNavigation['bantuan'] == 0){
-			if(navbarNavigation['form-control'] == 1){
-				modalStaticSingleWarning('Terdapat form yang aktif, tolong legkapi terlebih dahulu sebelum melanjutkan pindah form yang lain.');
-			}else{
-				resetControlNavigasi();
-				navbarNavigation['bantuan']=1;
-				setBreadCrumb({0:'Bantuan'});
-				showPlugin();
-				//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
-			}
-		}*/
+		
 	});
 	$('#seminar-layout').on('click',function(){
 		if(pengaturanPageNow){
@@ -217,11 +198,9 @@ $(document).ready(function(){
 						hidePlugin();
 						setNewIntern("Controlresultseminar/getLayoutSeminar",function(){
 							tableTA1TA2Seminar();
-							//reloadRegistrasiPemerataan();
 						},function(){
 							
 						});
-						//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 					}
 				}				
 			});
@@ -237,11 +216,9 @@ $(document).ready(function(){
 					hidePlugin();
 					setNewIntern("Controlresultseminar/getLayoutSeminar",function(){
 						tableTA1TA2Seminar();
-						//reloadRegistrasiPemerataan();
 					},function(){
 						
 					});
-					//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 				}
 			}	
 		}
@@ -262,7 +239,6 @@ $(document).ready(function(){
 						},function(){
 							
 						});
-						//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 					}
 				}
 			});
@@ -280,7 +256,6 @@ $(document).ready(function(){
 					},function(){
 						
 					});
-					//setNewContentIntern("getLayoutHome",function(){},function(){},function(){});	
 				}
 			}	
 		}
@@ -292,12 +267,6 @@ $(document).ready(function(){
 var pengaturanPageNow = false;
 function hidePengaturanKoor(a){
 	$("#setting-left-1").slideUp("slow",function(){
-		/* $().slideDown("slow",function(){
-			
-		});
-		$().slideDown("slow",function(){
-			
-		}); */
 		pengaturanPageNow = false;
 		a();
 		$("#default-page-content-1").slideDown("slow");		

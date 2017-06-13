@@ -5,7 +5,7 @@ function beNotMyFavorThisGuys(v,cc){
 	openLoadingBar("proses men-non-favorit-kan");
 	j('#setAjax').setAjax({
 		methode : "POST",
-		url : "Classdosenpreview/setNotLikeThisGuys.jsp",
+		url : "Classdosenpreview/setNotLikeThisGuys",
 		bool : true,
 		content : "kode=JASERVTECH-KODE&nip="+v,
 		sucOk : function(a){
@@ -18,14 +18,14 @@ function beNotMyFavorThisGuys(v,cc){
 					});
 					if(cc == 1)
 						seeThisGuys(dataActive);
-				},2000);
+				},750);
 			}else{
 				setLoadingBarMessage("proses gagal  ...");
 				setTimeout(function(){
 					setLoadingBarMessage(a.substr(1,a.length-1));
 					setTimeout(function(){
 						closeLoadingBar();
-					},2000);
+					},750);
 				},500);
 			}
 		},
@@ -38,7 +38,7 @@ function beMyFavorThisGuys(v,cc){
 	openLoadingBar("proses men-favorit-kan");
 	j('#setAjax').setAjax({
 		methode : "POST",
-		url : "Classdosenpreview/setLikeThisGuys.jsp",
+		url : "Classdosenpreview/setLikeThisGuys",
 		bool : true,
 		content : "kode=JASERVTECH-KODE&nip="+v,
 		sucOk : function(a){
@@ -51,14 +51,14 @@ function beMyFavorThisGuys(v,cc){
 					});
 					if(cc == 1)
 						seeThisGuys(dataActive);
-				},2000);
+				},750);
 			}else{
 				setLoadingBarMessage("proses gagal  ...");
 				setTimeout(function(){
 					setLoadingBarMessage(a.substr(1,a.length-1));
 					setTimeout(function(){
 						closeLoadingBar();
-					},2000);
+					},750);
 				},500);
 			}
 		},
@@ -71,7 +71,7 @@ function refreshListDosen(){
 	openLoadingBar("mengambil data");
 	j('#setAjax').setAjax({
 		methode : "POST",
-		url : "Classdosenpreview/getTableListDosen.jsp",
+		url : "Classdosenpreview/getTableListDosen",
 		bool : true,
 		content : "kode=JASERVTECH-KODE",
 		sucOk : function(a){
@@ -83,7 +83,7 @@ function refreshListDosen(){
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"sesi list table");
@@ -96,7 +96,7 @@ function seeThisGuys(a){
 	openLoadingBar("mengambil data dosen");
 	j('#setAjax').setAjax({
 		methode : 'POST',
-		url : 'Classdosenpreview/getInfoDosenFull.jsp',
+		url : 'Classdosenpreview/getInfoDosenFull',
 		bool : true,
 		content : "kode=JASERVTECH-KODE&nip="+a,
 		sucOk : function(a){
@@ -108,7 +108,7 @@ function seeThisGuys(a){
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"sesi info dosen");

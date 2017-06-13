@@ -93,7 +93,7 @@ function editFileKeterangan(xx,cc){
 		$("#submit-edit-acara-default").attr("disabled","true");
 		j("#setAjax").setAjax({
 			methode : "POST",
-			url : "Controlfileupload/updateRecord.jsp",
+			url : "Controlfileupload/updateRecord",
 			bool : true,
 			content : "kode=JASERVCONTROL&ID="+hapusIDFile+"&content="+$("#temp-file-data-keterangan-id").val(),
 			sucOk : function(a){
@@ -124,7 +124,7 @@ function hapusFile(xx,cc){
 		$("#submit-edit-acara-default").attr("disabled","true");
 		j("#setAjax").setAjax({
 			methode : "POST",
-			url : "Controlfileupload/removeRecord.jsp",
+			url : "Controlfileupload/removeRecord",
 			bool : true,
 			content : "kode=JASERVCONTROL&ID="+hapusIDFile,
 			sucOk : function(a){
@@ -148,7 +148,7 @@ function refreshFileList(){
 	openLoadingBar('refresh list file ...');
 	j("#setAjax").setAjax({
 		methode : "POST",
-		url : "Controlfileupload/getListRecord.jsp",
+		url : "Controlfileupload/getListRecord",
 		bool : true,
 		content : "kode=JASERVCONTROL",
 		sucOk : function(a){
@@ -209,7 +209,7 @@ function refreshAcaraDefault(){
 	openLoadingBar("mengambil data tabel ...");
 	j('#setAjax').setAjax({
 		methode : "POST",
-		url : "Controlacarakoor/getTableAcara.jsp",
+		url : "Controlacarakoor/getTableAcara",
 		bool : true,
 		content : "kode=JASERVCONTROL",
 		sucOk : function(a){
@@ -232,7 +232,7 @@ function refreshAcaraNonDefault(){
 	openLoadingBar("mengambil data tabel ...");
 	j('#setAjax').setAjax({
 		methode : "POST",
-		url : "Controlacarakoor/getTableAcaraNonDefault.jsp",
+		url : "Controlacarakoor/getTableAcaraNonDefault",
 		bool : true,
 		content : "kode=JASERVCONTROL&year="+acaraTableNonDefault,
 		sucOk : function(a){
@@ -257,7 +257,7 @@ function showMeThisRegistrasiContent(a,b){
 	j("#setAjax").setAjax({
 		methode : 'POST',
 		bool : true,
-		url : "Controlacarakoor/getJsonDataRegistrasi.jsp",
+		url : "Controlacarakoor/getJsonDataRegistrasi",
 		content : "year="+a+"&semester="+b+"&kode=JASERVCONTROL",
 		sucOk : function(a){
 			setLoadingBarMessage("pesan server diterima ...");
@@ -292,7 +292,7 @@ function showMeThisRegistrasiContentNonDefault(a){
 	j("#setAjax").setAjax({
 		methode : 'POST',
 		bool : true,
-		url : "Controlacarakoor/getJsonDataRegistrasiNonDefault.jsp",
+		url : "Controlacarakoor/getJsonDataRegistrasiNonDefault",
 		content : "id="+a+"&kode=JASERVCONTROL",
 		sucOk : function(a){
 			setLoadingBarMessage("pesan server diterima ...");
@@ -363,7 +363,7 @@ function addNewEvent(){
 					j('#setAjax').setAjax({
 						methode : "POST",
 						bool : true,
-						url : "Controlacarakoor/setNewEvent.jsp",
+						url : "Controlacarakoor/setNewEvent",
 						content : 
 						/* "start="+$('#start-event-new').val()+
 						"&end="+$('#end-event-new').val()+ */
@@ -401,7 +401,7 @@ function addNewEvent(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=TITLE&cat=0",
 				sucOk : function(a){
@@ -432,7 +432,7 @@ function addNewEvent(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=SUMMARY&cat=0",
 				sucOk : function(a){
@@ -462,7 +462,7 @@ function addNewEvent(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=DATE&cat=0",
 				sucOk : function(a){
@@ -508,7 +508,7 @@ function addNewEvent(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=DATE&cat=0",
 				sucOk : function(a){
@@ -589,7 +589,7 @@ function editEventAktif(ccc){/*
 					j('#setAjax').setAjax({
 						methode : "POST",
 						bool : true,
-						url : "Controlacarakoor/setDataEditEvent.jsp",
+						url : "Controlacarakoor/setDataEditEvent",
 						content : 
 						"start="+tempStartValue+
 						"&end="+tempEndValue+
@@ -625,7 +625,7 @@ function editEventAktif(ccc){/*
 	j("#setAjax").setAjax({
 		methode : "POST",
 		bool : true,
-		url : "Controlacarakoor/getJsonDataEventActive.jsp",
+		url : "Controlacarakoor/getJsonDataEventActive",
 		content : "kode=JASERVCONTROL&id="+ccc,
 		sucOk : function(a){
 			
@@ -661,7 +661,7 @@ function editEventAktif(ccc){/*
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=TITLE&cat=0",
 				sucOk : function(a){
@@ -692,7 +692,7 @@ function editEventAktif(ccc){/*
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=SUMMARY&cat=0",
 				sucOk : function(a){
@@ -722,7 +722,7 @@ function editEventAktif(ccc){/*
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=DATE&cat=0",
 				sucOk : function(a){
@@ -768,7 +768,7 @@ function editEventAktif(ccc){/*
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=DATE&cat=0",
 				sucOk : function(a){
@@ -851,7 +851,7 @@ function editAkademikAktif(){
 					j('#setAjax').setAjax({
 						methode : "POST",
 						bool : true,
-						url : "Controlacarakoor/setNewAkademik.jsp",
+						url : "Controlacarakoor/setNewAkademik",
 						content : 
 						"start="+$('#start-acara').val()+
 						"&end="+$('#end-acara').val()+
@@ -885,7 +885,7 @@ function editAkademikAktif(){
 	j("#setAjax").setAjax({
 		methode : "POST",
 		bool : true,
-		url : "Controlacarakoor/getJsonDataRegistrasiActive.jsp",
+		url : "Controlacarakoor/getJsonDataRegistrasiActive",
 		content : "kode=JASERVCONTROL",
 		sucOk : function(a){
 			//alert(a);
@@ -925,7 +925,7 @@ function editAkademikAktif(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=TITLE&cat=0",
 				sucOk : function(a){
@@ -956,7 +956,7 @@ function editAkademikAktif(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=SUMMARY&cat=0",
 				sucOk : function(a){
@@ -986,7 +986,7 @@ function editAkademikAktif(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=DATE&cat=0",
 				sucOk : function(a){
@@ -1032,7 +1032,7 @@ function editAkademikAktif(){
 		}else{
 			j("#setAjax").setAjax({
 				methode : "POST",
-				url : "Controlacarakoor/getCheck.jsp",
+				url : "Controlacarakoor/getCheck",
 				bool : true,
 				content : "value="+$(this).val()+"&kode=DATE&cat=0",
 				sucOk : function(a){

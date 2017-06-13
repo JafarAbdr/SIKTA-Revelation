@@ -901,8 +901,6 @@ class Controlresultseminar extends CI_Controller_Modified {
 		echo "1".$json;
 	}
 	public function getJsonTableTesterT(){
-		//$_POST['tahun']="2016";
-		//$_POST['semester']="1";
 		$tahun = $this->input->post('tahun');
 		if($this->input->post('tahun') === null){
 			$tahun = null;
@@ -1157,8 +1155,6 @@ class Controlresultseminar extends CI_Controller_Modified {
 		if(!$tempObjectDBTs || !$tempObjectDBTs->getNextCursor()){
 			exit('Nim belum melakukan registrasi tugas akhir');
 		}
-		
-		
 		$nip = $this->isNullPost('nip');
 		if($nip != '0'){
 			if(!$dosen->getCheckNip($nip,1)[0]){
@@ -1182,11 +1178,10 @@ class Controlresultseminar extends CI_Controller_Modified {
 			if(strlen($tempObjectDBE->getFujDS()) < 6){
 				exit("0tidak dapat merubah penguji karena belum mengumpulkan dokumen");
 			}
-			if(strlen($tempObjectDBE->getFujDP()) > 6 && strlen($tempObjectDBE->getFujDL()) > 6){
-				exit("0tidak dapat merubah penguji karena sudah mengumpulkan dokumen");
-			}
 		}
-		
+		if(strlen($tempObjectDBE->getFujDP()) > 6 && strlen($tempObjectDBE->getFujDL()) > 6){
+			exit("0tidak dapat merubah penguji karena sudah mengumpulkan dokumen");
+		}
 		$penguji = intval($this->isNullPost('penguji'));
 		switch($penguji){
 			case 1 : 
@@ -1238,6 +1233,7 @@ class Controlresultseminar extends CI_Controller_Modified {
 			exit("0kode ta tidak valid");
 			break;
 		}
+		$tempObjectDBE->setDataProsesS(1);
 		if($controlSidang->tryUpdate($tempObjectDBE))
 			exit("1Status berhasil dirubah");
 		else{
@@ -1245,7 +1241,6 @@ class Controlresultseminar extends CI_Controller_Modified {
 		}
 	}
 	public function setStatusProsesTester(){
-		
 		$nim = $this->isNullPost('nim');
 		$status = intval($this->isNullPost('status'));
 		$symbolize = $this->isNullPost('symbolize');
@@ -1261,7 +1256,6 @@ class Controlresultseminar extends CI_Controller_Modified {
 		if(!$mahasiswa->getCheckNim($nim,1)[0]){
 			exit('0Nim tidak Valid');
 		}
-		
 		$this->loadLib('ControlTime');
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlDosen');

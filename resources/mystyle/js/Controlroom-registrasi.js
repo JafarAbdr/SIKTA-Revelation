@@ -38,7 +38,7 @@ function reloadChart(){
 		initializingNewChart = true;
 		j('#setAjax').setAjax({
 			methode : 'POST',
-			url : 'Controlresultregistrasi/getJsonTableNow.jsp',
+			url : 'Controlresultregistrasi/getJsonTableNow',
 			bool : true,
 			content : "kode=JASERVCONTROL&tahun="+tahunForPemerataan+"&semester="+semesterForPemerataan,
 			sucOk : function(a){
@@ -106,7 +106,7 @@ function reloadTable(){
 	openLoadingBar("refresh tabel ...");
 	j("#setAjax").setAjax({
 		methode:"POST",
-		url : "Controlresultregistrasi/getPemerataanListMahasiswa.jsp",
+		url : "Controlresultregistrasi/getPemerataanListMahasiswa",
 		bool : true,
 		content : "kode=controlroom&tahun="+tahunForPemerataan+"&semester="+semesterForPemerataan+"&key="+namaForPemerataan+"&page="+pageApprove,
 		sucOk : function(a){
@@ -225,7 +225,7 @@ function tempSenDospem(nim,nip,kode){
 	openLoadingBar("menyimpan perubahan ...");
 	j('#setAjax').setAjax({
 		methode : 'POST',
-		url : "Controlresultregistrasi/setDospem.jsp",
+		url : "Controlresultregistrasi/setDospem",
 		content : "nim="+nim+"&nip="+nip+"&kode=JASERVCONTROL&tahun="+tahunForPemerataan+"&semester="+semesterForPemerataan+"&kodes="+kode,
 		bool : true,
 		sucOk : function(a){
@@ -252,27 +252,11 @@ function tempSenDospem(nim,nip,kode){
 		}
 	});
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function setOnThisPageAsJustOne(tempKodeSTM){
 	openLoadingBar("Process this page ...");
 	j("#setAjax").setAjax({
 		methode:"POST",
-		url : "Controlresultregistrasi/setOnlyThisPage.jsp",
+		url : "Controlresultregistrasi/setOnlyThisPage",
 		bool : true,
 		content : "kode=controlroom&tahun="+tahunForPemerataan+"&semester="+semesterForPemerataan+"&key="+namaForPemerataan+"&page="+pageApprove+"&kodeS="+tempKodeSTM,
 		sucOk : function(a){
@@ -293,7 +277,7 @@ function setOnThisPageAsForAll(tempKodeSTM){
 	openLoadingBar("Process this page ...");
 	j("#setAjax").setAjax({
 		methode:"POST",
-		url : "Controlresultregistrasi/setAllEveryRegister.jsp",
+		url : "Controlresultregistrasi/setAllEveryRegister",
 		bool : true,
 		content : "kode=controlroom&tahun="+tahunForPemerataan+"&semester="+semesterForPemerataan+"&key="+namaForPemerataan+"&page="+pageApprove+"&kodeS="+tempKodeSTM,
 		sucOk : function(a){
@@ -308,14 +292,12 @@ function setOnThisPageAsForAll(tempKodeSTM){
 			},800);
 		}
 	});
-}/*  */
-//
+}
 function detailThisGuys(a){
-	//dataActive = a;
 	openLoadingBar("mengambil data mahasiswa");
 	j('#setAjax').setAjax({
 		methode : 'POST',
-		url : 'Controlresultregistrasi/getInfoMahasiswaFull.jsp',
+		url : 'Controlresultregistrasi/getInfoMahasiswaFull',
 		bool : true,
 		content : "kode=JASERVTECH-KODE&nim="+a,
 		sucOk : function(a){
@@ -327,7 +309,7 @@ function detailThisGuys(a){
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"sesi info mahasiswa");
@@ -338,11 +320,10 @@ function detailThisDospem(a,x){
 	nip = document.getElementById('select-satu-'+x).value;
 	if(nip == "0")
 		return;
-	//dataActive = a;
 	openLoadingBar("mengambil data dosen");
 	j('#setAjax').setAjax({
 		methode : 'POST',
-		url : 'Controlresultregistrasi/getInfoDosenFull.jsp',
+		url : 'Controlresultregistrasi/getInfoDosenFull',
 		bool : true,
 		content : "kode=JASERVTECH-KODE&nim="+a+"&nip="+nip,
 		sucOk : function(a){
@@ -354,7 +335,7 @@ function detailThisDospem(a,x){
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"sesi info dosen");
@@ -366,13 +347,10 @@ function detailCompareThisGuysWithDospem(a,x){
 nip = document.getElementById('select-satu-'+x).value;
 	if(nip == "0")
 		return;
-	//alert(nip);
-	//return;
-	//dataActive = a;
 	openLoadingBar("mengambil data dosen compare");
 	j('#setAjax').setAjax({
 		methode : 'POST',
-		url : 'Controlresultregistrasi/getInfoDosenAndMahasiswaComparasiFull.jsp',
+		url : 'Controlresultregistrasi/getInfoDosenAndMahasiswaComparasiFull',
 		bool : true,
 		content : "kode=JASERVTECH-KODE&nim="+a+"&nip="+nip,
 		sucOk : function(a){
@@ -384,7 +362,7 @@ nip = document.getElementById('select-satu-'+x).value;
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"sesi info dosen compare");
@@ -392,13 +370,10 @@ nip = document.getElementById('select-satu-'+x).value;
 	});
 }
 function changeDataProses(aaa,b){
-	//alert(a+" "+b);
-	//return;
-	//dataActive = a;
 	openLoadingBar("merubah data status register");
 	j('#setAjax').setAjax({
 		methode : 'POST',
-		url : 'Controlresultregistrasi/setStatusMahasiswaRegister.jsp',
+		url : 'Controlresultregistrasi/setStatusMahasiswaRegister',
 		bool : true,
 		content : "kode=JASERVTECH-KODE&nim="+aaa+"&kodeS="+b,
 		sucOk : function(a){
@@ -411,7 +386,7 @@ function changeDataProses(aaa,b){
 			reloadChart();
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"sesi status register");

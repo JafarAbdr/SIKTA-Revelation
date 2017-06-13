@@ -26,7 +26,7 @@ function reloadTableRegistrasiMahasiswa(page){
 	}
 	openLoadingBar("memperoleh data mahasiswa");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/getTableAllAcountMahasiswa.jsp",
+		url : base_url+"Controlakunmahasiswa/getTableAllAcountMahasiswa",
 		methode : 'post',
 		bool : true,
 		content : "keyword="+$("#search-nama-mahasiswa-registrasi").val()+"&page="+page,
@@ -65,7 +65,7 @@ function reloadTableRegistrasiMahasiswa(page){
 function aktifkanThisGuysAccount(aa){
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setAktifOrNon.jsp",
+		url : base_url+"Controlakunmahasiswa/setAktifOrNon",
 		methode : 'post',
 		bool : true,
 		content : "nim="+aa,
@@ -87,7 +87,7 @@ function aktifkanThisGuysAccount(aa){
 function tryNoTime(aa){
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/tryNoTime.jsp",
+		url : base_url+"Controlakunmahasiswa/tryNoTime",
 		methode : 'post',
 		bool : true,
 		content : "nim="+aa,
@@ -110,7 +110,7 @@ function setSeminarTA1(aa){
 	//alert("semiar ta 2 "+a);
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setOneOrTwo.jsp",
+		url : base_url+"Controlakunmahasiswa/setOneOrTwo",
 		methode : 'post',
 		bool : true,
 		content : "nim="+aa+"&kode=1",
@@ -132,7 +132,7 @@ function setSeminarTA2(aa){
 	//alert("seminar ta 2 "+a);
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setOneOrTwo.jsp",
+		url : base_url+"Controlakunmahasiswa/setOneOrTwo",
 		methode : 'post',
 		bool : true,
 		content : "nim="+aa+"&kode=2",
@@ -153,7 +153,7 @@ function setSeminarTA2(aa){
 function nonAktifkanThisGuysAccount(aa){
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setAktifOrNon.jsp",
+		url : base_url+"Controlakunmahasiswa/setAktifOrNon",
 		methode : 'post',
 		bool : true,
 		content : "nim="+aa,
@@ -176,7 +176,7 @@ function normalSeminar(aa){
 	//alert("normal "+a);
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setNormalNewOrOld.jsp",
+		url : base_url+"Controlakunmahasiswa/setNormalNewOrOld",
 		methode : 'post',
 		bool : true,
 		content : "nim="+aa+"&kode=1",
@@ -198,7 +198,7 @@ function newForceSeminar(aa){
 	//alert("new "+a);
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setNormalNewOrOld.jsp",
+		url : base_url+"Controlakunmahasiswa/setNormalNewOrOld",
 		methode : 'post',
 		bool : true,
 		content : "nim="+aa+"&kode=2",
@@ -220,7 +220,7 @@ function lastForceSeminar(aa){
 	//alert("last "+a);
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setNormalNewOrOld.jsp",
+		url : base_url+"Controlakunmahasiswa/setNormalNewOrOld",
 		methode : 'post',
 		bool : true,
 		content : "nim="+aa+"&kode=3",

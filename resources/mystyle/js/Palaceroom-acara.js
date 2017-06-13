@@ -138,11 +138,7 @@ function reloadDataTableCalender(DATA){
 				if(jsonList.kode){
 					for(i=0;i<jsonList.content;i++){		
 						var START_DAY = moment(jsonList[i].tanggal);
-						//alert(START_DAY.toArray());
 						var END_DAY = moment(jsonList[i].endTanggal);
-						//END_DAY.hour(END_DAY.hour()+2);
-						//END_DAY.minute(END_DAY.minute()+30);
-						//CalendersRev[kodeCalenderActive].fullCalendar('removeEvent',kodeSeminarTanggalShare);
 						if(jsonList[i].id.substr(0,2) == "TD"){
 							tempIDListTable[jsonList[i].id] = [];
 							tempIDListTable[jsonList[i].id]['ketua'] = jsonList[i].ketua;
@@ -160,7 +156,6 @@ function reloadDataTableCalender(DATA){
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-				//reloadTable();
 			},400);	
 		},
 		sucEr : function(a,b){
@@ -292,8 +287,6 @@ function rebuildCalenderStillGetOne(DATA){
 				left:"prev,next today",
 				center:"title",
 				right : ""
-				//center:"title",
-				//right:"month,agendaWeek,agendaDay"
 				}
 			,editable:true,events:[],
 			droppable:false,
@@ -315,7 +308,6 @@ function rebuildCalenderStillGetOne(DATA){
 						openLoadingBar("Validasi tanggal dan jam ...");
 						var TEMP_DATE_TIME_START = moment("0000-00-00 "+$("#add-jam-mulai").val());
 						var TEMP_DATE_TIME_END = moment("0000-00-00 "+$("#add-jam-berakhir").val());
-						//alert($("#jam-rung-tas").val());
 						var TEMP_START = moment(dateGlobal);
 						var TEMP_END = moment(dateGlobal);
 						TEMP_START.hour(TEMP_DATE_TIME_START.hours());
@@ -324,19 +316,12 @@ function rebuildCalenderStillGetOne(DATA){
 						TEMP_END.minute(TEMP_DATE_TIME_END.minutes());
 						TEMP_END.seconds(TEMP_DATE_TIME_END.seconds());
 						TEMP_START.seconds(TEMP_DATE_TIME_START.seconds());
-						//tanggalSewaRuangTA2_TEMP.minute(tanggalSewaRuangTA2_TEMP.minute()-30);
-						//TEMP_DATE_TIME = tanggalSewaRuangTA2_TEMP.toArray();
-						//console.log(tanggalSewaRuangTA1_TEMP.toArray());
-						//alert(tanggalSewaRuangTA1_TEMP.toISOString());
-						//TEMP_DATE_TIME = generateNormalTime(TEMP_DATE_TIME);
-						//alert(TEMP_DATE_TIME);
 						j("#setAjax").setAjax({
 							methode: "POST",
-							url:base_url+"Palaceareaacara/setNewAcara.jsp",
+							url:base_url+"Palaceareaacara/setNewAcara",
 							bool : true,
 							content: "kode="+DATA.KEY+"&namaAcara="+$("#add-acara-title").val()+"&penanggung="+$("#add-acara-penanggung").val()+"&startEvent="+generateNormalTime(TEMP_START.toArray())+"&endEvent="+generateNormalTime(TEMP_END.toArray()),
 							sucOk : function(a){
-								//alert(a);
 								if(parseInt(a[0]) ==  3){
 									$(location).attr('href', base_url+a.substr(1,a.length-1));
 								}else if(parseInt(a[0]) ==  1){
@@ -350,9 +335,6 @@ function rebuildCalenderStillGetOne(DATA){
 									}
 									$year = z[0]; 
 									$month = z[1]+1; 
-									
-									//alert("AC"+kodex+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode);
-									//alert("AC"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode);
 									CalendersRev[DATA.ID].fullCalendar('renderEvent',{
 										id:"AC"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode,
 										title: $("#add-acara-title").val(),
@@ -374,15 +356,6 @@ function rebuildCalenderStillGetOne(DATA){
 							}
 							
 						});
-						//= moment();
-						/*
-						Calenders.fullCalendar("renderEvent",{
-							title:"koklllloko",
-							start:tanggalSewaRuangTA1_TEMP,
-							end:tanggalSewaRuangTA1_TEMP,
-							allDay:TEMP_N},true);
-							finalis(true);
-							*/
 					},function(){
 						$('#add-jam-mulai').on('blur', function(){
 							getCheckJam("add-jam-mulai",$(this).val(),function(){
@@ -423,20 +396,11 @@ function rebuildCalenderStillGetOne(DATA){
 				if($(".datepicker").length>0)$(".datepicker").datepicker({nextText:"",prevText:""});
 			},
 			//	update Event
-			/*
-			eventClick: function(calEvent, jsEvent, view) {
-				modalStaticMultipleButton(message,a);
-				$('#calendar').fullCalendar('removeEvents', event.id);
-			}
-			*/
 			eventClick: function(calEvent, jsEvent, view) {
 				kodeSeminarTanggalShare = calEvent;
 				kodeCalenderActive = DATA.ID;
-				//alert(kodeCalenderActive);
 				var wkwk = moment(calEvent.start);
-				//wkwk = wkwk.toArray();
 				var wkwk2 = moment(calEvent.end);
-				//wkwk2 = wkwk2.toArray();
 				var neutral = moment();
 				var buttonTolak = "";
 				if(calEvent.id.substr(0,2) == "TS"){
@@ -469,7 +433,7 @@ function rebuildCalenderStillGetOne(DATA){
 									"<div class='col-md-6'  style='text-align : center;'>"+
 										"<button class='btn btn-danger btn-clean' onclick='getNoSuratTAS("+'"ta1"'+").showBase()'>Batalkan</button>"+
 									"</div>"+
-									"<form style='display : none;' id='form-print' target='_blank' method='POST' action='Palaceareaacara/getPrintOfThis.jsp'><input type='text' id='idSurat' name='idSurat'><input type='text' id='noSuratUnd' name='noSuratUnd'><input type='submit'></form>"+
+									"<form style='display : none;' id='form-print' target='_blank' method='POST' action='Palaceareaacara/getPrintOfThis'><input type='text' id='idSurat' name='idSurat'><input type='text' id='noSuratUnd' name='noSuratUnd'><input type='submit'></form>"+
 								"</div><br>"+
 							"</div>"+
 						"</div>"+
@@ -568,7 +532,7 @@ function rebuildCalenderStillGetOne(DATA){
 									"<div class='col-md-6'  style='text-align : center;'>"+
 										"<button class='btn btn-danger btn-clean' onclick='getNoSuratTAD("+'"ta2"'+").showBase()'>Batalkan</button>"+
 									"</div>"+
-									"<form style='display : none;' id='form-print' target='_blank' method='POST' action='Palaceareaacara/getPrintOfThis.jsp'><input type='text' id='nip' name='nip'><input type='text' id='idSurat' name='idSurat'><input type='text' id='noSuratTug' name='noSuratTug'><input type='text' id='noSuratUnd' name='noSuratUnd'><input type='submit'></form>"+
+									"<form style='display : none;' id='form-print' target='_blank' method='POST' action='Palaceareaacara/getPrintOfThis'><input type='text' id='nip' name='nip'><input type='text' id='idSurat' name='idSurat'><input type='text' id='noSuratTug' name='noSuratTug'><input type='text' id='noSuratUnd' name='noSuratUnd'><input type='submit'></form>"+
 								"</div><br>"+
 							"</div>"+
 						"</div>"+
@@ -727,12 +691,11 @@ function getNoSuratTAS(id){
 		openLoadingBar("getting last kode");
 		var a= this.a;
 		j("#setAjax").setAjax({
-			url : base_url+"Palaceareaacara/getKodeSurat.jsp",
+			url : base_url+"Palaceareaacara/getKodeSurat",
 			bool : true,
 			content : "idSurat="+a,
 			methode : "POST",
 			sucOk : function(yl){
-				//alert(yl);
 				setLoadingBarMessage("proses hasil balasan server ...");
 				if(yl[0] == '3'){
 					$(location).attr('href', base_url+yl.substr(1,yl.length-1));
@@ -786,12 +749,11 @@ function getNoSuratTAD(id){
 		openLoadingBar("getting last kode");
 		var a= this.a;
 		j("#setAjax").setAjax({
-			url : base_url+"Palaceareaacara/getKodeSurat.jsp",
+			url : base_url+"Palaceareaacara/getKodeSurat",
 			bool : true,
 			content : "idSurat="+a,
 			methode : "POST",
 			sucOk : function(yl){
-				//alert(yl);
 				setLoadingBarMessage("proses hasil balasan server ...");
 				if(yl[0] == '3'){
 					$(location).attr('href', base_url+yl.substr(1,yl.length-1));
@@ -844,14 +806,12 @@ function alertAdminEvent(id){
 			$TEMP = $TEMP[0]+"."+$TEMP[1];
 			$TEMP = $TEMP.split("|");
 			$TEMP = $TEMP[0]+"_"+$TEMP[1];
-			//alert($TEMP);
 			j("#setAjax").setAjax({
-				url : base_url+"Palaceareaacara/getJSONDataAcara.jsp",
+				url : base_url+"Palaceareaacara/getJSONDataAcara",
 				bool : true,
 				content : "id="+$TEMP,
 				methode : "POST",
 				sucOk : function(yl){
-					//alert(yl);
 					setLoadingBarMessage("proses hasil balasan server ...");
 					if(yl[0] == '3'){
 						$(location).attr('href', base_url+yl.substr(1,yl.length-1));
@@ -886,12 +846,11 @@ function alertAdminEvent(id){
 		$TEMP_ID = $TEMP[0]+"."+$TEMP[1];
 		$TEMP_ID = $TEMP_ID.split("|");
 		$TEMP_ID = $TEMP_ID[0]+"_"+$TEMP_ID[1];
-		//alert($TEMP_ID);
 		openLoadingBar("Mengirim peintah penghapusan ...");
 		$(x).attr('disabled','true');
 		$('#batal-hapus-acara-admin').attr('disabled','true');
 		j('#setAjax').setAjax({
-			url : base_url+"Palaceareaacara/setDeleteOrRejected.jsp",
+			url : base_url+"Palaceareaacara/setDeleteOrRejected",
 			bool : true,
 			content : "id="+$TEMP_ID,
 			methode : "POST",
@@ -940,7 +899,7 @@ function alertAdminEvent(id){
 		$START_EVENT = $TEMP+" "+$("#jam-mulai").val()+":00";
 		$END_EVENT = $TEMP+" "+$("#jam-berakhir").val()+":00";
 		j("#setAjax").setAjax({
-			url : base_url+"Palaceareaacara/setUpdateAcara.jsp",
+			url : base_url+"Palaceareaacara/setUpdateAcara",
 			bool : true,
 			methode : "POST",
 			content : 
@@ -1004,8 +963,7 @@ function alertSeminarDate(id){
 			$TEMP = $TEMP[0]+"."+$TEMP[1];
 			$TEMP = $TEMP.split("|");
 			$TEMP = $TEMP[0]+"_"+$TEMP[1]+"_"+$TEMP[2];
-			//alert(base_url+"Palaceareaacara/printBeritaAcara/"+$TEMP+".aspx");
-			$("#"+id+"-pdf").attr("src",base_url+"Palaceareaacara/printBeritaAcara/"+$TEMP+".aspx");
+			$("#"+id+"-pdf").attr("src",base_url+"Palaceareaacara/printBeritaAcara/"+$TEMP+"");
 		});
 		$("#"+this.id+"-content-delete").slideUp('slow');
 		$("#"+this.id+"-content-base").slideUp('slow');
@@ -1019,11 +977,8 @@ function alertSeminarDate(id){
 		var xy = this.id;
 		openLoadingBar("mencoba menolak data ....");
 		$(x).attr("disabled","true");
-		
-		//alert(kodeCalenderActive+" = "+kodeSeminarTanggalShare);
-		
 		j("#setAjax").setAjax({
-			url : base_url+"Palaceareaacara/setDeleteOrRejected.jsp",
+			url : base_url+"Palaceareaacara/setDeleteOrRejected",
 			content : "id="+kodeSeminarTanggalShare.id,
 			methode : "POST",
 			bool : true,
@@ -1058,16 +1013,7 @@ function alertSeminarDate(id){
 	return this;
 }
 function getCheckJam(id,jam,tr,fl){
-	/*
-	xx = moment("0000-00-00T"+xx);
-	if(isNaN(xx.getHours()) || isNaN(xx.getMinutes())){
-		fl();
-		return false;
-	}
-	*/
-	
 	var TEMP_SPLIT = jam.split(":");
-	//alert(TEMP_SPLIT[0]+" "+TEMP_SPLIT[1]);
 	if(isNaN(parseInt(TEMP_SPLIT[0]))){
 		fl();
 		return false;	
@@ -1081,7 +1027,6 @@ function getCheckJam(id,jam,tr,fl){
 		fl();
 		return false;
 	}
-		//alert(TEMP_SPLIT[0]+" "+TEMP_SPLIT[1]);
 	coy = parseInt(TEMP_SPLIT[1]);
 	if(coy > 59 || coy < 0){
 		fl();

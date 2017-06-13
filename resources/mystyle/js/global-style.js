@@ -12,23 +12,6 @@ function setBreadCrumb(a){
 	}
 	document.getElementById('content-breadcrumb').innerHTML = temp;
 }
-/* '<div class="modal" id="mod-sta-tit-mes-butodec" tabindex="-1" role="dialog" backdrop="static" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">'+ 
-				'<div class="modal-dialog">'+
-					'<div class="modal-content">'+ 
-						'<div class="modal-header">'+ 
-							
-							'<h4 class="modal-title" id="msmb-message-mod-sta-tit-mes-butodec"></h4>'+
-						'</div>'+
-						'<div class="modal-body" id="msmb-body-mod-sta-tit-mes-butodec">'+
-							
-						'</div>'+
-						'<div class="modal-footer">'+
-							'<button type="button" class="btn btn-success btn-clean" id="msmb-yes-mod-sta-tit-mes-butodec">ya</button>'+
-							'<button type="button" class="btn btn-danger btn-clean" id="msmb-no-mod-sta-tit-mes-butodec">tidak</button>'+ 
-						'</div>'+ 
-					'</div>'+ 
-				'</div>'+ 
-			'</div>'+ */
 function modalStaticBodyMultipleButtonFullControl(message,message2,a,b,bool,c,d){
 	j('#msmb-message-mod-sta-tit-mes-butodec').setInHtml(message);
 	$("#msmb-body-mod-sta-tit-mes-butodec").html(message2);
@@ -209,7 +192,6 @@ if(parseInt(b) == 200){
 				setLoadingBarMessage("response di tolak ...");
 				setTimeout(function(){
 					closeLoadingBar();
-					//reloadTable();
 				},2000);	
 			}
 }

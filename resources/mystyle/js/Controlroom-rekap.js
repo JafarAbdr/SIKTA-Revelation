@@ -12,7 +12,6 @@ function reloadLayoutRekap(){
 	tempRekapNextPreControl = new NextPreControlClass({
 		id : "table-rekap-next-prev",
 		func : function(a){
-			//alert(a);
 			refreshTableRekap(a);
 		}
 	});
@@ -43,11 +42,10 @@ function openXLRekap(url){
 }
 function showLulus(g){
 	openLoadingBar("mencoba mengambil data ...");
-	//alert( "kode=JASERVCONTROL&nip="+g+"&year="+yearAktiv);
 	j("#setAjax").setAjax(
 	{
 		methode : 'POST',
-		url : 'Controlrekap/getJsonJumlahLulus.jsp',
+		url : 'Controlrekap/getJsonJumlahLulus',
 		bool : true,
 		content : "kode=JASERVCONTROL&nip="+g+"&year="+yearAktiv,
 		sucOk : function(a){
@@ -80,7 +78,7 @@ function showTentor(g){
 	j("#setAjax").setAjax(
 	{
 		methode : 'POST',
-		url : 'Controlrekap/getJsonJumlahBimbingan.jsp',
+		url : 'Controlrekap/getJsonJumlahBimbingan',
 		bool : true,
 		content : "kode=JASERVCONTROL&nip="+g+"&year="+yearAktiv,
 		sucOk : function(a){
@@ -113,7 +111,7 @@ function showUji(g){
 	j("#setAjax").setAjax(
 	{
 		methode : 'POST',
-		url : 'Controlrekap/getJsonJumlahMenguji.jsp',
+		url : 'Controlrekap/getJsonJumlahMenguji',
 		bool : true,
 		content : "kode=JASERVCONTROL&nip="+g+"&year="+yearAktiv,
 		sucOk : function(a){
@@ -146,17 +144,13 @@ function refreshTableRekap(page){
 	year = $("#tahun-ajaran").val()+""+$("#semester-ajaran").val();
 	yearAktiv = year;
 	openLoadingBar("refreshing tabel ...");
-	//alert(year);
 	j("#setajax").setAjax({
 		methode : 'POST',
-		url : base_url+'Controlrekap/getListDataRekap.jsp',
+		url : base_url+'Controlrekap/getListDataRekap',
 		bool : true,
 		content : "kode=JASERVCONTROL&key="+keyDosenRekapSearch+"&page="+page+"&year="+year,
 		sucOk : function(a){
-			//alert(base_url+'Controlrekap/getListDataRekap.jsp');
-			//alert(a);
 			var tempJson = JSON.parse(a.substr(1,a.length-1));
-			//alert("right : "+tempJson.right+" left : "+tempJson.left);
 			if(a[0]=='1'){
 				setLoadingBarMessage("response berhasil diproses ...");
 				j('#data-table-rekap').setInHtml(null);

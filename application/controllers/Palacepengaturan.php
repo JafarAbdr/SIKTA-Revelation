@@ -68,7 +68,7 @@ class Palacepengaturan extends CI_Controller_Modified {
 		}
 		$data['email'] = $this->isNullPost('email');
 		if(!$this->inputJaservFilter->emailFiltering($data['email'])[0]){ exit('Email yang anda ajukan tidak valid'); }
-		$data['alamat'] = $this->input->post('nip')."";
+		$data['alamat'] = $this->input->post('alamat')."";
 		if($data['alamat'] !== "") {
 			$data['alamat'] = $this->inputJaservFilter->stringFiltering($data['alamat']);
 		}

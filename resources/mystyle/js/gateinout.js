@@ -168,7 +168,6 @@ $(document).ready(function(){
 								openAlertDialogWithClick(daftarMessage['daftar-trans'],'daftar-trans-exe');
 								return false;
 							}else{
-								//j("#preview-trans").getObject().src = e.target.result;
 								daftar['daftar-trans'] = 1;
 								daftarMessage['daftar-trans'] = "Valid";
 								return true;
@@ -196,7 +195,6 @@ $(document).ready(function(){
 		setTimeout(function(){
 			checkInput('login-nim',$('#login-nim').val(),'Gateinout/getCheck',true);
 			checkInput('login-password',$('#login-password').val(),'Gateinout/getCheck',true);
-			//checkInput('login-akun',$('#login-akun').val(),'Gateinout/getCheck',true);
 			var zz='Kesalahan terjadi pada saat proses masuk(<i><b>login</b></i>) : <br>';
 			if(totalValiditySignIn()){
 				$('#masuk-form-validation').trigger('submit');
@@ -275,7 +273,7 @@ $(document).ready(function(){
 				if(baseroomGoNow){	
 					//alert("hello");
 					$('body').slideUp('slow',function(){
-						$(location).attr('href',base_url+"Errororredirect/goToBaseroom.jsp");
+						$(location).attr('href',base_url+"Errororredirect/goToBaseroom");
 					});
 				}else{				
 					$('body').slideUp('slow',function(){
@@ -312,10 +310,6 @@ $(document).ready(function(){
 			}, 1);
 		});
 	});
-	/* setTimeout(function(){
-		openAlertDialog('<h3>Bingung Login?</h2><hp>Lihat video dibawah Ini</p><iframe width="560" height="315" src="https://www.youtube.com/embed/SIe0f4JEj20" frameborder="0" allowfullscreen></iframe>');
-	},5000); */
-	
 });
 /*function*/
 function totalValiditySignIn(){
@@ -354,7 +348,7 @@ function initializingDaftar(){
 		j("#"+daftarId[i]).setValue("");
 		$('#'+daftarId[i]).css('border-color',"#d2d6de");
 	}
-	j("#preview-foto").getObject().src = base_url+"Filesupport/getFotoUserDefault.jsp";
+	j("#preview-foto").getObject().src = base_url+"Filesupport/getFotoUserDefault";
 	j('#daftar-foto-exe').setValue(null);
 	daftar[daftarId[6]] = 0;
 	daftarMessage[daftarId[6]]=daftarIdMessage[6];
@@ -439,7 +433,6 @@ function checkInput(switchs,value,url,kodealert){
 					addAlertValidasiInput(daftarMessage[switchs],j('#'+switchs).getObject());
 					$('#'+switchs).focus().css('border-color','red');
 				}
-					//openAlertDialogWithFunc(daftarMessage[switchs],function(){$('#'+switchs).focus().css('border-color','red');});
 				else
 					$('#'+switchs).css('border-color',"red");
 			}else{
@@ -466,7 +459,7 @@ function resetPassword(){
 	}
 	j("#setAjax").setAjax({
 		methode : 'POST',
-		url : base_url+"Gateinout/resetPassword.jsp",
+		url : base_url+"Gateinout/resetPassword",
 		bool : true,
 		content : "nim="+$('#reset-password-form').val(),
 		sucOk : function(a){

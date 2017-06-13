@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
         </div>
         <div class="content list-group list-group-icons">  
         	<a href=<?php echo base_url();?> class=list-group-item><span class=icon-windows></span> Ke Halaman Pengunjung</a> 
-        	<a id="pengaturan-control" href=# class=list-group-item><span class=icon-cogs></span> Pengaturan</a> 
+        	<a id="pengaturan-control" class='list-group-item pointer'><span class=icon-cogs></span> Pengaturan</a> 
         	<a id='keluar-confirm-exe' class='list-group-item pointer'><span class=icon-off></span> keluar</a> 
         </div>
       </div>
@@ -28,19 +28,6 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 			<img src=<?php echo $image;?> class="img-thumbnail img-circle" id="gambar-upload"> 
 		</div> 
 		<div class="content controls"> 
-		<!--
-			<div class="form-row"> 
-				<div class="col-md-12"> 
-					<div class="input-group file"> 
-						<input type="text" class="form-control" value="img/example/user/dmitry_b.jpg"> 
-						<input type="file" name="file"> 
-						<span class="input-group-btn"> 
-							<button class="btn" type="button" id="picture-exe">Browse</button> 
-						</span> 
-					</div> 
-				</div> 
-			</div> 
-			-->
 			<div class="form-row"> 
 				<div class="col-md-12"> 
 					<input type="text" class="form-control" id="support-nama" placeholder="Nama Mahasiswa" disabled> 

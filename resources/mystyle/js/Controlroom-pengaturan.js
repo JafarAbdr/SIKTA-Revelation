@@ -5,7 +5,7 @@ function pengaturanKoordinator(){
 function ubahPasswordKoor(){
 	openLoadingBar("mencoba merubah password");
 	j("#setAjax").setAjax({
-		url : "Controlpengaturan/changePasswordKoor.jsp",
+		url : "Controlpengaturan/changePasswordKoor",
 		bool : true,
 		content : "oldpass="+$("#support-old-password").val()+"&newpass="+$("#support-new-password").val()+"&conpass="+$("#support-con-password").val(),
 		methode : "POST",
@@ -46,7 +46,7 @@ function ubahDataGanjilGenapTahunConstrain(){
 		},1000);
 	}
 	j("#setAjax").setAjax({
-		url : "Controlpengaturan/setNewGanjilGenapConstrain.jsp",
+		url : "Controlpengaturan/setNewGanjilGenapConstrain",
 		bool : true,
 		content : 
 		"ganjilMonth="+ganjilBulan+"&"+
@@ -77,7 +77,7 @@ function ubahDataGanjilGenapTahunConstrain(){
 function reloadSelectOption(){
 	openLoadingBar("mencoba merubah password");
 	j("#setAjax").setAjax({
-		url : "Controlpengaturan/getSelectListDosen.jsp",
+		url : "Controlpengaturan/getSelectListDosen",
 		bool : true,
 		content : "",
 		methode : "POST",
@@ -125,7 +125,7 @@ function getDataTabel2(s,d){
 function reloadDataKoordinator(aa){
 	openLoadingBar("mencoba merubah data koordinator");
 	j("#setAjax").setAjax({
-		url : "Controlpengaturan/changeNipKoor.jsp",
+		url : "Controlpengaturan/changeNipKoor",
 		bool : true,
 		content : "nip="+$(aa).val(),
 		methode : "POST",

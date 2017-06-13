@@ -23,7 +23,7 @@ $(document).ready(function(){
 		}
 		j("#setAjax").setAjax({
 			methode : "POST",
-			url : base_url+"Kingpengaturan/setNewPassword.jsp",
+			url : base_url+"Kingpengaturan/setNewPassword",
 			bool : true,
 			content : "password-old="+$("#support-old-password").val()+"&"+
 			"password-new="+$("#support-new-password").val()+"&"+
@@ -65,7 +65,7 @@ $(document).ready(function(){
 		}
 		j("#setAjax").setAjax({
 			methode : "POST",
-			url : "Kingpengaturan/dataSupport.jsp",
+			url : "Kingpengaturan/dataSupport",
 			bool : true,
 			content : "support-email="+$("#support-email").val()+"&"+
 			"support-nohp="+$("#support-nohp").val()+"&"+
@@ -76,7 +76,6 @@ $(document).ready(function(){
 				if(a[0] == '0'){
 					failedTask(a.substr(1,a.length));
 				}else{
-					//resetPasswordCoulumn();
 					failedTask("data berhasil diperbaharui");
 				}
 			},
@@ -126,7 +125,7 @@ function resetValueSupport(){
 		methode : "POST",
 		bool : true,
 		content : "",
-		url : "Kingpengaturan/getJsonProfile.jsp",
+		url : "Kingpengaturan/getJsonProfile",
 		sucOk : function(a){
 			
 			var data = JSON.parse(a);

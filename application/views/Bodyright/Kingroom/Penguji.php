@@ -54,7 +54,7 @@
 									<th>operasi</th>
 								</tr>
 							</thead> 
-							<tbody id="tabel-penguji-TA1" style="overflow-y : auto; height: 200px;">   
+							<tbody id="tabel-penguji-TA1" style="overflow-y : auto;">   
 								<tr>
 									<td>-</td>
 									<td>-</td>
@@ -112,7 +112,7 @@
 									<th style='text-align : center;'>operasi</th>
 								</tr>
 							</thead> 
-							<tbody id="tabel-penguji-TA2" style="overflow-y : auto; height: 200px;">   
+							<tbody id="tabel-penguji-TA2" style="overflow-y : auto; ">   
 								<tr style="">
 									<td>-</td>
 									<td>-</td>
@@ -171,7 +171,7 @@
 									<th style='text-align : center;'>operasi</th>
 								</tr>
 							</thead> 
-							<tbody id="tabel-penguji-TA2-pembantu" style="overflow-y : auto; height: 200px;">   
+							<tbody id="tabel-penguji-TA2-pembantu" style="overflow-y : auto; ">   
 								<tr>
 									<td>-</td>
 									<td>-</td>
@@ -229,7 +229,7 @@
 									<th style='text-align : center;'>operasi</th>
 								</tr>
 							</thead> 
-							<tbody id="tabel-penguji-TA2-pembantu2" style="overflow-y : auto; height: 200px;">   
+							<tbody id="tabel-penguji-TA2-pembantu2" style="overflow-y : auto;">   
 								<tr>
 									<td>-</td>
 									<td>-</td>
@@ -287,7 +287,7 @@
 									<th style='text-align : center;'>operasi</th>
 								</tr>
 							</thead> 
-							<tbody id="tabel-penguji-TA2-ketua" style="overflow-y : auto; height: 200px;">   
+							<tbody id="tabel-penguji-TA2-ketua" style="overflow-y : auto;">   
 								<tr>
 									<td>-</td>
 									<td>-</td>
@@ -301,7 +301,6 @@
 					</div>  
 				</div> 
 			</div>
-
 		</div> 		
 	</div> 
 </div>

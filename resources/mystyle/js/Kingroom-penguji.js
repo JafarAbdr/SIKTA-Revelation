@@ -50,7 +50,6 @@ function dosenPengujiView(){
 	$("#penguji-TA2-ketua").on("click",function(){
 		reloadPengujiTA2DosenKetua();
 	});
-	//alert("penguji");
 }
 var activeTab = 1;
 //sesi penguji TA 1
@@ -62,7 +61,7 @@ function bannishThisGuysFromSeminar(a){
 function realBannishThisGuysFromSeminar(ass,dd){
 	openLoadingBar("melakukan penolakan data ...");
 	j("#setAjax").setAjax({
-		url : base_url+"Kingpenguji/reRegisterPengujiTA.jsp",
+		url : base_url+"Kingpenguji/reRegisterPengujiTA",
 		bool : true,
 		content : "Nim="+ass+"&TA="+dd,
 		methode : "POST",
@@ -77,7 +76,7 @@ function realBannishThisGuysFromSeminar(ass,dd){
 			}else{
 				setLoadingBarMessage(a.substr(1,a.length-1)+" ...");
 			}
-			setTimeout(function(){closeLoadingBar();},2000);
+			setTimeout(function(){closeLoadingBar();},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"sesi tolak mahasiswa");
@@ -93,12 +92,11 @@ function reloadPengujiTA1Dosen(){
 		$("#search-name-penguji-ta1").val(keyNameInfoMahasiswaPengujiTA1);
 	}
 	j("#setAjax").setAjax({
-		url : base_url+"Kingpenguji/getTablePengujiTA1.jsp",
+		url : base_url+"Kingpenguji/getTablePengujiTA1",
 		methode : "post",
 		content : "keyword="+keyNameInfoMahasiswaPengujiTA1,
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0]=="1")
 				$("#tabel-penguji-TA1").html(a.substr(1,a.length-1));
 		},
@@ -123,12 +121,11 @@ function reloadPengujiTA2Dosen(){
 		$("#search-name-penguji-ta2").val(keyNameInfoMahasiswaPengujiTA2);
 	}
 	j("#setAjax").setAjax({
-		url : base_url+"Kingpenguji/getTablePengujiTA2.jsp",
+		url : base_url+"Kingpenguji/getTablePengujiTA2",
 		methode : "post",
 		content : "keyword="+keyNameInfoMahasiswaPengujiTA2,
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0]=="1")
 				$("#tabel-penguji-TA2").html(a.substr(1,a.length-1));
 		},
@@ -141,12 +138,11 @@ function reloadPengujiTA2Dosen(){
 function realBannishMeFromHerTA(a,b){
 	openLoadingBar("menolah proses uji seminar");
 	j("#setAjax").setAjax({
-		url : base_url+"Kingpenguji/banishLeaderOrMember.jsp",
+		url : base_url+"Kingpenguji/banishLeaderOrMember",
 		methode : "post",
 		content : "kode="+b+"&nim="+a,
 		bool : true,
 		sucOk : function(bb){
-			//alert(a);
 			setLoadingBarMessage(bb.substr(1,bb.length-1));
 			if(bb[0]=='1'){
 				switch(b){
@@ -163,7 +159,7 @@ function realBannishMeFromHerTA(a,b){
 			}
 			setTimeout(function(){
 				closeLoadingBar();
-			},2000);
+			},750);
 		},
 		sucEr : function(a,b){
 			template(a,b,"sesi pengambilan tabel beranda");
@@ -193,12 +189,11 @@ function reloadPengujiTA2DosenPembantu(){
 		$("#search-name-penguji-ta2-pembantu").val(keyNameInfoMahasiswaPengujiTA2Pembantu);
 	}
 	j("#setAjax").setAjax({
-		url : base_url+"Kingpenguji/getDataNipsOrNipd.jsp",
+		url : base_url+"Kingpenguji/getDataNipsOrNipd",
 		methode : "post",
 		content : "keyword="+keyNameInfoMahasiswaPengujiTA2Pembantu+"&kode=pembantu",
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0]=="1")
 				$("#tabel-penguji-TA2-pembantu").html(a.substr(1,a.length-1));
 		},
@@ -215,12 +210,11 @@ function reloadPengujiTA2DosenPembantu2(){
 		$("#search-name-penguji-ta2-pembantu2").val(keyNameInfoMahasiswaPengujiTA2Pembantu2);
 	}
 	j("#setAjax").setAjax({
-		url : base_url+"Kingpenguji/getDataNipsOrNipd.jsp",
+		url : base_url+"Kingpenguji/getDataNipsOrNipd",
 		methode : "post",
 		content : "keyword="+keyNameInfoMahasiswaPengujiTA2Pembantu2+"&kode=pembantu2",
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0]=="1")
 				$("#tabel-penguji-TA2-pembantu2").html(a.substr(1,a.length-1));
 		},
@@ -245,12 +239,11 @@ function reloadPengujiTA2DosenKetua(){
 		$("#search-name-penguji-ta1-ketua").val(keyNameInfoMahasiswaPengujiTA2Ketua);
 	}
 	j("#setAjax").setAjax({
-		url : base_url+"Kingpenguji/getDataNipsOrNipd.jsp",
+		url : base_url+"Kingpenguji/getDataNipsOrNipd",
 		methode : "post",
 		content : "keyword="+keyNameInfoMahasiswaPengujiTA2Ketua+"&kode=ketua",
 		bool : true,
 		sucOk : function(a){
-			//alert(a);
 			if(a[0]=="1")
 				$("#tabel-penguji-TA2-ketua").html(a.substr(1,a.length-1));
 		},
