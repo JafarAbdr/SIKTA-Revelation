@@ -49,6 +49,7 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlAcara');
+		$this->loadLib('ControlPinjam');
 		$this->loadLib('ControlAdmin');
 		$this->loadLib('ControlTime');
 		$this->loadLib('ControlDosen');
@@ -56,6 +57,10 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$controlDosen = new ControlDosen($this->gateControlModel);
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
 		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
+		$controlSeminar = new ControlSeminar($this->gateControlModel);
+		$controlSidang = new ControlSidang($this->gateControlModel);
+		$controlAcara = new ControlAcara($this->gateControlModel);
+		$controlPinjam = new ControlPinjam($this->gateControlModel);
 		$data['kode'] = false;
 		$i=0;
 		$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
@@ -66,7 +71,7 @@ class Palaceareaacara extends CI_Controller_Modified {
 		while(intval($tahun."".$semester) <= intval($tahunAk)){
 			$tempTahunAk = $tahun."".$semester;
 			//your kode
-			$tempObjectDBs =(new ControlSeminar($this->gateControlModel))->getAllDataHaveATimeWithMahasiswa($tempTahunAk);
+			$tempObjectDBs = $controlSeminar->getAllDataHaveATimeWithMahasiswa($tempTahunAk);
 			if($tempObjectDBs->getCountData() > 0){
 				$data['kode'] = true;
 				while($tempObjectDBs->getNextCursor()){
@@ -74,6 +79,8 @@ class Palaceareaacara extends CI_Controller_Modified {
 					$tempObjectDB = $tempObjectDBs->getTableStack(0);
 					$tempMahasiswa->getNextCursor();
 					$data[$i]['nama'] = $tempMahasiswa->getNama();
+					$data[$i]['contact'] = $tempMahasiswa->getNoHp();
+					$data[$i]['deskripsi'] = "Seminar proposal";
 					$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
 					$data[$i]['endTanggal'] = $tempObjectDB->getWaktuEnd();
 					
@@ -84,24 +91,43 @@ class Palaceareaacara extends CI_Controller_Modified {
 				
 			}
 			
-			$tempObjectDB = (new ControlAcara($this->gateControlModel))->getAllData($tempTahunAk,"1");
+			$tempObjectDB = $controlAcara->getAllData($tempTahunAk,"1");
 			if($tempObjectDB->getCountData() > 0){
 				$data['kode'] = true;
 				while($tempObjectDB->getNextCursor()){
-					$data[$i]['nama'] = $tempObjectDB->getDetail();
+					$data[$i]['contact'] = "Admin Departemen";
+					$data[$i]['nama'] = $tempObjectDB->getPenanggungJawab();
+					$data[$i]['deskripsi'] = $tempObjectDB->getDetail();
 					$data[$i]['tanggal'] = $tempObjectDB->getMulai();
 					$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
 					$data[$i]['id'] = "AC".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
 					$i++;
 				}
 			}
-			$tempObjectDBs =(new ControlSidang($this->gateControlModel))->getAllDataHaveATimeWithMahasiswa($tempTahunAk,"1");
+			$tempObjectDBs = $controlPinjam->getAllData($tempTahunAk,"1",null,true);
+			if($tempObjectDBs->getCountData() > 0){
+				$data['kode'] = true;
+				while($tempObjectDBs->getNextCursor()){
+					$tempObjectDB = $tempObjectDBs->getTableStack(0);
+					$tempObjectDBD = $tempObjectDBs->getTableStack(1);
+					$data[$i]['contact'] = $tempObjectDBD->getNoHp();
+					$data[$i]['nama'] = $tempObjectDBD->getNama();
+					$data[$i]['deskripsi'] = $tempObjectDB->getDetail();
+					$data[$i]['tanggal'] = $tempObjectDB->getMulai();
+					$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
+					$data[$i]['id'] = "PM".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
+					$i++;
+				}
+			}
+			$tempObjectDBs = $controlSidang->getAllDataHaveATimeWithMahasiswa($tempTahunAk,"1");
 			if($tempObjectDBs->getCountData() > 0){
 				$data['kode'] = true;
 				while($tempObjectDBs->getNextCursor()){
 					$tempMahasiswa = $tempObjectDBs->getTableStack(1);
 					$tempObjectDB = $tempObjectDBs->getTableStack(0);
 					$data[$i]['nama'] = $tempMahasiswa->getNama();
+					$data[$i]['contact'] = $tempMahasiswa->getNoHp();
+					$data[$i]['deskripsi'] = "Sidang laporan proposal";
 					$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
 					$data[$i]['endTanggal'] = $tempObjectDB->getWaktuEnd();
 					$data[$i]['ketua'] = "";
@@ -158,12 +184,16 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlAcara');
+		$this->loadLib('ControlPinjam');
 		$this->loadLib('ControlDosen');
 		$this->loadLib('ControlRegistrasi');
 		$this->loadLib('ControlAdmin');
 		$this->loadLib('ControlTime');
 		$controlDosen = new ControlDosen($this->gateControlModel);
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
+		$controlAcara = new ControlAcara($this->gateControlModel);
+		$controlPinjam = new ControlPinjam($this->gateControlModel);
+		$controlSidang = new ControlSidang($this->gateControlModel);
 		$data['kode'] = false;
 		$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
 		$tempAdmin = (new ControlAdmin($this->gateControlModel))->getDataByIdentified($this->loginFilter->getIdentifiedActive());
@@ -174,25 +204,43 @@ class Palaceareaacara extends CI_Controller_Modified {
 		while(intval($tahun."".$semester) <= intval($tahunAk)){
 			$tempTahunAk = $tahun."".$semester;
 			//your kode
-			
-			$tempObjectDB = (new ControlAcara($this->gateControlModel))->getAllData($tempTahunAk,"2");
+			$tempObjectDB = $controlAcara->getAllData($tempTahunAk,"2");
 			if($tempObjectDB->getCountData() > 0){
 				$data['kode'] = true;
 				while($tempObjectDB->getNextCursor()){
-					$data[$i]['nama'] = $tempObjectDB->getDetail();
+					$data[$i]['contact'] = "Admin Departemen";
+					$data[$i]['nama'] = $tempObjectDB->getPenanggungJawab();
+					$data[$i]['deskripsi'] = $tempObjectDB->getDetail();
 					$data[$i]['tanggal'] = $tempObjectDB->getMulai();
 					$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
 					$data[$i]['id'] = "AC".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
 					$i++;
 				}
 			}
-			$tempObjectDBs =(new ControlSidang($this->gateControlModel))->getAllDataHaveATimeWithMahasiswa($tempTahunAk,"2");
+			$tempObjectDBs = $controlPinjam->getAllData($tempTahunAk,"2",null,true);
+			if($tempObjectDBs->getCountData() > 0){
+				$data['kode'] = true;
+				while($tempObjectDBs->getNextCursor()){
+					$tempObjectDB = $tempObjectDBs->getTableStack(0);
+					$tempObjectDBD = $tempObjectDBs->getTableStack(1);
+					$data[$i]['contact'] = $tempObjectDBD->getNoHp();
+					$data[$i]['nama'] = $tempObjectDBD->getNama();
+					$data[$i]['deskripsi'] = $tempObjectDB->getDetail();
+					$data[$i]['tanggal'] = $tempObjectDB->getMulai();
+					$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
+					$data[$i]['id'] = "PM".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
+					$i++;
+				}
+			}
+			$tempObjectDBs = $controlSidang->getAllDataHaveATimeWithMahasiswa($tempTahunAk,"2");
 			if($tempObjectDBs->getCountData() > 0){
 				$data['kode'] = true;
 				while($tempObjectDBs->getNextCursor()){
 					$tempMahasiswa = $tempObjectDBs->getTableStack(1);
 					$tempObjectDB = $tempObjectDBs->getTableStack(0);
 					$data[$i]['nama'] = $tempMahasiswa->getNama();
+					$data[$i]['contact'] = $tempMahasiswa->getNoHp();
+					$data[$i]['deskripsi'] = "Sidang laporan proposal";
 					$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
 					$data[$i]['endTanggal'] = $this->dateJaservFilter->setDate($tempObjectDB->getWaktu(),true)->setPlusOrMinMinute($tempAdmin->getTaDDurasi(),true)->getDate("Y-m-d H:i:s");
 					$data[$i]['ketua'] = "";
@@ -249,74 +297,109 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlAcara');
+		$this->loadLib('ControlPinjam');
 		$this->loadLib('ControlDosen');
 		$this->loadLib('ControlRegistrasi');
 		$this->loadLib('ControlAdmin');
 		$this->loadLib('ControlTime');
 		$controlDosen = new ControlDosen($this->gateControlModel);
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
+		$controlAcara = new ControlAcara($this->gateControlModel);
+		$controlPinjam = new ControlPinjam($this->gateControlModel);
+		$controlSidang = new ControlSidang($this->gateControlModel);
 		$data['kode'] = false;
 		$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
 		$tempAdmin = (new ControlAdmin($this->gateControlModel))->getDataByIdentified($this->loginFilter->getIdentifiedActive());
 		$tempAdmin->getNextCursor();
-		//$this->load->model("sc_arte");
 		$i=0;
-		$tempObjectDB = (new ControlAcara($this->gateControlModel))->getAllData($tahunAk,"3");
-		if($tempObjectDB->getCountData() > 0){
-			$data['kode'] = true;
-			while($tempObjectDB->getNextCursor()){
-				$data[$i]['nama'] = $tempObjectDB->getDetail();
-				$data[$i]['tanggal'] = $tempObjectDB->getMulai();
-				$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
-				$data[$i]['id'] = "AC".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
-				$i++;
+		$semester = 1;
+		$tahun = 2014;
+		while(intval($tahun."".$semester) <= intval($tahunAk)){
+			$tempTahunAk = $tahun."".$semester;
+			//your kode
+			$tempObjectDB = $controlAcara->getAllData($tempTahunAk,"3");
+			if($tempObjectDB->getCountData() > 0){
+				$data['kode'] = true;
+				while($tempObjectDB->getNextCursor()){
+					$data[$i]['contact'] = "Admin Departemen";
+					$data[$i]['nama'] = $tempObjectDB->getPenanggungJawab();
+					$data[$i]['deskripsi'] = $tempObjectDB->getDetail();
+					$data[$i]['tanggal'] = $tempObjectDB->getMulai();
+					$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
+					$data[$i]['id'] = "AC".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
+					$i++;
+				}
 			}
-		}
-		$tempObjectDBs =(new ControlSidang($this->gateControlModel))->getAllDataHaveATimeWithMahasiswa($tahunAk,"3");
-		if($tempObjectDBs->getCountData() > 0){
-			$data['kode'] = true;
-			while($tempObjectDBs->getNextCursor()){
-				$tempMahasiswa = $tempObjectDBs->getTableStack(1);
-				$tempObjectDB = $tempObjectDBs->getTableStack(0);
-				$data[$i]['nama'] = $tempMahasiswa->getNama();
-				$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
-				$data[$i]['endTanggal'] = $this->dateJaservFilter->setDate($tempObjectDB->getWaktu(),true)->setPlusOrMinMinute($tempAdmin->getTaDDurasi(),true)->getDate("Y-m-d H:i:s");
-				$data[$i]['ketua'] = "";
-				$data[$i]['pengujis'] = "";
-				$data[$i]['pengujid'] = "";
-				$data[$i]['pengujit'] = "";
-				if(strlen($tempObjectDB->getDosenS()) == 40){
-					$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenS());
-					if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
-						$data[$i]['ketua'] = $tempObjectDBE->getNip();
-					}
+			$tempObjectDBs = $controlPinjam->getAllData($tempTahunAk,"3",null,true);
+			if($tempObjectDBs->getCountData() > 0){
+				$data['kode'] = true;
+				while($tempObjectDBs->getNextCursor()){
+					$tempObjectDB = $tempObjectDBs->getTableStack(0);
+					$tempObjectDBD = $tempObjectDBs->getTableStack(1);
+					$data[$i]['contact'] = $tempObjectDBD->getNoHp();
+					$data[$i]['nama'] = $tempObjectDBD->getNama();
+					$data[$i]['deskripsi'] = $tempObjectDB->getDetail();
+					$data[$i]['tanggal'] = $tempObjectDB->getMulai();
+					$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
+					$data[$i]['id'] = "PM".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
+					$i++;
 				}
-				if(strlen($tempObjectDB->getDosenD()) == 40){
-					$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenD());
-					if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
-						$data[$i]['pengujis'] = $tempObjectDBE->getNip();
-					}
-				}
-				if(strlen($tempObjectDB->getDosenT()) == 40){
-					$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenT());
-					if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
-						$data[$i]['pengujid'] = $tempObjectDBE->getNip();
-					}
-				}
-				$tempObjectDBE = $controlRegistrasi->getAllDataWithDosbing($tempObjectDB->getTahunAk(),$tempObjectDB->getMahasiswa());
-				if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
-					$tempObjectDBL = $tempObjectDBE->getTableStack(2);
-					if($data[$i]['pengujid'] == ""){
-						$data[$i]['pengujid'] = $tempObjectDBL->getNip();
-					}else{
-						$data[$i]['pengujit'] = $tempObjectDBL->getNip();
-					}
-				}
-				$STATE="TD";
-				$data[$i]['id'] = $STATE."".$tempObjectDB->getTahunAk()."_".str_ireplace(" ",".",$tempObjectDB->getWaktu())."2_".$tempMahasiswa->getNim();
-				$i++;
 			}
-			
+			$tempObjectDBs = $controlSidang->getAllDataHaveATimeWithMahasiswa($tempTahunAk,"3");
+			if($tempObjectDBs->getCountData() > 0){
+				$data['kode'] = true;
+				while($tempObjectDBs->getNextCursor()){
+					$tempMahasiswa = $tempObjectDBs->getTableStack(1);
+					$tempObjectDB = $tempObjectDBs->getTableStack(0);
+					$data[$i]['nama'] = $tempMahasiswa->getNama();
+					$data[$i]['contact'] = $tempMahasiswa->getNoHp();
+					$data[$i]['deskripsi'] = "Sidang laporan proposal";
+					$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
+					$data[$i]['endTanggal'] = $this->dateJaservFilter->setDate($tempObjectDB->getWaktu(),true)->setPlusOrMinMinute($tempAdmin->getTaDDurasi(),true)->getDate("Y-m-d H:i:s");
+					$data[$i]['ketua'] = "";
+					$data[$i]['pengujis'] = "";
+					$data[$i]['pengujid'] = "";
+					$data[$i]['pengujit'] = "";
+					if(strlen($tempObjectDB->getDosenS()) == 40){
+						$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenS());
+						if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
+							$data[$i]['ketua'] = $tempObjectDBE->getNip();
+						}
+					}
+					if(strlen($tempObjectDB->getDosenD()) == 40){
+						$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenD());
+						if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
+							$data[$i]['pengujis'] = $tempObjectDBE->getNip();
+						}
+					}
+					if(strlen($tempObjectDB->getDosenT()) == 40){
+						$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenT());
+						if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
+							$data[$i]['pengujid'] = $tempObjectDBE->getNip();
+						}
+					}
+					$tempObjectDBE = $controlRegistrasi->getAllDataWithDosbing($tempObjectDB->getTahunAk(),$tempObjectDB->getMahasiswa());
+					if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
+						$tempObjectDBL = $tempObjectDBE->getTableStack(2);
+						if($data[$i]['pengujid'] == ""){
+							$data[$i]['pengujid'] = $tempObjectDBL->getNip();
+						}else{
+							$data[$i]['pengujit'] = $tempObjectDBL->getNip();
+						}
+					}
+					$STATE="TD";
+					$data[$i]['id'] = $STATE."".$tempObjectDB->getTahunAk()."_".str_ireplace(" ",".",$tempObjectDB->getWaktu())."2_".$tempMahasiswa->getNim();
+					$i++;
+				}
+				
+			}
+			//end of kode
+			if($semester == 1){
+				$semester = 2;
+			}else{
+				$semester = 1;
+				$tahun += 1;
+			}
 		}
 		$data['content'] = $i;
 		echo "1".json_encode($data);
@@ -327,73 +410,109 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlAcara');
+		$this->loadLib('ControlPinjam');
 		$this->loadLib('ControlDosen');
 		$this->loadLib('ControlRegistrasi');
 		$this->loadLib('ControlAdmin');
 		$this->loadLib('ControlTime');
 		$controlDosen = new ControlDosen($this->gateControlModel);
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
+		$controlAcara = new ControlAcara($this->gateControlModel);
+		$controlPinjam = new ControlPinjam($this->gateControlModel);
+		$controlSidang = new ControlSidang($this->gateControlModel);
 		$data['kode'] = false;
 		$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
 		$tempAdmin = (new ControlAdmin($this->gateControlModel))->getDataByIdentified($this->loginFilter->getIdentifiedActive());
 		$tempAdmin->getNextCursor();
 		$i=0;
-		$tempObjectDB = (new ControlAcara($this->gateControlModel))->getAllData($tahunAk,"4");
-		if($tempObjectDB->getCountData() > 0){
-			$data['kode'] = true;
-			while($tempObjectDB->getNextCursor()){
-				$data[$i]['nama'] = $tempObjectDB->getDetail();
-				$data[$i]['tanggal'] = $tempObjectDB->getMulai();
-				$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
-				$data[$i]['id'] = "AC".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
-				$i++;
+		$semester = 1;
+		$tahun = 2014;
+		while(intval($tahun."".$semester) <= intval($tahunAk)){
+			$tempTahunAk = $tahun."".$semester;
+			//your kode
+			$tempObjectDB = $controlAcara->getAllData($tempTahunAk,"4");
+			if($tempObjectDB->getCountData() > 0){
+				$data['kode'] = true;
+				while($tempObjectDB->getNextCursor()){
+					$data[$i]['contact'] = "Admin Departemen";
+					$data[$i]['nama'] = $tempObjectDB->getPenanggungJawab();
+					$data[$i]['deskripsi'] = $tempObjectDB->getDetail();
+					$data[$i]['tanggal'] = $tempObjectDB->getMulai();
+					$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
+					$data[$i]['id'] = "AC".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
+					$i++;
+				}
 			}
-		}
-		$tempObjectDBs =(new ControlSidang($this->gateControlModel))->getAllDataHaveATimeWithMahasiswa($tahunAk,"4");
-		if($tempObjectDBs->getCountData() > 0){
-			$data['kode'] = true;
-			while($tempObjectDBs->getNextCursor()){
-				$tempMahasiswa = $tempObjectDBs->getTableStack(1);
-				$tempObjectDB = $tempObjectDBs->getTableStack(0);
-				$data[$i]['nama'] = $tempMahasiswa->getNama();
-				$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
-				$data[$i]['endTanggal'] = $this->dateJaservFilter->setDate($tempObjectDB->getWaktu(),true)->setPlusOrMinMinute($tempAdmin->getTaDDurasi(),true)->getDate("Y-m-d H:i:s");
-				$data[$i]['ketua'] = "";
-				$data[$i]['pengujis'] = "";
-				$data[$i]['pengujid'] = "";
-				$data[$i]['pengujit'] = "";
-				if(strlen($tempObjectDB->getDosenS()) == 40){
-					$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenS());
-					if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
-						$data[$i]['ketua'] = $tempObjectDBE->getNip();
-					}
+			$tempObjectDBs = $controlPinjam->getAllData($tempTahunAk,"4",null,true);
+			if($tempObjectDBs->getCountData() > 0){
+				$data['kode'] = true;
+				while($tempObjectDBs->getNextCursor()){
+					$tempObjectDB = $tempObjectDBs->getTableStack(0);
+					$tempObjectDBD = $tempObjectDBs->getTableStack(1);
+					$data[$i]['contact'] = $tempObjectDBD->getNoHp();
+					$data[$i]['nama'] = $tempObjectDBD->getNama();
+					$data[$i]['deskripsi'] = $tempObjectDB->getDetail();
+					$data[$i]['tanggal'] = $tempObjectDB->getMulai();
+					$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
+					$data[$i]['id'] = "PM".$tempObjectDB->getTahunAk()."|".str_ireplace(" ","&",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
+					$i++;
 				}
-				if(strlen($tempObjectDB->getDosenD()) == 40){
-					$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenD());
-					if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
-						$data[$i]['pengujis'] = $tempObjectDBE->getNip();
-					}
-				}
-				if(strlen($tempObjectDB->getDosenT()) == 40){
-					$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenT());
-					if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
-						$data[$i]['pengujid'] = $tempObjectDBE->getNip();
-					}
-				}
-				$tempObjectDBE = $controlRegistrasi->getAllDataWithDosbing($tempObjectDB->getTahunAk(),$tempObjectDB->getMahasiswa());
-				if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
-					$tempObjectDBL = $tempObjectDBE->getTableStack(2);
-					if($data[$i]['pengujid'] == ""){
-						$data[$i]['pengujid'] = $tempObjectDBL->getNip();
-					}else{
-						$data[$i]['pengujit'] = $tempObjectDBL->getNip();
-					}
-				}
-				$STATE="TD";
-				$data[$i]['id'] = $STATE."".$tempObjectDB->getTahunAk()."_".str_ireplace(" ",".",$tempObjectDB->getWaktu())."2_".$tempMahasiswa->getNim();
-				$i++;
 			}
-			
+			$tempObjectDBs = $controlSidang->getAllDataHaveATimeWithMahasiswa($tempTahunAk,"4");
+			if($tempObjectDBs->getCountData() > 0){
+				$data['kode'] = true;
+				while($tempObjectDBs->getNextCursor()){
+					$tempMahasiswa = $tempObjectDBs->getTableStack(1);
+					$tempObjectDB = $tempObjectDBs->getTableStack(0);
+					$data[$i]['nama'] = $tempMahasiswa->getNama();
+					$data[$i]['contact'] = $tempMahasiswa->getNoHp();
+					$data[$i]['deskripsi'] = "Sidang laporan proposal";
+					$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
+					$data[$i]['endTanggal'] = $this->dateJaservFilter->setDate($tempObjectDB->getWaktu(),true)->setPlusOrMinMinute($tempAdmin->getTaDDurasi(),true)->getDate("Y-m-d H:i:s");
+					$data[$i]['ketua'] = "";
+					$data[$i]['pengujis'] = "";
+					$data[$i]['pengujid'] = "";
+					$data[$i]['pengujit'] = "";
+					if(strlen($tempObjectDB->getDosenS()) == 40){
+						$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenS());
+						if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
+							$data[$i]['ketua'] = $tempObjectDBE->getNip();
+						}
+					}
+					if(strlen($tempObjectDB->getDosenD()) == 40){
+						$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenD());
+						if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
+							$data[$i]['pengujis'] = $tempObjectDBE->getNip();
+						}
+					}
+					if(strlen($tempObjectDB->getDosenT()) == 40){
+						$tempObjectDBE = $controlDosen->getAllData($tempObjectDB->getDosenT());
+						if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
+							$data[$i]['pengujid'] = $tempObjectDBE->getNip();
+						}
+					}
+					$tempObjectDBE = $controlRegistrasi->getAllDataWithDosbing($tempObjectDB->getTahunAk(),$tempObjectDB->getMahasiswa());
+					if($tempObjectDBE && $tempObjectDBE->getNextCursor()){
+						$tempObjectDBL = $tempObjectDBE->getTableStack(2);
+						if($data[$i]['pengujid'] == ""){
+							$data[$i]['pengujid'] = $tempObjectDBL->getNip();
+						}else{
+							$data[$i]['pengujit'] = $tempObjectDBL->getNip();
+						}
+					}
+					$STATE="TD";
+					$data[$i]['id'] = $STATE."".$tempObjectDB->getTahunAk()."_".str_ireplace(" ",".",$tempObjectDB->getWaktu())."2_".$tempMahasiswa->getNim();
+					$i++;
+				}
+				
+			}
+			//end of kode
+			if($semester == 1){
+				$semester = 2;
+			}else{
+				$semester = 1;
+				$tahun += 1;
+			}
 		}
 		$data['content'] = $i;
 		echo "1".json_encode($data);
@@ -615,12 +734,14 @@ class Palaceareaacara extends CI_Controller_Modified {
 		}
 		if($typeKetua){
 			$TEMP_ARRAY['statusPenandaTangan']="Ketua";
+			$TEMP_ARRAY['statusPenandaTanganPrefix']="";
 			$dosPenS = $controlDosen->getAllData($tempAdmin->getKajur());
 			$dosPenS->getNextCursor();
 			$TEMP_ARRAY["penandaTangan"]= $dosPenS->getNama();
 			$TEMP_ARRAY["nipPenandaTangan"]=$dosPenS->getNip();
 		}else{
-			$TEMP_ARRAY['statusPenandaTangan']="Wakil";
+			$TEMP_ARRAY['statusPenandaTangan']="A.n Ketua";
+			$TEMP_ARRAY['statusPenandaTanganPrefix']="Sekretaris,";
 			$dosPenS = $controlDosen->getAllData($tempAdmin->getWakil());
 			$dosPenS->getNextCursor();
 			$TEMP_ARRAY["penandaTangan"]= $dosPenS->getNama();
@@ -785,12 +906,14 @@ class Palaceareaacara extends CI_Controller_Modified {
 		if(!$nipChoice) exit("error code <a href='".base_url()."c00a0fe01f87645da894a5c1033e39f4.php?key=NIP-CODE-3'>NIP-CODE-3</a>");
 		if($typeKetua){
 			$TEMP_ARRAY['statusPenandaTangan']="Ketua";
+			$TEMP_ARRAY['statusPenandaTanganPrefix']="";
 			$dosPenS = $controlDosen->getAllData($tempAdmin->getKajur());
 			$dosPenS->getNextCursor();
 			$TEMP_ARRAY["penandaTangan"]= $dosPenS->getNama();
 			$TEMP_ARRAY["nipPenandaTangan"]=$dosPenS->getNip();
 		}else{
-			$TEMP_ARRAY['statusPenandaTangan']="Wakil";
+			$TEMP_ARRAY['statusPenandaTangan']="A.n Ketua";
+			$TEMP_ARRAY['statusPenandaTanganPrefix']="Sekretaris,";
 			$dosPenS = $controlDosen->getAllData($tempAdmin->getWakil());
 			$dosPenS->getNextCursor();
 			$TEMP_ARRAY["penandaTangan"]= $dosPenS->getNama();
@@ -1018,7 +1141,6 @@ class Palaceareaacara extends CI_Controller_Modified {
 	//Optimized
 	//menghapus acara yang pernah ditambahkan admin
 	public function setDeleteOrRejected(){
-		
 		$id=$this->isNullPost('id');
 		$kode = substr($id,0,2);
 		$TEMP_STRING = substr($id,2,strlen($id)-2);
@@ -1034,7 +1156,6 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$TANGGAL = str_ireplace("."," ",substr($TEMP_STRING[1],0,strlen($TEMP_STRING[1])-1)); //sudah difilter
 		if(count($TEMP_STRING) == 3){
 			$NIM = $TEMP_STRING[2]; 
-			//$this->load->library("Mahasiswa");
 			if(!$this->mahasiswa->getCheckNim($NIM,1)[0]){
 				exit("0data tidak valid");
 			}
@@ -1043,13 +1164,11 @@ class Palaceareaacara extends CI_Controller_Modified {
 			exit("0data tidak ditemukan");
 		}
 		$TANGGAL = $this->dateJaservFilter->nice_date($TANGGAL,"Y-m-d H:i:s");
-		if($ROOM > 2 || $ROOM < 1){
+		if($ROOM > 4 || $ROOM < 1){
 			exit("0data tidak ditemukan");
 		}
-		
 		switch($kode){
 			case "TS" : 
-		
 			if($TEMP_REST[0]){
 				exit("1Seminar berhasil ditolak");
 			}else{
@@ -1057,7 +1176,6 @@ class Palaceareaacara extends CI_Controller_Modified {
 			}
 			break;
 			case "TD" : 
-			
 			if($TEMP_REST[0]){
 				exit("1Seminar berhasil ditolak");
 			}else{
@@ -1065,7 +1183,6 @@ class Palaceareaacara extends CI_Controller_Modified {
 			}
 			break;
 			case "AC" : 
-			
 			$this->loadLib('ControlAcara');
 			if((new ControlAcara($this->gateControlModel))->deleteAcara(array("tahunak"=>$SRT, "mulai"=>$TANGGAL, "ruang"=>$ROOM))){
 				exit("1Data acara berhasil dihapus");

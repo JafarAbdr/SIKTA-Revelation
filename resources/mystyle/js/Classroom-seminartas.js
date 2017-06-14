@@ -368,63 +368,31 @@ function refreshCalendarSeminarTa1(){
 				var title = tempEvent[0];
 				var nama = tempEvent[1];
 				var status = tempEvent[2];
-				if(idTanggal != null){
-					if(calEvent.id == idTanggal)
-						modalStaticMultipleButton("Anda ingin menghapus even ini ",function(){
-							$("#s-tanggal").val("");
-							$("s-ruang").val("");
-							$('#calendar').fullCalendar('removeEvents', calEvent.id);
-							tanggalSewaRuangDefault = false;
-							idTanggal = null;
-						});
-					else{
-						 modalStaticSingleInformation(title,
-					 "<table style='width : 100%;'>"+
-						"<tr>"+
-							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Pemegang"+
-							"</td>"+
-							"<td style='width : 75%;'>"+
-								nama+
-							"</td>"+
-						"</tr>"+
-						"<tr>"+
-							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Mulai"+
-							"</td>"+
-							"<td>"+
-								"Tanggal "+start.format("D MMMM YYYY")+", "+start.format("H:mm")+" WIB"+
-							"</td>"+
-						"</tr>"+
-						"<tr>"+
-							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Berakhir"+
-							"</td>"+
-							"<td>"+
-								"Tanggal "+end.format("D MMMM YYYY")+", "+end.format("H:mm")+" WIB"+
-							"</td>"+
-						"</tr>"+
-						"<tr>"+
-							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Status"+
-							"</td>"+
-							"<td>"+
-								status+
-							"</td>"+
-						"</tr>"+
-					 "</table>"
-					 );
-					}
-						
+				if(idTanggal != null && calEvent.id == idTanggal){
+					modalStaticMultipleButton("Anda ingin menghapus even ini ",function(){
+						$("#s-tanggal").val("");
+						$("s-ruang").val("");
+						$('#calendar').fullCalendar('removeEvents', calEvent.id);
+						tanggalSewaRuangDefault = false;
+						idTanggal = null;
+					});
 				}else{
 					 modalStaticSingleInformation(title,
 					 "<table style='width : 100%;'>"+
 						"<tr>"+
 							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Pemegang"+
+								"Deskripsi"+
 							"</td>"+
 							"<td style='width : 75%;'>"+
 								nama+ 
+							"</td>"+
+						"</tr>"+
+						"<tr>"+
+							"<td style='width : 25%; padding-left : 10px;'>"+
+								"Penanggung Jawab"+
+							"</td>"+
+							"<td style='width : 75%;'>"+
+								tempDataListCalender[calEvent.id]['contact']+ 
 							"</td>"+
 						"</tr>"+
 						"<tr>"+
@@ -474,6 +442,9 @@ function refreshCalendarSeminarTa1(){
 						for(i=0;i<jsonList.content;i++){		
 							var START_DAY = moment(jsonList[i].tanggal);
 							var END_DAY = moment(jsonList[i].endTanggal);
+							tempDataListCalender[jsonList[i].namaAcara+"|"+jsonList[i].nama+"|"+jsonList[i].status]=[];
+							tempDataListCalender[jsonList[i].namaAcara+"|"+jsonList[i].nama+"|"+jsonList[i].status]['contact']=jsonList[i].contact;
+							tempDataListCalender[jsonList[i].namaAcara+"|"+jsonList[i].nama+"|"+jsonList[i].status]['nama']=jsonList[i].nama;
 							Calenders.fullCalendar('renderEvent',{
 								id: jsonList[i].namaAcara+"|"+jsonList[i].nama+"|"+jsonList[i].status,
 								title: jsonList[i].namaAcara,
@@ -493,6 +464,7 @@ function refreshCalendarSeminarTa1(){
 		});
 	}
 }
+var tempDataListCalender = [];
 function buttonLoaderFunctionFull(data){
 	$("#exec-"+data.idC).click(function(){$("#"+data.idC).trigger('click');});
 	$("#"+data.idC).change(function () {

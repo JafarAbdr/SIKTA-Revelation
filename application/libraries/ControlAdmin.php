@@ -222,6 +222,55 @@ class ControlAdmin extends LibrarySupport {
 			else
 				return $this->setCategoryPrintMessage($cat,FALSE,"Maaf, 02.00 adalah waktu paling sore utuk TA 1");
 		}
+		$tempObjectDB = $this->gateControlModel->loadObjectDB('Pinjam');
+		$tempObjectDB->setRuang($ruang,true);
+		$tempObjectDB->setmulai($dateJaservFilter->nice_date($mulai,"Y-m-d"),true);
+		$tempObjectDB->setWhere(4);
+		$tempObjectDB = $this->gateControlModel->executeObjectDB($tempObjectDB)->takeData();
+		
+		
+		
+		if($tempObjectDB->getCountData() > 0){
+			while($tempObjectDB->getNextCursor()){
+				$id = "AC".$tempObjectDB->getTahunAk()."_".str_ireplace(" ",".",$tempObjectDB->getMulai()).$tempObjectDB->getRuang();
+				$tempStart = $dateJaservFilter->setDate($tempObjectDB->getMulai(),true)->getDate("Y-m-d H:i:s");
+				$tempEnd = $dateJaservFilter->setDate($tempObjectDB->getBerakhir(),true)->getDate("Y-m-d H:i:s");
+				if($dateJaservFilter->setDate($mulai,true)->isAfterAndNow($tempStart,true)->isBeforeAndNow($tempEnd)){
+					$error+=1;
+					break;
+				}
+				if($dateJaservFilter->setDate($berakhir,true)->isAfterAndNow($tempStart,true)->isBeforeAndNow($tempEnd)){
+					$error+=2;
+					break;
+				}
+			}
+		}
+		if($error > 0){
+			if($error == 1)
+				if(!$returnID)
+					return $this->setCategoryPrintMessage($cat,FALSE,"Maaf, waktu anda tabrakan dengan Acara lain sebelum anda");
+				else
+					return array(FALSE,"Maaf, waktu anda tabrakan dengan Acara lain sebelum anda",$id);
+			else
+				if(!$returnID)
+					return $this->setCategoryPrintMessage($cat,FALSE,"Maaf, waktu anda tabrakan dengan Acara lain sesudah anda");
+				else
+					return array(FALSE,"Maaf, waktu anda tabrakan dengan Acara lain sesudah anda",$id);
+		}
+		$tempMorning = $dateJaservFilter->nice_date($mulai,"Y-m-d")." 07:30:00";
+		$tempEvening = $dateJaservFilter->nice_date($mulai,"Y-m-d")." 15:00:00";
+		if($dateJaservFilter->setDate($mulai,true)->isBefore($tempMorning)){
+			$error+=1;
+		}
+		if($dateJaservFilter->setDate($mulai,true)->isAfter($tempEvening)){
+			$error+=2;
+		}
+		if($error > 0){
+			if($error == 1)
+				return $this->setCategoryPrintMessage($cat,FALSE,"Maaf, 07.30 adalah waktu paling pagi");
+			else
+				return $this->setCategoryPrintMessage($cat,FALSE,"Maaf, 02.00 adalah waktu paling sore utuk TA 1");
+		}
 		return $this->setCategoryPrintMessage($cat,true,"waktu di terima");
 	}
 }

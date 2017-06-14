@@ -33,7 +33,6 @@ class Classseminartas extends CI_Controller_Modified {
 		$this->dateJaservFilter = new Datejaservfilter();
 		$this->load->library('Session');
 		$this->load->helper('url');
-		//$this->load->model('sc_ea');
 		$this->load->helper('html');
 		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){
@@ -56,9 +55,11 @@ class Classseminartas extends CI_Controller_Modified {
 		$this->loadLib("ControlSeminar");
 		$this->loadLib("ControlSidang");
 		$this->loadLib("ControlAcara");
+		$this->loadLib("ControlPinjam");
 		$this->controlSeminar = new ControlSeminar($this->gateControlModel);
 		$this->controlSidang = new ControlSidang($this->gateControlModel);
 		$this->controlAcara = new ControlAcara($this->gateControlModel);
+		$this->controlPinjam = new ControlPinjam($this->gateControlModel);
 		if($errorProsesOpen == 0)
 			$this->prosesOpen = true;
 		
@@ -113,7 +114,6 @@ class Classseminartas extends CI_Controller_Modified {
 					break;
 				case 3 :
 					echo "0C";
-					//$this->load->view("Classroom_room/Body_right/Seminartas/Langkah3"); 
 					$this->load->view("Bodyright/Classroom/Seminartas/Alternateaction"); 
 					break;
 			}			
@@ -136,13 +136,14 @@ class Classseminartas extends CI_Controller_Modified {
 		$taDDurasi = $controlAdmin->getTADurasi(2);
 		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		$dateJaservFilter = new Datejaservfilter();
-		$tempObjectDB =$this->controlSeminar->getAllDataHaveATime($this->tahunAk);
-		if($tempObjectDB->getCountData() > 0){
+		$tempObjectDBs =$this->controlSeminar->getAllDataHaveATimeWithMahasiswa($this->tahunAk);
+		if($tempObjectDBs->getCountData() > 0){
 			$data['kode'] = true;
-			while($tempObjectDB->getNextCursor()){
-				$tempMahasiswa = $controlMahasiswa->getAllData($tempObjectDB->getMahasiswa());
-				$tempMahasiswa->getNextCursor();
-				$data[$i]['nama'] = $tempMahasiswa->getNama();
+			while($tempObjectDBs->getNextCursor()){
+				$tempObjectDB = $tempObjectDBs->getTableStack(0);
+				$tempMahasiswa = $tempObjectDBs->getTableStack(1);
+				$data[$i]['nama'] = "Pelakasaan seminar proposal";
+				$data[$i]['contact'] = $tempMahasiswa->getNama()." (".$tempMahasiswa->getNoHp().")";
 				$data[$i]['namaAcara'] = "Seminar TA 1";
 				$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
 				$data[$i]['endTanggal'] = $tempObjectDB->getWaktuEnd();
@@ -161,19 +162,37 @@ class Classseminartas extends CI_Controller_Modified {
 			while($tempObjectDB->getNextCursor()){
 				$data[$i]['nama'] = $tempObjectDB->getDetail();
 				$data[$i]['namaAcara'] = "Acara Lain";
+				$data[$i]['contact'] = "Admin Departemen";
 				$data[$i]['tanggal'] = $tempObjectDB->getMulai();
 				$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
 				$data[$i]['status'] = "Disetujui";
 				$i++;
 			}
 		}
-		$tempObjectDB = $this->controlSidang->getAllDataHaveATime($this->tahunAk,"1");
-		if($tempObjectDB->getCountData() > 0){
+		$tempObjectDBs = $this->controlPinjam->getAllData($this->tahunAk,"1",null,true);
+		if($tempObjectDBs && $tempObjectDB->getCountData() > 0){
 			$data['kode'] = true;
-			while($tempObjectDB->getNextCursor()){
-				$tempMahasiswa = $controlMahasiswa->getAllData($tempObjectDB->getMahasiswa());
-				$data[$i]['nama'] = $tempMahasiswa->getNama();
+			while($tempObjectDBs->getNextCursor()){
+				$tempObjectDB = $tempObjectDBs->getTableStack(0);
+				$tempObjectDBn = $tempObjectDBs->getTableStack(1);
+				$data[$i]['nama'] = $tempObjectDB->getDetail();
+				$data[$i]['namaAcara'] = "peminjam ruang";
+				$data[$i]['contact'] = $tempObjectDBn->getNama()." (".$tempObjectDBn->getNoHp().")";
+				$data[$i]['tanggal'] = $tempObjectDB->getMulai();
+				$data[$i]['endTanggal'] = $tempObjectDB->getBerakhir();
+				$data[$i]['status'] = "Disetujui";
+				$i++;
+			}
+		}
+		$tempObjectDBs = $this->controlSidang->getAllDataHaveATimeWithMahasiswa($this->tahunAk,"1");
+		if($tempObjectDBs->getCountData() > 0){
+			$data['kode'] = true;
+			while($tempObjectDBs->getNextCursor()){
+				$tempObjectDB = $tempObjectDBs->getTableStack(0);
+				$tempMahasiswa = $tempObjectDBs->getTableStack(1);
+				$data[$i]['nama'] = "Pelaksaan Sidang Laporan";
 				$data[$i]['namaAcara'] = "Sidang TA 2";
+				$data[$i]['contact'] = $tempMahasiswa->getNama()." (".$tempMahasiswa->getNoHp().")";
 				$data[$i]['tanggal'] = $tempObjectDB->getWaktu();
 				$data[$i]['endTanggal'] = $tempObjectDB->getWaktuEnd();
 				if(intval($tempObjectDB->getDataProsesD()) == 2)

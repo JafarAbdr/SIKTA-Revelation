@@ -387,6 +387,8 @@ function getDataOnForCalendar(){
 						for(i=0;i<jsonList[h].lengths;i++){		
 							var START_DAY = moment(jsonList[h][i].tanggal);
 							var END_DAY = moment(jsonList[h][i].endTanggal);
+							tableListSeminarTad[jsonList[h][i].namaAcara+"|"+jsonList[h][i].nama+"|"+jsonList[h][i].status]=[];
+							tableListSeminarTad[jsonList[h][i].namaAcara+"|"+jsonList[h][i].nama+"|"+jsonList[h][i].status]['contact']=jsonList[h][i].contact;
 							CalenderOnSemTA2["calendar-"+h].fullCalendar('renderEvent',{
 								id: jsonList[h][i].namaAcara+"|"+jsonList[h][i].nama+"|"+jsonList[h][i].status,
 								title: jsonList[h][i].namaAcara,
@@ -527,63 +529,31 @@ function createCalenderOn(data){
 				var title = tempEvent[0];
 				var nama = tempEvent[1];
 				var status = tempEvent[2];
-				if(CalenderOnSemTA2ID[data.kodeId] != null){
-					if(calEvent.id == CalenderOnSemTA2ID[data.kodeId])
-						modalStaticMultipleButton("Anda ingin menghapus even ini ",function(){
-							$("#s-tanggal").val("");
-							$("s-ruang").val("");
-							CalenderOnSemTA2[data.id].fullCalendar('removeEvents', calEvent.id);
-							CalenderOnSemTA2TANGGAL[data.kodeId] = null;
-							CalenderOnSemTA2ID[data.kodeId] = null;
-						});
-					else{
-						 modalStaticSingleInformation(title,
-					 "<table style='width : 100%;'>"+
-						"<tr>"+
-							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Pemegang"+
-							"</td>"+
-							"<td style='width : 75%;'>"+
-								nama+
-							"</td>"+
-						"</tr>"+
-						"<tr>"+
-							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Mulai"+
-							"</td>"+
-							"<td>"+
-								"Tanggal "+start.format("D MMMM YYYY")+", "+start.format("H:mm")+" WIB"+
-							"</td>"+
-						"</tr>"+
-						"<tr>"+
-							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Berakhir"+
-							"</td>"+
-							"<td>"+
-								"Tanggal "+end.format("D MMMM YYYY")+", "+end.format("H:mm")+" WIB"+
-							"</td>"+
-						"</tr>"+
-						"<tr>"+
-							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Status"+
-							"</td>"+
-							"<td>"+
-								status+
-							"</td>"+
-						"</tr>"+
-					 "</table>"
-					 );
-					}
-						
+				if(CalenderOnSemTA2ID[data.kodeId] != null && calEvent.id == CalenderOnSemTA2ID[data.kodeId]){
+					modalStaticMultipleButton("Anda ingin menghapus even ini ",function(){
+						$("#s-tanggal").val("");
+						$("s-ruang").val("");
+						CalenderOnSemTA2[data.id].fullCalendar('removeEvents', calEvent.id);
+						CalenderOnSemTA2TANGGAL[data.kodeId] = null;
+						CalenderOnSemTA2ID[data.kodeId] = null;
+					});
 				}else{
 					 modalStaticSingleInformation(title,
 					 "<table style='width : 100%;'>"+
 						"<tr>"+
 							"<td style='width : 25%; padding-left : 10px;'>"+
-								"Pemegang"+
+								"Deskripsi"+
 							"</td>"+
 							"<td style='width : 75%;'>"+
 								nama+ 
+							"</td>"+
+						"</tr>"+
+						"<tr>"+
+							"<td style='width : 25%; padding-left : 10px;'>"+
+								"Penanggung jawan"+
+							"</td>"+
+							"<td style='width : 75%;'>"+
+								tableListSeminarTad[calEvent.id]['contact']+ 
 							"</td>"+
 						"</tr>"+
 						"<tr>"+
@@ -618,8 +588,7 @@ function createCalenderOn(data){
 	}
 }
 
-
-
+var tableListSeminarTad = [];
 
 
 

@@ -69,13 +69,17 @@ class ControlRegistrasi extends LibrarySupport {
 		if(is_null($tahunAk) && !is_null($mahasiswa) && is_null($status)  && is_null($dataproses)){
 			$tempObjectDB->setWhere(16);
 		}
-		$tempDosbing->setWhereMultiple(3);
+		if(!$mahasiswaEx){
+			$tempDosbing->setWhereMultiple(3);
+			$tempMultiple->addTable($tempDosbing);
+			$tempMultiple->addTable($tempObjectDB);
+			$tempMultiple->addTable($tempGuru);
+			return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
+		}
+		$tempDosbing->setWhereMultiple(6);
 		$tempMultiple->addTable($tempDosbing);
 		$tempMultiple->addTable($tempObjectDB);
 		$tempMultiple->addTable($tempGuru);
-		if(!$mahasiswaEx)
-			return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();
-		$tempDosbing->setWhereMultiple(6);
 		$tempMahasiswa = $this->gateControlModel->loadObjectDB('Murid');
 		$tempMultiple->addTable($tempMahasiswa);
 		return $this->gateControlModel->executeObjectDB($tempMultiple)->takeData();

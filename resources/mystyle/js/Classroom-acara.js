@@ -1,75 +1,54 @@
 function acaraAkademikFullArea(){
-	reloadTableRuangTa1();
-	reloadTableRuang();
+	areaReloadTableRuangTa1();
+	areaReloadTableRuang();
 }
-function reloadTableRuang(){
+function areaReloadTableRuang(){
+	$("#REF-TA2").on("click",function(){
+		areaReloadTableRuangTa2();
+	});
+	$("#REF-TA1").on("click",function(){
+		areaReloadTableRuangTa1();
+	});
+	$("#REF-PUS").on("click",function(){
+		areaReloadTableRuangPus();
+	});
 	$("#lingk-TA2").on("click",function(){
-		if(table2){
-			reloadTableRuangTa2();
-			table2 = false;
-			table1 = true;
-			table3 = true;
-			table4 = true;
+		if(areaTable2){
+			areaReloadTableRuangTa2();
+			areaTable2 = false;
+			areaTable1 = true;
+			areaTable4 = true;
 		}
 	});
 	$("#lingk-TA1").on("click",function(){
-		if(table1){
-			reloadTableRuangTa1();
-			table1 = false;
-			table2 = true;
-			table3 = true;
-			table4 = true;
-		}
-	});
-	$("#lingk-TAM").on("click",function(){
-		if(table3){
-			reloadTableRuangTaM();
-			table3 = false;
-			table1 = true;
-			table2 = true;
-			table4 = true;
+		if(areaTable1){
+			areaReloadTableRuangTa1();
+			areaTable1 = false;
+			areaTable2 = true;
+			areaTable4 = true;
 		}
 	});
 	$("#lingk-PUS").on("click",function(){
-		if(table4){
-			reloadTableRuangPus();
-			table4 = false;
-			table1 = true;
-			table2 = true;
-			table3 = true;
+		if(areaTable4){
+			areaReloadTableRuangPus();
+			areaTable4 = false;
+			areaTable1 = true;
+			areaTable2 = true;
 		}
 	});
 }
-var table4  = true;
-var table3  = true;
-var table2  = true;
-var table1  = false;
-function reloadTableRuangTaM(){
-	$("#calendar-ta-m").html("");
-	setTimeout(function(){	
-		rebuildCalenderStillGetOne({
-			ID : "calendar-ta-m",
-			KEY : "TAM"
-		});
-		setTimeout(function(){
-			reloadDataTableCalender({
-				idCalender : "calendar-ta-m",
-				title : "update calender 3",
-				urlpostfix : "getJSONAcaraRuangTAM",
-				
-			})
-		},1000);
-	},500);
-}
-function reloadTableRuangPus(){
+var areaTable4  = true;
+var areaTable2  = true;
+var areaTable1  = false;
+function areaReloadTableRuangPus(){
 	$("#calendar-pu-s").html("");
 	setTimeout(function(){	
-		rebuildCalenderStillGetOne({
+		areaRebuildCalenderStillGetOne({
 			ID : "calendar-pu-s",
 			KEY : "PUS"
 		});
 		setTimeout(function(){
-			reloadDataTableCalender({
+			areaReloadDataTableCalender({
 				idCalender : "calendar-pu-s",
 				title : "update calender 4",
 				urlpostfix : "getJSONAcaraRuangPUS",
@@ -78,15 +57,15 @@ function reloadTableRuangPus(){
 		},1000);
 	},500);
 }
-function reloadTableRuangTa1(){
+function areaReloadTableRuangTa1(){
 	$("#calendar-ta-1").html("");
 	setTimeout(function(){	
-		rebuildCalenderStillGetOne({
+		areaRebuildCalenderStillGetOne({
 			ID : "calendar-ta-1",
 			KEY : "TA1"
 		});
 		setTimeout(function(){
-			reloadDataTableCalender({
+			areaReloadDataTableCalender({
 				idCalender : "calendar-ta-1",
 				title : "update calender 1",
 				urlpostfix : "getJSONAcaraRuangTA1",
@@ -95,15 +74,15 @@ function reloadTableRuangTa1(){
 		},1000);
 	},500);
 }
-function reloadTableRuangTa2(){
+function areaReloadTableRuangTa2(){
 	$("#calendar-ta-2").html("");
 	setTimeout(function(){		
-		rebuildCalenderStillGetOne({
+		areaRebuildCalenderStillGetOne({
 			ID : "calendar-ta-2",
 			KEY : "TA2"
 		});
 		setTimeout(function(){
-			reloadDataTableCalender({
+			areaReloadDataTableCalender({
 				idCalender : "calendar-ta-2",
 				title : "update calender 2",
 				urlpostfix : "getJSONAcaraRuangTA2",
@@ -117,13 +96,13 @@ DATA.title
 DATA.urlpostfix
 DATA.idCalender
 */
-var tempIDListTable = [];
-function reloadDataTableCalender(DATA){
+var areaTempIDListTable = [];
+function areaReloadDataTableCalender(DATA){
 	openLoadingBar("memperoleh data "+DATA.title);
 	j("#setAjax").setAjax({
 		methode : "GET",
 		bool : true,
-		url :base_url+"Palaceareaacara/"+DATA.urlpostfix+".jsp",
+		url :base_url+"Classareaacara/"+DATA.urlpostfix+"",
 		content : "",
 		sucOk : function(a){
 			//alert(a);
@@ -137,22 +116,16 @@ function reloadDataTableCalender(DATA){
 				jsonList = JSON.parse(a.substr(1,a.length-1));
 				if(jsonList.kode){
 					for(i=0;i<jsonList.content;i++){		
-						var START_DAY = moment(jsonList[i].tanggal);
-						var END_DAY = moment(jsonList[i].endTanggal);
-						tempIDListTable[jsonList[i].id] = [];
-						tempIDListTable[jsonList[i].id]['contact'] = jsonList[i].contact;
-						tempIDListTable[jsonList[i].id]['deskripsi'] = jsonList[i].deskripsi;
-						if(jsonList[i].id.substr(0,2) == "TD"){
-							tempIDListTable[jsonList[i].id]['ketua'] = jsonList[i].ketua;
-							tempIDListTable[jsonList[i].id]['pengujis'] = jsonList[i].pengujis;
-							tempIDListTable[jsonList[i].id]['pengujid'] = jsonList[i].pengujid;
-							tempIDListTable[jsonList[i].id]['pengujit'] = jsonList[i].pengujit;
-						}
-						CalendersRev[DATA.idCalender].fullCalendar('renderEvent',{
+						tempStart = moment(jsonList[i].tanggal);
+						tempEnd = moment(jsonList[i].endTanggal);
+						areaTempIDListTable[jsonList[i].id] = [];
+						areaTempIDListTable[jsonList[i].id]['deskripsi'] = jsonList[i].deskripsi;
+						areaTempIDListTable[jsonList[i].id]['contact'] = jsonList[i].contact;
+						areaCalendersRev[DATA.idCalender].fullCalendar('renderEvent',{
 							title: jsonList[i].nama,
-							start: START_DAY,
+							start: tempStart,
 							id : jsonList[i].id,
-							end: END_DAY},true);
+							end: tempEnd},true);
 					}
 				}
 			}
@@ -165,22 +138,16 @@ function reloadDataTableCalender(DATA){
 		}
 	});
 }
-var TotalCalender = 0;
-var CalendersRev = [];
-var nGlobal=null;
-var dateGlobal=null;
-var templateCalendarTAS2 = 
+var areaTotalCalender = 0;
+var areaCalendersRev = [];
+var areaNGlobal=null;
+var areaDateGlobal=null;
+var areaTemplateCalendarTAS2 = 
 	'<div style=" color:#333333;">'+
 		'<div class=form-row> '+
 			'<div class=col-md-3>Nama acara : </div> '+
 			'<div class=col-md-9> '+
 				'<input id="add-acara-title" type="username" placeholder="Masukan judul acara anda(maksimal 250 karakter)" max="250" style="width : 100%;">'+			
-			'</div>'+ 
-		'</div>'+
-		'<div class=form-row> '+
-			'<div class=col-md-3>Penanggung jawab : </div> '+
-			'<div class=col-md-9> '+
-				'<input id="add-acara-penanggung" type="username" placeholder="Penanggung jawab acara (maksimal 70 karakter)" max="70"  style="width : 100%;">'+
 			'</div>'+ 
 		'</div>'+
 		'<div class=form-row> '+
@@ -210,18 +177,12 @@ var templateCalendarTAS2 =
 		'</div>'+
 	'</div>'
 ;
-var templateCalendarTAS = 
+var areaTemplateCalendarTAS = 
 	'<div style=" color:#333333;">'+
 		'<div class=form-row> '+
 			'<div class=col-md-3>Nama acara : </div> '+
 			'<div class=col-md-9> '+
 				'<input id="acara-title" type="username" placeholder="Masukan judul acara anda(maksimal 250 karakter)" max="250" style="width : 100%;">'+			
-			'</div>'+ 
-		'</div>'+
-		'<div class=form-row> '+
-			'<div class=col-md-3>Penanggung jawab : </div> '+
-			'<div class=col-md-9> '+
-				'<input id="acara-penanggung" type="username" placeholder="Penanggung jawab acara (maksimal 70 karakter)" max="70"  style="width : 100%;">'+
 			'</div>'+ 
 		'</div>'+
 		'<div class=form-row> '+
@@ -251,30 +212,8 @@ var templateCalendarTAS =
 		'</div>'+
 	'</div>'
 ;
-var templateCalendarTADKode = 
-		'<div class=form-row> '+
-			'<div class=col-md-3>No Surat Undangan : </div> '+
-			'<div class=col-md-9> '+
-				'<input id="nosuratundangan" type="kode" placeholder="No Surat Undangan" max="70" style="width : 100%;">'+			
-			'</div>'+ 
-		'</div>'+
-		'<div class=form-row> '+
-			'<div class=col-md-3>No Surat Tugas : </div> '+
-			'<div class=col-md-9> '+
-				'<input id="nosurattugas" type="username" placeholder="No SUrat Tugas " max="70"  style="width : 100%;">'+
-			'</div>'+ 
-		'</div>'
-;
-var templateCalendarTASKode = 
-		'<div class=form-row> '+
-			'<div class=col-md-3>No Surat Undangan : </div> '+
-			'<div class=col-md-9> '+
-				'<input id="nosuratundangan" type="kode" placeholder="No Surat Undangan" max="70" style="width : 100%;">'+			
-			'</div>'+ 
-		'</div>'
-;
-function rebuildCalenderStillGetOne(DATA){
-	var valueTotalCalendar = TotalCalender;
+function areaRebuildCalenderStillGetOne(DATA){
+	var valueTotalCalendar = areaTotalCalender;
 	if($("#"+DATA.ID).length>0){
 		var e=new Date();
 		var t=e.getDate();
@@ -284,7 +223,7 @@ function rebuildCalenderStillGetOne(DATA){
 			var e={title:$.trim($(this).text())};$(this).data("eventObject",e);
 		$(this).draggable({zIndex:999,revert:true,revertDuration:0})});
 		
-		CalendersRev[DATA.ID] = $("#"+DATA.ID).fullCalendar({
+		areaCalendersRev[DATA.ID] = $("#"+DATA.ID).fullCalendar({
 			header:{
 				left:"prev,next today",
 				center:"title",
@@ -299,19 +238,19 @@ function rebuildCalenderStillGetOne(DATA){
 			disableResizing : true,
 			select:function(e,t,n){
 				var key = DATA.KEY;
-				nGlobal = n;
-				dateGlobal = e;
+				areaNGlobal = n;
+				areaDateGlobal = e;
 				if(moment(e).isBefore(new Date())){
 					modalStaticSingleInformation("Peringatan ",
 					 "<div style='padding : 10px; font-family : arial; font-size : 10pt;'>Anda tidak dapat menambahkan acara pada waku yang telah lewat.</div>"
 					 );
 				}else{
-					modalStaticBodyMultipleButton("Data Acara baru",templateCalendarTAS2,function(finalis){
+					modalStaticBodyMultipleButton("Data Acara baru",areaTemplateCalendarTAS2,function(finalis){
 						openLoadingBar("Validasi tanggal dan jam ...");
 						var TEMP_DATE_TIME_START = moment("0000-00-00 "+$("#add-jam-mulai").val());
 						var TEMP_DATE_TIME_END = moment("0000-00-00 "+$("#add-jam-berakhir").val());
-						var TEMP_START = moment(dateGlobal);
-						var TEMP_END = moment(dateGlobal);
+						var TEMP_START = moment(areaDateGlobal);
+						var TEMP_END = moment(areaDateGlobal);
 						TEMP_START.hour(TEMP_DATE_TIME_START.hours());
 						TEMP_END.hour(TEMP_DATE_TIME_END.hours());
 						TEMP_START.minute(TEMP_DATE_TIME_START.minutes());
@@ -320,9 +259,9 @@ function rebuildCalenderStillGetOne(DATA){
 						TEMP_START.seconds(TEMP_DATE_TIME_START.seconds());
 						j("#setAjax").setAjax({
 							methode: "POST",
-							url:base_url+"Palaceareaacara/setNewAcara",
+							url:base_url+"Classareaacara/setNewAcara",
 							bool : true,
-							content: "kode="+DATA.KEY+"&namaAcara="+$("#add-acara-title").val()+"&penanggung="+$("#add-acara-penanggung").val()+"&startEvent="+generateNormalTime(TEMP_START.toArray())+"&endEvent="+generateNormalTime(TEMP_END.toArray()),
+							content: "kode="+DATA.KEY+"&namaAcara="+$("#add-acara-title").val()+"&startEvent="+generateNormalTime(TEMP_START.toArray())+"&endEvent="+generateNormalTime(TEMP_END.toArray()),
 							sucOk : function(a){
 								if(parseInt(a[0]) ==  3){
 									$(location).attr('href', base_url+a.substr(1,a.length-1));
@@ -337,12 +276,15 @@ function rebuildCalenderStillGetOne(DATA){
 									}
 									$year = z[0]; 
 									$month = z[1]+1; 
-									CalendersRev[DATA.ID].fullCalendar('renderEvent',{
-										id:"AC"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode,
-										title: $("#add-acara-title").val(),
+									areaTempIDListTable["PM"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode] = [];
+									areaTempIDListTable["PM"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode]['deskripsi'] = $("#add-acara-title").val();
+									areaTempIDListTable["PM"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode]['contact'] = a[3];
+									areaCalendersRev[DATA.ID].fullCalendar('renderEvent',{
+										id:"PM"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode,
+										title: a[2],
 										start: TEMP_START,
 										end: TEMP_END,
-										allDay:nGlobal},true);
+										allDay:areaNGlobal},true);
 									//insert ruang
 									finalis(true);
 								}else{
@@ -406,39 +348,8 @@ function rebuildCalenderStillGetOne(DATA){
 				var neutral = moment();
 				var buttonTolak = "";
 				if(calEvent.id.substr(0,2) == "TS"){
-					buttonTolak += 
-						"<div>"+
-						"<span class='icon-print' onclick='getNoSuratTAS("+'"ta1"'+").setA("+'"'+calEvent.id+'"'+").showNoSurat()' style='color : green; cursor : pointer;' title='print surat ketua'>&nbsp;Undangan</span>"+
-						"</div>";
 					 modalStaticSingleInformation("Pelaku seminar TA 1 ",
 					 "<div style='width : 100%;'>"+
-						"<div id='ta1-content-succes-delete'  style='display : none;'>"+
-							"<div>"+
-								'<div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">Pemberitahuan</h3> </div> <div class="panel-body"> Data seminar berhasil di tolak </div> <div class="panel-footer"></div> </div>'+
-							"</div>"+
-						"</div>"+
-						"<div id='ta1-content-pdf'  style='display : none;'>"+
-							"<div  onclick='alertSeminarDate("+'"ta1"'+").showBase();' style='position : absolute; width : 45px;margin-top : 10px; cursor : pointer; margin-left : 10px; height 45px; text-align : center; border-radius : 45px; background-color : black; '>"+
-								"<i  style='font-size : 14px; color : white; line-height : 45px;' class='icon-arrow-left'></i>"+
-							"</div>"+
-							"<div>"+
-								"<iframe id='ta1-pdf' style='width : 100%; min-height : 500px;'></iframe>"+
-							"</div>"+
-						"</div>"+
-						"<div id='ta1-content-edit' style='display : none; height : 145px;'>"+
-							"<div>"+
-								templateCalendarTASKode+
-								"<div class=form-row>"+
-									"<div class='col-md-6' style='text-align : center;'>"+
-										"<button class='btn btn-success btn-clean'  onclick='getNoSuratTAS("+'"ta1"'+").printThisSurat()'>print</button>"+
-									"</div>"+
-									"<div class='col-md-6'  style='text-align : center;'>"+
-										"<button class='btn btn-danger btn-clean' onclick='getNoSuratTAS("+'"ta1"'+").showBase()'>Batalkan</button>"+
-									"</div>"+
-									"<form style='display : none;' id='form-print' target='_blank' method='POST' action='Palaceareaacara/getPrintOfThis'><input type='text' id='idSurat' name='idSurat'><input type='text' id='noSuratUnd' name='noSuratUnd'><input type='submit'></form>"+
-								"</div><br>"+
-							"</div>"+
-						"</div>"+
 						"<div id='ta1-content-base' >"+
 							 "<table style='width : 100%; font-family : Arial; font-size : 10pt;'>"+
 								"<tr >"+
@@ -451,18 +362,18 @@ function rebuildCalenderStillGetOne(DATA){
 								"</tr>"+
 								"<tr >"+
 									"<td style='width : 25%; padding-left : 10px;'>"+
-										"Deskripsi"+
+										"Kontak"+
 									"</td>"+
 									"<td style='width : 75%;'>"+
-										tempIDListTable[calEvent.id]['deskripsi']+
+										areaTempIDListTable[calEvent.id]['contact']+
 									"</td>"+
 								"</tr>"+
 								"<tr >"+
 									"<td style='width : 25%; padding-left : 10px;'>"+
-										"No Handphone"+
+										"Deskripsi"+
 									"</td>"+
 									"<td style='width : 75%;'>"+
-										tempIDListTable[calEvent.id]['contact']+
+										areaTempIDListTable[calEvent.id]['deskripsi']+
 									"</td>"+
 								"</tr>"+
 								"<tr>"+
@@ -480,80 +391,14 @@ function rebuildCalenderStillGetOne(DATA){
 									"<td>"+
 										wkwk2.format("dddd, MMMM Do YYYY, HH:mm:ss")+
 									"</td>"+
-								"</tr>"+
-								"<tr>"+
-									"<td style='width : 25%; padding-left : 10px;'>"+
-										
-									"</td>"+
-									
-									"<td>"+
-										buttonTolak+
-									"</td>"+
-									
 								"</tr>"+
 							 "</table>"+
 						"</div>"+
 					"</div>"
 					 );
 				}else if(calEvent.id.substr(0,2) == "TD"){
-					buttonTolak += 
-						"<div>";
-					if(tempIDListTable[calEvent.id]['ketua'] != ""){
-						buttonTolak += "<span class='icon-print' onclick='getNoSuratTAD("+'"ta2"'+").setAAndB("+'"'+calEvent.id+'"'+" , "+'"'+tempIDListTable[calEvent.id]['ketua']+'"'+").showNoSurat()' style='color : green; cursor : pointer;' title='print surat ketua'>&nbsp;ketua</span>";
-					}else{
-						buttonTolak += 
-						"<span class='icon-remove' style='color : red;' title='print surat ketua'>&nbsp;ketua</span>";
-					}
-					if(tempIDListTable[calEvent.id]['pengujis'] != ""){
-						buttonTolak += "&nbsp;|&nbsp;<span class='icon-print' onclick='getNoSuratTAD("+'"ta2"'+").setAAndB("+'"'+calEvent.id+'"'+" , "+'"'+tempIDListTable[calEvent.id]['pengujis']+'"'+").showNoSurat()' style='color : green; cursor : pointer;' title='print surat penguji 1'>&nbsp;penguji 1</span>";
-					}else{
-						buttonTolak += 
-						"&nbsp;|&nbsp;<span class='icon-remove' style='color : red;' title='print surat penguji 1'>&nbsp;penguji 1</span>";
-					}
-					if(tempIDListTable[calEvent.id]['pengujid'] != ""){
-					buttonTolak += "&nbsp;|&nbsp;<span class='icon-print' onclick='getNoSuratTAD("+'"ta2"'+").setAAndB("+'"'+calEvent.id+'"'+" , "+'"'+tempIDListTable[calEvent.id]['pengujid']+'"'+").showNoSurat()' style='color : green; cursor : pointer;' title='print surat penguji 2'>&nbsp;penguji 2</span>";
-					}else{
-						buttonTolak += 
-						"&nbsp;|&nbsp;<span class='icon-remove' style='color : red;' title='print surat penguji 2'>&nbsp;penguji 2</span>";
-					}
-					if(tempIDListTable[calEvent.id]['pengujit'] != ""){
-						buttonTolak += "&nbsp;|&nbsp;<span class='icon-print' onclick='getNoSuratTAD("+'"ta2"'+").setAAndB("+'"'+calEvent.id+'"'+" , "+'"'+tempIDListTable[calEvent.id]['pengujit']+'"'+").showNoSurat()' style='color : green; cursor : pointer;' title='print surat penguji 3'>&nbsp;penguji 3</span>";
-					}else{
-						buttonTolak += 
-						"&nbsp;|&nbsp;<span class='icon-remove' style='color : red;' title='print surat penguji 3'>&nbsp;penguji 3</span>";
-					}
-							
-					buttonTolak += 
-						"</div>";
 					 modalStaticSingleInformation("Pelaku seminar TA 2 ",
 					 "<div style='width : 100%;'>"+
-						"<div id='ta2-content-succes-delete'  style='display : none;'>"+
-							"<div>"+
-								'<div class="panel panel-success"> <div class="panel-heading"> <h3 class="panel-title">Pemberitahuan</h3> </div> <div class="panel-body"> Data seminar berhasil di tolak </div> <div class="panel-footer"></div> </div>'+
-							"</div>"+
-						"</div>"+
-						"<div id='ta2-content-pdf' style='display : none;'>"+
-							"<div  onclick='alertSeminarDate("+'"ta2"'+").showBase();' style='position : absolute; width : 45px;margin-top : 10px; cursor : pointer; margin-left : 10px; height 45px; text-align : center; border-radius : 45px; background-color : black; '>"+
-								"<i  style='font-size : 14px; color : white; line-height : 45px;' class='icon-arrow-left'></i>"+
-							"</div>"+
-							"<div>"+
-								"<iframe id='ta2-pdf' style='width : 100%; min-height : 500px;'></iframe>"+
-							"</div>"+
-						"</div>"+
-						"<div id='ta2-content-edit' style='display : none; height : 145px;'>"+
-							"<div>"+
-								templateCalendarTADKode+
-								"<div class=form-row>"+
-									"<div class='col-md-6' style='text-align : center;'>"+
-										"<button class='btn btn-success btn-clean'  onclick='getNoSuratTAD("+'"ta2"'+").printThisSurat()'>print</button>"+
-									"</div>"+
-									"<div class='col-md-6'  style='text-align : center;'>"+
-										"<button class='btn btn-danger btn-clean' onclick='getNoSuratTAD("+'"ta2"'+").showBase()'>Batalkan</button>"+
-									"</div>"+
-									"<form style='display : none;' id='form-print' target='_blank' method='POST' action='Palaceareaacara/getPrintOfThis'><input type='text' id='nip' name='nip'><input type='text' id='idSurat' name='idSurat'><input type='text' id='noSuratTug' name='noSuratTug'><input type='text' id='noSuratUnd' name='noSuratUnd'><input type='submit'></form>"+
-								"</div><br>"+
-							"</div>"+
-						"</div>"+
 						"<div id='ta2-content-base' >"+
 							 "<table style='width : 100%; font-family : Arial; font-size : 10pt;'>"+
 								"<tr >"+
@@ -566,18 +411,18 @@ function rebuildCalenderStillGetOne(DATA){
 								"</tr>"+
 								"<tr >"+
 									"<td style='width : 25%; padding-left : 10px;'>"+
-										"Deskripsi"+
+										"Kontak"+
 									"</td>"+
 									"<td style='width : 75%;'>"+
-										tempIDListTable[calEvent.id]['deskripsi']+
+										areaTempIDListTable[calEvent.id]['contact']+
 									"</td>"+
 								"</tr>"+
 								"<tr >"+
 									"<td style='width : 25%; padding-left : 10px;'>"+
-										"No Handphone"+
+										"Deskripsi"+
 									"</td>"+
 									"<td style='width : 75%;'>"+
-										tempIDListTable[calEvent.id]['contact']+
+										areaTempIDListTable[calEvent.id]['deskripsi']+
 									"</td>"+
 								"</tr>"+
 								"<tr>"+
@@ -595,22 +440,13 @@ function rebuildCalenderStillGetOne(DATA){
 									"<td>"+
 										wkwk2.format("dddd, MMMM Do YYYY, HH:mm:ss")+
 									"</td>"+
-								"</tr>"+
-								"<tr>"+
-									"<td style='width : 25%; padding-left : 10px;'>"+
-										
-									"</td>"+						
-									"<td>"+
-										buttonTolak+
-									"</td>"+
-							
 								"</tr>"+
 							 "</table>"+
 						"</div>"+
 					"</div>"
 					 );
-				}else if(calEvent.id.substr(0,2) == "PM"){
-					 modalStaticSingleInformation("Peminjam ruang ",
+				}else if(calEvent.id.substr(0,2) == "NP"){
+					 modalStaticSingleInformation("Peminjam Ruangan ",
 					 "<div style='width : 100%;'>"+
 						"<div id='ta2-content-base' >"+
 							 "<table style='width : 100%; font-family : Arial; font-size : 10pt;'>"+
@@ -624,18 +460,18 @@ function rebuildCalenderStillGetOne(DATA){
 								"</tr>"+
 								"<tr >"+
 									"<td style='width : 25%; padding-left : 10px;'>"+
-										"Deskripsi"+
+										"Kontak"+
 									"</td>"+
 									"<td style='width : 75%;'>"+
-										tempIDListTable[calEvent.id]['deskripsi']+
+										areaTempIDListTable[calEvent.id]['contact']+
 									"</td>"+
 								"</tr>"+
 								"<tr >"+
 									"<td style='width : 25%; padding-left : 10px;'>"+
-										"No Handphone"+
+										"Deskripsi"+
 									"</td>"+
 									"<td style='width : 75%;'>"+
-										tempIDListTable[calEvent.id]['contact']+
+										areaTempIDListTable[calEvent.id]['deskripsi']+
 									"</td>"+
 								"</tr>"+
 								"<tr>"+
@@ -653,21 +489,61 @@ function rebuildCalenderStillGetOne(DATA){
 									"<td>"+
 										wkwk2.format("dddd, MMMM Do YYYY, HH:mm:ss")+
 									"</td>"+
-								"</tr>"+
-								"<tr>"+
-									"<td style='width : 25%; padding-left : 10px;'>"+
-										
-									"</td>"+						
-									"<td>"+
-										buttonTolak+
-									"</td>"+
-							
 								"</tr>"+
 							 "</table>"+
 						"</div>"+
 					"</div>"
 					 );
 				}else if(calEvent.id.substr(0,2) == "AC"){
+					 modalStaticSingleInformation("Acara Admin Departemen ",
+					 "<div style='width : 100%;'>"+
+						"<div id='ta2-content-base' >"+
+							 "<table style='width : 100%; font-family : Arial; font-size : 10pt;'>"+
+								"<tr >"+
+									"<td style='width : 25%; padding-left : 10px;'>"+
+										"Nama"+
+									"</td>"+
+									"<td style='width : 75%;'>"+
+										calEvent.title+
+									"</td>"+
+								"</tr>"+
+								"<tr >"+
+									"<td style='width : 25%; padding-left : 10px;'>"+
+										"Kontak"+
+									"</td>"+
+									"<td style='width : 75%;'>"+
+										areaTempIDListTable[calEvent.id]['contact']+
+									"</td>"+
+								"</tr>"+
+								"<tr >"+
+									"<td style='width : 25%; padding-left : 10px;'>"+
+										"Deskripsi"+
+									"</td>"+
+									"<td style='width : 75%;'>"+
+										areaTempIDListTable[calEvent.id]['deskripsi']+
+									"</td>"+
+								"</tr>"+
+								"<tr>"+
+									"<td style='width : 25%; padding-left : 10px;'>"+
+										"Mulai"+
+									"</td>"+
+									"<td>"+
+										wkwk.format("dddd, MMMM Do YYYY, HH:mm:ss")+
+									"</td>"+
+								"</tr>"+
+								"<tr>"+
+									"<td style='width : 25%; padding-left : 10px;'>"+
+										"Berakhir"+
+									"</td>"+
+									"<td>"+
+										wkwk2.format("dddd, MMMM Do YYYY, HH:mm:ss")+
+									"</td>"+
+								"</tr>"+
+							 "</table>"+
+						"</div>"+
+					"</div>"
+					 );
+				}else if(calEvent.id.substr(0,2) == "PM"){
 					if(wkwk2.isBefore(neutral)){
 						buttonTolak += 
 						"<div>"+
@@ -681,7 +557,6 @@ function rebuildCalenderStillGetOne(DATA){
 							"&nbsp;|&nbsp;<span  onclick='alertAdminEvent("+'"ac"'+").showEdit();' style='color : green; cursor : pointer;' class='icon-edit' title='berita acara'> ubah</span>"+
 						"</div>";
 					}
-
 					 modalStaticSingleInformation("Even dari anda ",
 					  "<div style='width : 100%;'>"+
 						"<div id='ac-content-succes-delete'  style='display : none;'>"+
@@ -691,7 +566,7 @@ function rebuildCalenderStillGetOne(DATA){
 						"</div>"+
 						"<div id='ac-content-edit' style='display : none;'>"+
 							"<div>"+
-								templateCalendarTAS+
+								areaTemplateCalendarTAS+
 							"</div>"+
 							"<div  style='height : 50px' >"+
 								"<div class='col-md-6' style='text-align : center;'>"+
@@ -729,18 +604,18 @@ function rebuildCalenderStillGetOne(DATA){
 								"</tr>"+
 								"<tr >"+
 									"<td style='width : 25%; padding-left : 10px;'>"+
-										"Deskripsi"+
+										"Kontak"+
 									"</td>"+
 									"<td style='width : 75%;'>"+
-										tempIDListTable[calEvent.id]['deskripsi']+
+										areaTempIDListTable[calEvent.id]['contact']+
 									"</td>"+
 								"</tr>"+
 								"<tr >"+
 									"<td style='width : 25%; padding-left : 10px;'>"+
-										"No Handphone"+
+										"Deskripsi"+
 									"</td>"+
-									"<td style='width : 75%;'>"+
-										tempIDListTable[calEvent.id]['contact']+
+									"<td style='width : 75%;' id='base-acara-deskripsi'>"+
+										areaTempIDListTable[calEvent.id]['deskripsi']+
 									"</td>"+
 								"</tr>"+
 								"<tr>"+
@@ -773,121 +648,8 @@ function rebuildCalenderStillGetOne(DATA){
 				}
 			}
 		});
-		TotalCalender += 1;
+		areaTotalCalender += 1;
 	}
-}
-function getNoSuratTAS(id){
-	this.id=id;
-	this.setA = function(a){
-		this.a = a;
-		return this;
-	}
-	this.showBase = function(){
-		$("#"+this.id+"-content-base").slideDown('slow');
-		$("#"+this.id+"-content-edit").slideUp('slow');
-	};
-	this.printThisSurat = function(){
-		$("#idSurat").val(this.a);
-		$("#noSuratUnd").val($('#nosuratundangan').val());
-		$("#form-print").submit();
-		this.showBase();
-	}
-	this.showNoSurat = function(){
-		$("#"+this.id+"-content-base").slideUp('slow');
-		$("#"+this.id+"-content-edit").slideDown('slow');
-		$("#nosuratundangan").attr("disabled","true");
-		openLoadingBar("getting last kode");
-		var a= this.a;
-		j("#setAjax").setAjax({
-			url : base_url+"Palaceareaacara/getKodeSurat",
-			bool : true,
-			content : "idSurat="+a,
-			methode : "POST",
-			sucOk : function(yl){
-				setLoadingBarMessage("proses hasil balasan server ...");
-				if(yl[0] == '3'){
-					$(location).attr('href', base_url+yl.substr(1,yl.length-1));
-				}else if(yl[0]=='1'){
-					var dataJSON = JSON.parse(yl.substr(1,yl.length-1));					
-					$("#nosuratundangan").val(dataJSON.nosuratundangan);
-				}
-				else if(yl[0]=='0'){
-					setLoadingBarMessage('Maaf gagal melakukan pengambilan data');
-					setTimeout(function(){
-						alertAdminEvent(idActive).showBase();
-					},1000);
-				}
-				$("#nosurattugas").removeAttr("disabled");
-				$("#nosuratundangan").removeAttr("disabled");
-				setTimeout(function(){
-					closeLoadingBar();
-				},400);
-			},
-			sucEr : function(a,b){
-				template(a,b,"sesi edit acara");
-			}
-		});
-	};
-	return this;
-}
-function getNoSuratTAD(id){
-	this.id=id;
-	this.setAAndB = function(a,b){
-		this.a = a;
-		this.b = b;
-		return this;
-	}
-	this.showBase = function(){
-		$("#"+this.id+"-content-base").slideDown('slow');
-		$("#"+this.id+"-content-edit").slideUp('slow');
-	};
-	this.printThisSurat = function(){		
-		$("#nip").val(this.b);
-		$("#idSurat").val(this.a);
-		$("#noSuratTug").val($('#nosurattugas').val());
-		$("#noSuratUnd").val($('#nosuratundangan').val());
-		$("#form-print").submit();
-		this.showBase();
-	}
-	this.showNoSurat = function(){
-		$("#"+this.id+"-content-base").slideUp('slow');
-		$("#"+this.id+"-content-edit").slideDown('slow');
-		$("#nosurattugas").attr("disabled","true");
-		$("#nosuratundangan").attr("disabled","true");
-		openLoadingBar("getting last kode");
-		var a= this.a;
-		j("#setAjax").setAjax({
-			url : base_url+"Palaceareaacara/getKodeSurat",
-			bool : true,
-			content : "idSurat="+a,
-			methode : "POST",
-			sucOk : function(yl){
-				setLoadingBarMessage("proses hasil balasan server ...");
-				if(yl[0] == '3'){
-					$(location).attr('href', base_url+yl.substr(1,yl.length-1));
-				}else if(yl[0]=='1'){
-					var dataJSON = JSON.parse(yl.substr(1,yl.length-1));					
-					$("#nosuratundangan").val(dataJSON.nosuratundangan);
-					$("#nosurattugas").val(dataJSON.nosurattugas);
-				}
-				else if(yl[0]=='0'){
-					setLoadingBarMessage('Maaf gagal melakukan pengambilan data');
-					setTimeout(function(){
-						alertAdminEvent(idActive).showBase();
-					},1000);
-				}
-				$("#nosurattugas").removeAttr("disabled");
-				$("#nosuratundangan").removeAttr("disabled");
-				setTimeout(function(){
-					closeLoadingBar();
-				},400);
-			},
-			sucEr : function(a,b){
-				template(a,b,"sesi edit acara");
-			}
-		});
-	};
-	return this;
 }
 var kodeSeminarTanggalShare = null;
 var kodeCalenderActive = null;
@@ -915,7 +677,7 @@ function alertAdminEvent(id){
 			$TEMP = $TEMP.split("|");
 			$TEMP = $TEMP[0]+"_"+$TEMP[1];
 			j("#setAjax").setAjax({
-				url : base_url+"Palaceareaacara/getJSONDataAcara",
+				url : base_url+"Classareaacara/getJSONDataAcara",
 				bool : true,
 				content : "id="+$TEMP,
 				methode : "POST",
@@ -958,7 +720,7 @@ function alertAdminEvent(id){
 		$(x).attr('disabled','true');
 		$('#batal-hapus-acara-admin').attr('disabled','true');
 		j('#setAjax').setAjax({
-			url : base_url+"Palaceareaacara/setDeleteOrRejected",
+			url : base_url+"Classareaacara/setDeleteOrRejected",
 			bool : true,
 			content : "id="+$TEMP_ID,
 			methode : "POST",
@@ -968,7 +730,7 @@ function alertAdminEvent(id){
 				if(yl[0] == '3'){
 					$(location).attr('href', base_url+yl.substr(1,yl.length-1));
 				}else if(yl[0]=='1'){
-					CalendersRev[kodeCalenderActive].fullCalendar("removeEvents",kodeSeminarTanggalShare.id); 
+					areaCalendersRev[kodeCalenderActive].fullCalendar("removeEvents",kodeSeminarTanggalShare.id); 
 					$("#"+IDs+"-content-succes-delete").slideDown('slow',function(){
 						setTimeout(function(){
 							$('#mod-sta-sing-warn-terima-kasih').trigger('click');
@@ -1007,13 +769,12 @@ function alertAdminEvent(id){
 		$START_EVENT = $TEMP+" "+$("#jam-mulai").val()+":00";
 		$END_EVENT = $TEMP+" "+$("#jam-berakhir").val()+":00";
 		j("#setAjax").setAjax({
-			url : base_url+"Palaceareaacara/setUpdateAcara",
+			url : base_url+"Classareaacara/setUpdateAcara",
 			bool : true,
 			methode : "POST",
 			content : 
 			"id="+$TEMP_ID+"&"+
 			"namaAcara="+$("#acara-title").val()+"&"+
-			"penanggung="+$("#acara-penanggung").val()+"&"+
 			"startEvent="+$START_EVENT+"&"+
 			"endEvent="+$END_EVENT+"",
 			sucOk : function(yl){
@@ -1026,23 +787,27 @@ function alertAdminEvent(id){
 					var newTitle = $("#acara-title").val();
 					var newStart = moment($START_EVENT);
 					var newEnd = moment($END_EVENT);
-					CalendersRev[kodeCalenderActive].fullCalendar("removeEvents",kodeSeminarTanggalShare.id); 
-					CalendersRev[kodeCalenderActive].fullCalendar('renderEvent',{
-							title: newTitle,
+					areaCalendersRev[kodeCalenderActive].fullCalendar("removeEvents",kodeSeminarTanggalShare.id); 
+					tempContact = areaTempIDListTable[kodeSeminarTanggalShare.id]['contact'];
+					areaTempIDListTable[kodeSeminarTanggalShare.id]=[]
+					areaTempIDListTable[newID]=[];
+					areaTempIDListTable[newID]['contact']=tempContact;
+					areaTempIDListTable[newID]['deskripsi']=newTitle;
+					areaCalendersRev[kodeCalenderActive].fullCalendar('renderEvent',{
+							title: kodeSeminarTanggalShare.title,
 							start: newStart,
 							id : newID,
 							end: newEnd},true);
 					kodeSeminarTanggalShare.id = newID;
-					kodeSeminarTanggalShare.title = newTitle;
 					kodeSeminarTanggalShare.start = newStart;
 					kodeSeminarTanggalShare.end = newEnd;
-					$("#base-acara-title").html(newTitle);
+					$("#base-acara-deskripsi").html(newTitle);
 					$("#base-acara-start").html(newStart.format("dddd, MMMM Do YYYY, HH:mm:ss"));
 					$("#base-acara-end").html(newEnd.format("dddd, MMMM Do YYYY, HH:mm:ss"));
 					alertAdminEvent(idBaseAlert).showBase();
 				}
 				else if(yl[0]=='0'){
-					setLoadingBarMessage('Maaf gagal melakukan pengambilan data');
+					setLoadingBarMessage(yl.substr(1,yl.length-1));
 				}
 				$(x).removeAttr("disabled");
 				$(x.parentNode.parentNode.childNodes[1].childNodes[0]).removeAttr("disabled");
@@ -1071,7 +836,7 @@ function alertSeminarDate(id){
 			$TEMP = $TEMP[0]+"."+$TEMP[1];
 			$TEMP = $TEMP.split("|");
 			$TEMP = $TEMP[0]+"_"+$TEMP[1]+"_"+$TEMP[2];
-			$("#"+id+"-pdf").attr("src",base_url+"Palaceareaacara/printBeritaAcara/"+$TEMP+"");
+			$("#"+id+"-pdf").attr("src",base_url+"Classareaacara/printBeritaAcara/"+$TEMP+"");
 		});
 		$("#"+this.id+"-content-delete").slideUp('slow');
 		$("#"+this.id+"-content-base").slideUp('slow');
@@ -1086,7 +851,7 @@ function alertSeminarDate(id){
 		openLoadingBar("mencoba menolak data ....");
 		$(x).attr("disabled","true");
 		j("#setAjax").setAjax({
-			url : base_url+"Palaceareaacara/setDeleteOrRejected",
+			url : base_url+"Classareaacara/setDeleteOrRejected",
 			content : "id="+kodeSeminarTanggalShare.id,
 			methode : "POST",
 			bool : true,
@@ -1094,7 +859,7 @@ function alertSeminarDate(id){
 				if(parseInt(yy[0]) ==  3){
 					$(location).attr('href', base_url+yy.substr(1,yy.length-1));
 				}else if(parseInt(yy[0]) ==  1){
-					CalendersRev[kodeCalenderActive].fullCalendar('removeEvents',kodeSeminarTanggalShare.id);
+					areaCalendersRev[kodeCalenderActive].fullCalendar('removeEvents',kodeSeminarTanggalShare.id);
 					setLoadingBarMessage(yy.substr(1,yy.length-1)+" ...");
 					$("#"+xy+"-content-succes-delete").slideDown('slow',function(){
 						setTimeout(function(){

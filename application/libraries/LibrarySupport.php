@@ -50,7 +50,9 @@ class LibrarySupport extends Librarian{
 									if($tempId[0] != 'S'){ //Seminar
 										if($tempId[0] != 'Z'){ //sidang
 											if($tempId[0] != 'C'){ //acara
-												return false;
+												if($tempId[0] != 'P'){ //Pinjam
+													return false;
+												}
 											}
 										}
 									}

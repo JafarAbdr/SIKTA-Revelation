@@ -65,7 +65,8 @@ class Classroom extends CI_Controller_Modified {
 				"resources/mystyle/js/Classroom-likedosen.js",
 				"resources/mystyle/js/Classroom-pengaturan.js",
 				"resources/mystyle/js/Classroom-bantuan.js",
-				"resources/mystyle/js/Classroom-seminartas.js"
+				"resources/mystyle/js/Classroom-seminartas.js",
+				"resources/mystyle/js/Classroom-acara.js"
 		);
 		$data['url_link'] = array(
 				"resources/taurus/css/stylesheets.css",

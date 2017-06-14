@@ -373,30 +373,32 @@ class Classseminartad extends CI_Controller_Modified {
 		$tadD = $controlAdmin->getTADurasi(2); */
 		$this->loadLib('ControlTime');
 		$this->loadLib('ControlAcara');
+		$this->loadLib('ControlPinjam');
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('Datejaservfilter');
 		$dateJaservFilter = new Datejaservfilter();
 		$controlSeminar = new ControlSeminar($this->gateControlModel);
 		$controlSidang = new ControlSidang($this->gateControlModel);
 		$controlAcara = new ControlAcara($this->gateControlModel);
+		$controlPinjam = new ControlPinjam($this->gateControlModel);
 		$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
-		$tempObjectDB = $controlSeminar->getAllDataHaveATime($tahunAk);
+		$tempObjectDBs = $controlSeminar->getAllDataHaveATimeWithMahasiswa($tahunAk);
 		$data[1]['kode'] = false;
 		$i=0;
 		$data[1]['lengths']=0;
 		$data[2]['lengths']=0;
 		$data[3]['lengths']=0;
 		$data[4]['lengths']=0;
-		if($tempObjectDB){
+		if($tempObjectDBs){
 			$data[1]['kode'] = true;
-			while($tempObjectDB->getNextCursor()){
-				$tempObjectDBD = $controlMahasiswa->getAllData($tempObjectDB->getMahasiswa());
-				$tempObjectDBD->getNextCursor();
-				$data[1][$i]['nama'] = $tempObjectDBD->getNama();
+			while($tempObjectDBs->getNextCursor()){
+				$tempObjectDB = $tempObjectDBs->getTableStack(0);
+				$tempObjectDBD = $tempObjectDBs->getTableStack(1);
+				$data[1][$i]['nama'] = "Pelakasaan seminar proposal";
+				$data[1][$i]['contact'] = $tempObjectDBD->getNama()." (".$tempObjectDBD->getNoHp().")";
 				$data[1][$i]['namaAcara'] = "Seminar TA 1";
 				$data[1][$i]['tanggal'] = $tempObjectDB->getWaktu();
 				$data[1][$i]['endTanggal'] = $tempObjectDB->getWaktuEnd();
-//$dateJaservFilter->setDate($tempObjectDB->getWaktu(),true)->setPlusOrMinMinute($tasD,true)->getDate("Y-m-d H:i:s");
 				if(intval($tempObjectDB->getDataProses()) == 2)
 					$data[1][$i]['status'] = 'Disetujui';	
 				else
@@ -416,17 +418,17 @@ class Classseminartad extends CI_Controller_Modified {
 			
 			
 			
-			$tempObjectDB = $controlSidang->getAllDataHaveATime($tahunAk,$j);
-			if($tempObjectDB){
+			$tempObjectDBs = $controlSidang->getAllDataHaveATimeWithMahasiswa($tahunAk,$j);
+			if($tempObjectDBs){
 				$data[$j]['kode'] = true;
-				while($tempObjectDB->getNextCursor()){
-					$tempObjectDBD = $controlMahasiswa->getAllData($tempObjectDB->getMahasiswa());
-					$tempObjectDBD->getNextCursor();
-					$data[$j][$i]['nama'] = $tempObjectDBD->getNama();
+				while($tempObjectDBs->getNextCursor()){
+					$tempObjectDB = $tempObjectDBs->getTableStack(0);
+					$tempObjectDBD = $tempObjectDBs->getTableStack(1);
+					$data[$j][$i]['nama'] = "Pelaksaan Sidang Laporan";
+					$data[$j][$i]['contact'] = $tempObjectDBD->getNama()." (".$tempObjectDBD->getNoHp().")";
 					$data[$j][$i]['namaAcara'] = "Sidang TA 2";
 					$data[$j][$i]['tanggal'] = $tempObjectDB->getWaktu();
 					$data[$j][$i]['endTanggal'] = $tempObjectDB->getWaktuEnd();
-					//$dateJaservFilter->setDate($tempObjectDB->getWaktu(),true)->setPlusOrMinMinute($tadD,true)->getDate("Y-m-d H:i:s");
 					if(intval($tempObjectDB->getDataProsesD()) == 2)
 						$data[$j][$i]['status'] = 'Disetujui';	
 					else
@@ -441,6 +443,23 @@ class Classseminartad extends CI_Controller_Modified {
 				while($tempObjectDB->getNextCursor()){
 					$data[$j][$i]['nama'] = $tempObjectDB->getDetail();
 					$data[$j][$i]['namaAcara'] = "Acara Lain";
+					$data[$j][$i]['contact'] = "Admin Departemen";
+					$data[$j][$i]['tanggal'] = $tempObjectDB->getMulai();
+					$data[$j][$i]['endTanggal'] = $tempObjectDB->getBerakhir();
+					$data[$j][$i]['status'] = "Disetujui";
+					$data[$j]['lengths'] += 1;
+					$i++;
+				}
+			}
+			$tempObjectDBs = $controlPinjam->getAllData($tahunAk,$j,null, true);
+			if($tempObjectDBs){
+				$data[$j]['kode'] = true;
+				while($tempObjectDBs->getNextCursor()){
+					$tempObjectDB = $tempObjectDBs->getTableStack(0);
+					$tempObjectDBn = $tempObjectDBs->getTableStack(1);
+					$data[$j][$i]['nama'] = $tempObjectDB->getDetail();
+					$data[$j][$i]['namaAcara'] = "Peminjam ruang";
+					$data[$j][$i]['contact'] = $tempObjectDBn->getNama()." (".$tempObjectDBn->getNoHp().")";
 					$data[$j][$i]['tanggal'] = $tempObjectDB->getMulai();
 					$data[$j][$i]['endTanggal'] = $tempObjectDB->getBerakhir();
 					$data[$j][$i]['status'] = "Disetujui";

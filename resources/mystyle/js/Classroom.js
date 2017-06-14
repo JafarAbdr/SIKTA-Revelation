@@ -205,6 +205,24 @@ $(document).ready(function(){
 			}
 		});
 	});
+	$('#pinjam-layout').on('click',function(){
+		setBreadCrumb({0:'Pinjam'});
+		barSettingProfile = false;
+		closeSettingLayout(function(){
+			if(navbarNavigation['pinjam'] == 0){
+				if(navbarNavigation['form-control'] == 1){
+					modalStaticSingleWarning('Terdapat form yang aktif, tolong legkapi terlebih dahulu sebelum melanjutkan pindah form yang lain.');
+				}else{
+					resetControlNavigasi();
+					navbarNavigation['pinjam']=1;
+					setBreadCrumb({0:'Pinjam'});
+					setNewContentIntern2("Classareaacara/getLayoutAreaAcara",function(){
+						acaraAkademikFullArea();
+					});
+				}
+			}
+		});
+	});
 	$('#bantuan-layout').on('click',function(){
 		bantuanLayout();
 	});
@@ -245,6 +263,7 @@ function resetControlNavigasi(){
 	navbarNavigation['dosen'] = 0;
 	navbarNavigation['bimbingan'] = 0;
 	navbarNavigation['bantuan'] = 0;
+	navbarNavigation['pinjam'] = 0;
 }
 function openLoadingBar(a){
 	setLoadingBarMessage(a);

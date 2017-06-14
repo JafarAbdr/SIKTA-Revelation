@@ -3,8 +3,6 @@ function homeOfMahasiswa(){
 		$(".accordion").accordion({heightStyle:"content"});
 		$(".accordion .ui-accordion-header:last").css("border-bottom","0px");
 	}
-	reloadInfoFastRegister();
-	reloadInfoSeminar();
 	reloadInfoFastRegisterReference();
 }
 
