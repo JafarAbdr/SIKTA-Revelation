@@ -3,6 +3,18 @@ function acaraAkademikFullArea(){
 	reloadTableRuang();
 }
 function reloadTableRuang(){
+	$("#REF-TA2").on("click",function(){
+		reloadTableRuangTa2();
+	});
+	$("#REF-TA1").on("click",function(){
+		reloadTableRuangTa1();
+	});
+	$("#REF-PUS").on("click",function(){
+		reloadTableRuangPus();
+	});
+	$("#REF-TAM").on("click",function(){
+		reloadTableRuangTaM();
+	});
 	$("#lingk-TA2").on("click",function(){
 		if(table2){
 			reloadTableRuangTa2();

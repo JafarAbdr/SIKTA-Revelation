@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 						<div class="form-row">
 							<div class="block"> 
 								<div class="header"> 
-									<h2>Ruang TA 1</h2> 
+									<h2>Ruang TA 1 ( <span style='color : blue;'><a id="REF-TA1" style="cursor:pointer;"><i class="icon-refresh" title="refresh table"></i></a></span> )</h2> 
 								</div> 
 								<div class="content" style="">
 									<div id='calendar-ta-1'>
@@ -40,7 +40,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 						<div class="form-row">
 							<div class="block"> 
 								<div class="header"> 
-									<h2>Ruang TA 2</h2> 
+									<h2>Ruang TA 2 ( <span style='color : blue;'><a id="REF-TA2" style="cursor:pointer;"><i class="icon-refresh" title="refresh table"></i></a></span> )</h2> 
 								</div> 
 								<div class="content" style="">
 									<div id='calendar-ta-2'>
@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 						<div class="form-row">
 							<div class="block"> 
 								<div class="header"> 
-									<h2>Ruang Sidang Matematika</h2> 
+									<h2>Ruang Sidang Matematika ( <span style='color : blue;'><a id="REF-TAM" style="cursor:pointer;"><i class="icon-refresh" title="refresh table"></i></a></span> )</h2> 
 								</div> 
 								<div class="content" style="">
 									<div id='calendar-ta-m'>
@@ -72,7 +72,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 						<div class="form-row">
 							<div class="block"> 
 								<div class="header"> 
-									<h2>Ruang Puspital</h2> 
+									<h2>Ruang Puspital ( <span style='color : blue;'><a id="REF-PUS" style="cursor:pointer;"><i class="icon-refresh" title="refresh table"></i></a></span> )</h2> 
 								</div> 
 								<div class="content" style="">
 									<div id='calendar-pu-s'>
