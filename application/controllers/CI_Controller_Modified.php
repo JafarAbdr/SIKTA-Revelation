@@ -1,7 +1,22 @@
 <?php
 if(!defined('BASEPATH')) header("location:http://siata.undip.ac.id/");
 class CI_Controller_Modified extends CI_Controller{
-	
+	protected $gateControlModel;
+	protected $loginFilter;
+	protected $inputJaservFilter;
+	protected $dateJaservFilter;
+	public function __CONSTRUCT(){
+		parent::__CONSTRUCT();
+		$this->loadMod('GateControlModel');
+		$this->loadLib('LoginFilter');
+		$this->load->library('Session');
+		$this->loadLib('Datejaservfilter');
+		$this->loadLib('Inputjaservfilter');
+		$this->dateJaservFilter = new Datejaservfilter();
+		$this->inputJaservFilter = new Inputjaservfilter();
+		$this->gateControlModel = new GateControlModel();
+		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
+	}
 	protected function isNullPost($tempName,$messageError = null, $forceExit = true){
 		if(!is_bool($forceExit)) $forceExit = true;
 		if($this->input->post($tempName) === NULL){

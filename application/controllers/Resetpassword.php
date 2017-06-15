@@ -2,7 +2,7 @@
 /*
 dependencie:
 LoginFilter
-GateControlModel
+GateControlModel(-)
 Mahasiswa
 Koordinator
 Dosen
@@ -24,9 +24,7 @@ class Resetpassword extends CI_Controller_Modified {
 		$this->load->library('Aktor/Koordinator');
 		$this->loadLib('LoginFilter');
 		$session = $this->loadLib('Session',true);
-		$this->loadMod("GateControlModel");
 		$this->loadLib('Datejaservfilter');
-		$this->gateControlModel = new GateControlModel();
 		$this->loginFilter = new LoginFilter($session, $this->gateControlModel);
 		if($this->loginFilter->isLogin($this->mahasiswa))
 			redirect(base_url()."Classroom.jsp");
@@ -60,10 +58,6 @@ class Resetpassword extends CI_Controller_Modified {
 		$this->load->view('Reset_layout',$tempArray);
 	}
 	public function resetNowThisGuys(){
-		//exit("0lkjkjk");
-		//$_POST['passwordbaru'] = "jafar56AAA";
-		//$_POST['passwordkonfirmasi'] = "jafar56AAA";
-		//$_POST['kode'] = "efcf7c61932b37f89f0f970bbd33c6f9";
 		$passwordNew = $this->isNullPost('passwordbaru');
 		$passwordKon = $this->isNullPost('passwordkonfirmasi');
 		$kode = $this->isNullPost('kode');
@@ -80,8 +74,6 @@ class Resetpassword extends CI_Controller_Modified {
 		$this->loadLib('LoginFilter');
 		if(!(new LoginFilter(null,$this->gateControlModel))->setNewPassword($passwordNew,$tempObjectDB->getIdentified())) 
 			exit('0password anda harus berbeda dengan password yang lama');
-		//echo (new Datejaservfilter())->setDate(date("Y-m-d H:i:s"),true)->setPlusOrMinMinute(-120,true)->getDate('Y-m-d H:i:s');
-		//echo $kode;
 		(new ControlMahasiswa($this->gateControlModel))->setOverWaktuCookie($kode,(new Datejaservfilter())->setDate(date("Y-m-d H:i:s"),true)->setPlusOrMinMinute(-120,true)->getDate('Y-m-d H:i:s'));
 		exit("1Berhasil melakukan perubahan");
 	}

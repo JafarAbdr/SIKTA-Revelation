@@ -9,7 +9,6 @@ class Baseroom extends CI_Controller_Modified {
 		-Koordinator
 		-Admin
 		-LoginFilter
-		-GateControlModel
 		-ControlDosen
 		-ControlMahasiswa
 		*/
@@ -29,8 +28,7 @@ class Baseroom extends CI_Controller_Modified {
 		$loginFilter = new LoginFilter($this->session);
 		if($loginFilter->isLogin($this->mahasiswa)){
 			$this->loadLib('ControlMahasiswa');
-			$this->loadMod('GateControlModel');
-			$controlMahasiswa = new ControlMahasiswa(new GateControlModel());
+			$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 			$tempObjectDB = $controlMahasiswa->getAllData($loginFilter->getIdentifiedActive());
 			$tempObjectDB->getNextCursor();
 			$image = 'filesupport/getPhotoMahasiswaProfil/'.$tempObjectDB->getNim().".aspx";
@@ -60,7 +58,7 @@ class Baseroom extends CI_Controller_Modified {
 		if($loginFilter->isLogin($this->dosen)){
 			$this->loadLib('ControlDosen');
 			$this->loadMod('GateControlModel');
-			$controlDosen = new ControlDosen(new GateControlModel());
+			$controlDosen = new ControlDosen($this->gateControlModel);
 			$tempObjectDB = $controlDosen->getAllData($loginFilter->getIdentifiedActive());
 			$tempObjectDB->getNextCursor();
 			return array("Dosen",array(

@@ -7,9 +7,9 @@ if(!defined('BASEPATH')){
 -Dosen
 -Koordinator
 -Admin
--LoginFilter
--GateControlModel
--Inputjaservfilter
+-LoginFilter(-)
+-GateControlModel(-)
+-Inputjaservfilter(-)
 -ControlMahasiswa
 -ControlRegistrasi
 -ControlTime
@@ -22,13 +22,6 @@ class Filesupport extends CI_Controller_Modified {
 		$this->load->library('Aktor/Koordinator');
 		$this->load->library('Aktor/Dosen');
 		$this->load->library('Aktor/Admin');
-		$this->load->library('Session');
-		$this->loadLib('Inputjaservfilter');
-		$this->loadLib('LoginFilter');
-		$this->loadMod('GateControlModel');
-		$this->gateControlModel = new GateControlModel();
-		$this->inputJaservFilter = new Inputjaservfilter();
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		$this->load->helper("Download");
 		$this->load->helper("Url");
 	}

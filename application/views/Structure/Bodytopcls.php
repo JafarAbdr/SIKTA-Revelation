@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
                 <li><a class="pointer" id="lihat-bimbingan-layout"> bimbingan</a></li>
               </ul>
             </li>
-            <li><a class="pointer" id="pinjam-layout"><span class=icon-cogs></span> pinjam ruang</a></li>
+            <li><a class="pointer" id="pinjam-layout"><span class=icon-calendar></span> pinjam ruang</a></li>
             <li><a class="pointer" id="bantuan-layout"><span class=icon-cogs></span> bantuan</a></li>
           </ul>
         </div>

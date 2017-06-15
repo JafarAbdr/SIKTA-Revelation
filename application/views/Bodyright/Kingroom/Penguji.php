@@ -37,7 +37,7 @@
 						$("#search-name-penguji-ta1").trigger({type:"keyup", keyCode:13})'><i class="icon-refresh" title="refresh table"></i></a></span>
 					</label>
 					<label style="margin : 10px; float: right;">
-						<input type="text" id="search-name-penguji-ta1" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" placeholder="Nama ..."/>
+						<input type="text" id="search-name-penguji-ta1" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" title="Pencarian berdasarkan nim, nama dan judul ta mahasiswa " placeholder="Ketikan sesuatu ..."/>
 					</label>
 						
 					</div> 
@@ -93,7 +93,7 @@
 						$("#search-name-penguji-ta2").trigger({type:"keyup", keyCode:13})'><i class="icon-refresh" title="refresh table"></i></a></span>
 					</label>
 					<label style="margin : 10px; float: right;">
-						<input type="text" id="search-name-penguji-ta2" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" placeholder="Nama ..."/>
+						<input type="text" id="search-name-penguji-ta2" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" title="Pencarian berdasarkan nim, nama dan judul ta mahasiswa " placeholder="Ketikan sesuatu ..."/>
 					</label>
 						
 					</div> 
@@ -153,7 +153,7 @@
 						$("#search-name-penguji-ta2-pembantu").trigger({type:"keyup", keyCode:13})'><i class="icon-refresh" title="refresh table"></i></a></span>
 					</label>
 					<label style="margin : 10px; float: right;">
-						<input type="text" id="search-name-penguji-ta2-pembantu" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" placeholder="Nama ..."/>
+						<input type="text" id="search-name-penguji-ta2-pembantu" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" title="Pencarian berdasarkan nim dan nama mahasiswa " placeholder="Ketikan sesuatu ..."/>
 					</label>
 						
 					</div> 
@@ -211,7 +211,7 @@
 						$("#search-name-penguji-ta2-pembantu2").trigger({type:"keyup", keyCode:13})'><i class="icon-refresh" title="refresh table"></i></a></span>
 					</label>
 					<label style="margin : 10px; float: right;">
-						<input type="text" id="search-name-penguji-ta2-pembantu2" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" placeholder="Nama ..."/>
+						<input type="text" id="search-name-penguji-ta2-pembantu2" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" title="Pencarian berdasarkan nim dan nama mahasiswa " placeholder="Ketikan sesuatu ..."/>
 					</label>
 						
 					</div> 
@@ -269,7 +269,7 @@
 						$("#search-name-penguji-ta2-ketua").trigger({type:"keyup", keyCode:13})'><i class="icon-refresh" title="refresh table"></i></a></span>
 					</label>
 					<label style="margin : 10px; float: right;">
-						<input type="text" id="search-name-penguji-ta2-ketua" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" placeholder="Nama ..."/>
+						<input type="text" id="search-name-penguji-ta2-ketua" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" title="Pencarian berdasarkan nim dan nama mahasiswa " placeholder="Ketikan sesuatu ..."/>
 					</label>
 						
 					</div> 

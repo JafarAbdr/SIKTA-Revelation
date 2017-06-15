@@ -5,7 +5,7 @@ dependencies:
 -LoginFilter
 -Dosen
 -Mahasiswa
--GateControlModel
+-GateControlModel(-)
 -ControlDosen
 */
 require_once APPPATH.'controllers/CI_Controller_Modified.php';
@@ -13,12 +13,7 @@ class Kingroom extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
 		$this->load->library('Aktor/Dosen');
-		$this->load->library('Session');
-		$this->loadLib('LoginFilter');
-		$this->loginFilter = new LoginFilter($this->session);
-		//$this->load->library("Mahasiswa");
 		$this->load->helper('url');
-		//$this->load->model('sc_ea');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->dosen))
 			redirect(base_url().'Gateinout.jsp');
@@ -31,8 +26,7 @@ class Kingroom extends CI_Controller_Modified {
 		if(!$this->loginFilter->isLogin($this->dosen))
 			redirect(base_url().'Gateinout.jsp');
 		$this->loadLib('ControlDosen');
-		$this->loadMod('GateControlModel');
-		$controlDosen = new ControlDosen(new GateControlModel());
+		$controlDosen = new ControlDosen($this->gateControlModel);
 		$tempObjectDB = $controlDosen->getAllData($this->loginFilter->getIdentifiedActive());
 		$tempObjectDB->getNextCursor();
 		$data['url_script'] = array(

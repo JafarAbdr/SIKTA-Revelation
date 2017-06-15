@@ -2,7 +2,7 @@
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 /*
 dependencie
--GateControlModel
+-GateControlModel(-)
 -ControlEvent
 -ControlFile
 Revelation : success
@@ -34,8 +34,7 @@ class Baseberanda extends CI_Controller_Modified {
 		$koko = 0;
 		$trueCon = false;
 		$this->loadLib('ControlEvent');
-		$this->loadMod('GateControlModel');
-		$tempKejadian = (new ControlEvent(new GateControlModel()))->getAllData();
+		$tempKejadian = (new ControlEvent($this->gateControlModel))->getAllData();
 		if($tempKejadian){
 			while($tempKejadian->getNextCursor()){
 				if($n <= 5 && $z == $key){
@@ -103,8 +102,7 @@ class Baseberanda extends CI_Controller_Modified {
 	//getting file, uploaded by koordinator tugas akhir
 	public function getListRecord(){
 		$this->loadLib('ControlFile');
-		$this->loadMod('GateControlModel');
-		$tempObjectDB = (new ControlFile(new GateControlModel()))->getAllData();
+		$tempObjectDB = (new ControlFile($this->gateControlModel))->getAllData();
 		$data = "";
 		if($tempObjectDB){
 			$i=1;

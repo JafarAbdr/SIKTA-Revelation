@@ -349,9 +349,12 @@ function rebuildCalenderStillGetOne(DATA){
 									}
 									$year = z[0]; 
 									$month = z[1]+1; 
+									tempIDListTable["AC"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode]=[];
+									tempIDListTable["AC"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode]['contact']="Admin Departemen";
+									tempIDListTable["AC"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode]['deskripsi']=$("#add-acara-title").val();
 									CalendersRev[DATA.ID].fullCalendar('renderEvent',{
 										id:"AC"+a[1]+"|"+TEMP_START.format("YYYY-MM-DD&HH:mm:ss")+kode,
-										title: $("#add-acara-title").val(),
+										title: $("#add-acara-penanggung").val(),
 										start: TEMP_START,
 										end: TEMP_END,
 										allDay:nGlobal},true);

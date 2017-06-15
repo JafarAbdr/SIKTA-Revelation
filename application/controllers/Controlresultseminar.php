@@ -21,15 +21,8 @@ class Controlresultseminar extends CI_Controller_Modified {
 		parent::__CONSTRUCT();
 		parent::__construct();
 		$this->load->library("Aktor/Koordinator");
-		$this->loadMod("GateControlModel");
-		$this->loadLib("Inputjaservfilter");
-		$this->inputJaservFilter = new Inputjaservfilter();
-		$this->gateControlModel = new GateControlModel();
-		$this->loadLib('LoginFilter');
-		$this->load->library('Session');
 		$this->load->helper('url');
 		$this->load->helper('html');
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		if(!$this->loginFilter->isLogin($this->koordinator)){
 			redirect(base_url()."Gateinout.jsp");
 		}

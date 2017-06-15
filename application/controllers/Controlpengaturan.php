@@ -13,13 +13,8 @@ class Controlpengaturan extends CI_Controller_Modified {
 	function __CONSTRUCT(){
 		parent::__CONSTRUCT();
 		$this->load->library("Aktor/Koordinator");
-		$this->loadMod("GateControlModel");
-		$this->gateControlModel = new GateControlModel();
-		$this->loadLib('LoginFilter');
-		$this->load->library('Session');
 		$this->load->helper('url');
 		$this->load->helper('html');
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		if(!$this->loginFilter->isLogin($this->koordinator)){
 			redirect(base_url()."Gateinout.jsp");
 		}

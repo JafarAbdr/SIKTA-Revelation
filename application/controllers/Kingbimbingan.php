@@ -4,10 +4,10 @@ require_once APPPATH.'controllers/CI_Controller_Modified.php';
 /*
 dependencies:
 -Dosen
--LoginFilter
+-LoginFilter(-)
 -Mahasiswa
--GateControlModel
--Inputjaservfilter
+-GateControlModel(-)
+-Inputjaservfilter(-)
 -ControlDetail
 -ControlDosen
 -ControlMahasiswa
@@ -20,20 +20,13 @@ class Kingbimbingan extends CI_Controller_Modified{
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
 		$this->load->library('Aktor/Dosen');
-		$this->load->library('Session');
-		$this->loadMod('GateControlModel');
-		$this->gateControlModel = new GateControlModel();
-		$this->loadLib('LoginFilter');
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
-		//$this->load->library("Mahasiswa");
 		$this->load->helper('url');
-		//$this->load->model('sc_eah
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->dosen))
 			redirect(base_url().'Gateinout.jsp');
 		$this->loadLib('Aktor/Mahasiswa');
 		$this->loadLib('Inputjaservfilter');
-		$this->mahasiswa = new Mahasiswa(new Inputjaservfilter());
+		$this->mahasiswa = new Mahasiswa($this->inputJaservFilter);
 		$this->loadLib('ControlTime');
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlRegistrasi');
@@ -156,55 +149,53 @@ class Kingbimbingan extends CI_Controller_Modified{
 		
 		$bool = false;
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		$controlSeminar = new ControlSeminar($this->gateControlModel);
 		$controlSidang = new ControlSidang($this->gateControlModel);
 		$controlDetail = new ControlDetail($this->gateControlModel);
-		$tempObjectDB = $controlRegistrasi->getAllDataByDosen($this->tahunAk,$this->loginFilter->getIdentifiedActive());
-		if($tempObjectDB){
-			while($tempObjectDB->getNextCursor()){
-				$tempObjectDBD = $controlMahasiswa->getAllData($tempObjectDB->getTableStack(1)->getMahasiswa());
-				if($tempObjectDBD && $tempObjectDBD->getNextCursor()){
-					if($keyword == "*" || !is_bool(strpos(strtolower($tempObjectDBD->getNama()),strtolower($keyword)))){
-						$error = 0;
-						$tempObjectDBT = $controlSeminar->getDataByMahasiswa($this->tahunAk,$tempObjectDBD->getIdentified());
-						if($tempObjectDBT->getNextCursor()){
-							$error += 1;
-							$TA1 = "style='font-size : 17px; color : red;' disabled";
-						}else{
-							$TA1 = "style='font-size : 17px; color : green; cursor : pointer;' onclick='recomTA1ThisGuys(".'"'.$tempObjectDBD->getNim().'"'.")'";	
-						}
-						$tempObjectDBT = $controlSidang->getDataByMahasiswa($this->tahunAk,$tempObjectDBD->getIdentified());
-						if($tempObjectDBT->getNextCursor()){
-							$error += 1;
-							$TA2 = "style='font-size : 17px; color : red;' disabled";
-						}else{
-							$TA2 = "style='font-size : 17px; color : green; cursor : pointer;' onclick='recomTA2ThisGuys(".'"'.$tempObjectDBD->getNim().'"'.")'";	
-						}
-						if($error > 0){
-							$tolak = "style='font-size : 17px; color : red;' disabled";
-						}else{
-							$tolak = "style='font-size : 17px; color : green; cursor : pointer;' onclick='bannishThisGuys(".'"'.$tempObjectDBD->getNim().'"'.")'";
-						}
-						$color = "blue";
-						$message = "seeThisGuysFullOfIt(".$tempObjectDBD->getNim().',"sudah memasuki sesi seminar, dalam sistem tidak dapat melakukan penolakan"'.")";
-						$tempObjectDBT = $controlDetail->getDetail('kategori',$tempObjectDB->getTableStack(1)->getKategori());
-						$tempObjectDBT->getNextCursor();
-						$string .=
-						"<tr>
-							<td style='text-align : center;'>".$tempObjectDBD->getNim()."</td>
-							<td style='text-align : center;'>".$tempObjectDBD->getNama()."</td>
-							<td style='text-align : center;'>".$tempObjectDB->getTableStack(1)->getJudulTA()."</td>
-							<td style='text-align : center;'>".$tempObjectDBT->getDetail()."</td>
-							<td style='width : 100px;'>
-								<span><i onclick='".$message."' class='icon-info-sign' style='font-size : 17px; color : ".$color.";'></i></span>
-								<span><i title='Tolak menjadi mahasiswa bimbingan saya' ".$tolak." type='button' class='icon-remove'></i></span>
-								<span><i title='Rekomendasikan seminar TA 1' ".$TA1." type='button' class='icon-tag'></i></span>
-								<span><i title='Rekomendasikan seminar TA 2' ".$TA2." type='button' class='icon-tag'></i></span>
-							</td>
-						</tr>
-						";
+		$tempObjectDBs = $controlRegistrasi->getAllDataByDosen($this->tahunAk,$this->loginFilter->getIdentifiedActive(),1,true);
+		if($tempObjectDBs){
+			while($tempObjectDBs->getNextCursor()){
+				$tempObjectDBD = $tempObjectDBs->getTableStack(2);
+				$tempObjectDB = $tempObjectDBs->getTableStack(1);
+				if($keyword == "*" || !is_bool(strpos(strtolower($tempObjectDBD->getNama()),strtolower($keyword)))){
+					$error = 0;
+					$tempObjectDBT = $controlSeminar->getDataByMahasiswa($this->tahunAk,$tempObjectDBD->getIdentified());
+					if($tempObjectDBT->getNextCursor()){
+						$error += 1;
+						$TA1 = "style='font-size : 17px; color : red;' disabled";
+					}else{
+						$TA1 = "style='font-size : 17px; color : green; cursor : pointer;' onclick='recomTA1ThisGuys(".'"'.$tempObjectDBD->getNim().'"'.")'";	
 					}
+					$tempObjectDBT = $controlSidang->getDataByMahasiswa($this->tahunAk,$tempObjectDBD->getIdentified());
+					if($tempObjectDBT->getNextCursor()){
+						$error += 1;
+						$TA2 = "style='font-size : 17px; color : red;' disabled";
+					}else{
+						$TA2 = "style='font-size : 17px; color : green; cursor : pointer;' onclick='recomTA2ThisGuys(".'"'.$tempObjectDBD->getNim().'"'.")'";	
+					}
+					if($error > 0){
+						$tolak = "style='font-size : 17px; color : red;' disabled";
+					}else{
+						$tolak = "style='font-size : 17px; color : green; cursor : pointer;' onclick='bannishThisGuys(".'"'.$tempObjectDBD->getNim().'"'.")'";
+					}
+					$color = "blue";
+					$message = "seeThisGuysFullOfIt(".$tempObjectDBD->getNim().',"sudah memasuki sesi seminar, dalam sistem tidak dapat melakukan penolakan"'.")";
+					$tempObjectDBT = $controlDetail->getDetail('kategori',$tempObjectDB->getKategori());
+					$tempObjectDBT->getNextCursor();
+					$string .=
+					"<tr>
+						<td style='text-align : center;'>".$tempObjectDBD->getNim()."</td>
+						<td style='text-align : center;'>".$tempObjectDBD->getNama()."</td>
+						<td style='text-align : center;'>".$tempObjectDB->getJudulTA()."</td>
+						<td style='text-align : center;'>".$tempObjectDBT->getDetail()."</td>
+						<td style='width : 100px;'>
+							<span><i onclick='".$message."' class='icon-info-sign' style='font-size : 17px; color : ".$color.";'></i></span>
+							<span><i title='Tolak menjadi mahasiswa bimbingan saya' ".$tolak." type='button' class='icon-remove'></i></span>
+							<span><i title='Rekomendasikan seminar TA 1' ".$TA1." type='button' class='icon-tag'></i></span>
+							<span><i title='Rekomendasikan seminar TA 2' ".$TA2." type='button' class='icon-tag'></i></span>
+						</td>
+					</tr>
+					";
 				}
 			}
 		}
@@ -256,7 +247,6 @@ class Kingbimbingan extends CI_Controller_Modified{
 		}
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
 		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		//$this->load->model('sc_st_category');
 		$tempObjectDB = $controlMahasiswa->getDataByNim($nim);
 		if(!$tempObjectDB || !$tempObjectDB->getNextCursor()){
 			exit("0anda melakukan debugging terhadap system");

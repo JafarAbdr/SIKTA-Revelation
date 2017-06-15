@@ -9,19 +9,10 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Classseminartad extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
-		parent::__CONSTRUCT();$this->load->library("Aktor/Mahasiswa");
-		$this->loadMod("GateControlModel");
-		$this->gateControlModel = new GateControlModel();
-		$this->loadLib('LoginFilter');
-		$this->loadLib('Inputjaservfilter');
-		$this->loadLib('Datejaservfilter');
-		$this->inputJaservFilter = new Inputjaservfilter();
-		$this->dateJaservFilter = new Datejaservfilter();
-		$this->load->library('Session');
+		parent::__CONSTRUCT();
+		$this->load->library("Aktor/Mahasiswa");
 		$this->load->helper('url');
-		//$this->load->model('sc_ea');
 		$this->load->helper('html');
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){
 			exit("=<script>window.location = '".base_url().'Gateinout.jsp'."';</script>");
 		}

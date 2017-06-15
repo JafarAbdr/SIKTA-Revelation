@@ -3,17 +3,17 @@ if(!defined('BASEPATH')) exit("");
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 /*
 dependencies:
--LoginFilter
+-LoginFilter(-)
 -Admin
--Inputjaservfilter
--Datejaservfilter
+-Inputjaservfilter (-)
+-Datejaservfilter(-)
 -ControlAcara
 -ControlAdmin
 -ControlMahasiswa
 -ControlSeminar
 -ControlSidang
 -ControlTime
--GateControlModel
+-GateControlModel(-)
 */
 /*
 ControlDosen
@@ -23,15 +23,6 @@ class Palaceareaacara extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
 		$this->load->library('Aktor/Admin');
-		$this->load->library('Session');
-		$this->loadLib('Datejaservfilter');
-		$this->loadLib('Inputjaservfilter');
-		$this->dateJaservFilter = new Datejaservfilter();
-		$this->inputJaservFilter = new Inputjaservfilter();
-		$this->loadLib('LoginFilter');
-		$this->loadMod('GateControlModel');
-		$this->gateControlModel = new GateControlModel();
-		$this->loginFilter = new LoginFilter($this->session);
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->admin))
@@ -181,7 +172,6 @@ class Palaceareaacara extends CI_Controller_Modified {
 	//Optimized
 	//memeperoleh eegala macam kegiatan dari ruang Sidangg TA 2
 	public function getJSONAcaraRuangTA2(){
-		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlAcara');
 		$this->loadLib('ControlPinjam');

@@ -17,7 +17,7 @@ if(!defined('BASEPATH'))
 						$("#search-name-info-public").trigger({type:"keyup", keyCode:13})'><i class="icon-refresh" title="refresh table"></i></a></span>
 					</label>
 					<label style="margin : 10px; float: right;">
-						<input type="text" id="search-name-info-public" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" placeholder="Ketikan Nim ..."/>
+						<input type="text" id="search-name-info-public" pattern="[a-zA-Z0-9 @.]{0,50}" onkeypress="" title="pencarian berdasarkan nim, nama, judul maupun nama dosen" placeholder="Ketikan sesuatu ..."/>
 					</label>
 		</div> 
 		<div style="overflow-x : auto; margin-top : 60px;">

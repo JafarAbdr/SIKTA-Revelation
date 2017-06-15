@@ -24,17 +24,9 @@ class Classseminartas extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
 		$this->load->library("Aktor/Mahasiswa");
-		$this->loadMod("GateControlModel");
-		$this->gateControlModel = new GateControlModel();
-		$this->loadLib('LoginFilter');
-		$this->loadLib('Inputjaservfilter');
-		$this->loadLib('Datejaservfilter');
-		$this->inputJaservFilter = new Inputjaservfilter();
-		$this->dateJaservFilter = new Datejaservfilter();
 		$this->load->library('Session');
 		$this->load->helper('url');
 		$this->load->helper('html');
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){
 			exit("=<script>window.location = '".base_url().'Gateinout.jsp'."';</script>");
 		}

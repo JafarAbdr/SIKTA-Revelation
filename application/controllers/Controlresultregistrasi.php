@@ -1,11 +1,11 @@
 <?php
 /*
 dependencies:
--LoginFilter
+-LoginFilter(-)
 -Dosen
 -Koordinator
 -Mahasiswa
--Inputjaservfilter
+-Inputjaservfilter(-)
 -ControlDetail
 -ControlDosen
 -ControlMahasiswa
@@ -21,16 +21,9 @@ class Controlresultregistrasi extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
 		$this->loadLib("Aktor/Koordinator");
-		$this->loadLib("Inputjaservfilter");
-		$this->inputJaservFilter = new Inputjaservfilter();
 		$this->koordinator = new Koordinator($this->inputJaservFilter);
-		$this->loadMod("GateControlModel");
-		$this->gateControlModel = new GateControlModel();
-		$this->loadLib('LoginFilter');
-		$this->load->library('Session');
 		$this->load->helper('url');
 		$this->load->helper('html');
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		if(!$this->loginFilter->isLogin($this->koordinator)){
 			redirect(base_url()."Gateinout.jsp");
 		}

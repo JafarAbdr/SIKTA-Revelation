@@ -14,6 +14,7 @@ dependencies:
 -ControlSidang
 -ControlTime
 -GateControlModel
+-ControlPinjam (+)
 */
 /*
 ControlDosen
@@ -23,15 +24,6 @@ class Classareaacara extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
 		$this->load->library('Aktor/Mahasiswa');
-		$this->load->library('Session');
-		$this->loadLib('Datejaservfilter');
-		$this->loadLib('Inputjaservfilter');
-		$this->dateJaservFilter = new Datejaservfilter();
-		$this->inputJaservFilter = new Inputjaservfilter();
-		$this->loadLib('LoginFilter');
-		$this->loadMod('GateControlModel');
-		$this->gateControlModel = new GateControlModel();
-		$this->loginFilter = new LoginFilter($this->session);
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->mahasiswa))
@@ -46,7 +38,6 @@ class Classareaacara extends CI_Controller_Modified {
 	//memeperoleh eegala macam kegiatan dari ruang Sidang TA 1
 	public function getJSONAcaraRuangTA1(){
 		$this->loadLib('ControlSeminar');
-		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlAcara');
 		$this->loadLib('ControlPinjam');
@@ -56,7 +47,6 @@ class Classareaacara extends CI_Controller_Modified {
 		$this->loadLib('ControlRegistrasi');
 		$controlDosen = new ControlDosen($this->gateControlModel);
 		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		$controlSeminar = new ControlSeminar($this->gateControlModel);
 		$controlSidang = new ControlSidang($this->gateControlModel);
 		$controlPinjam = new ControlPinjam($this->gateControlModel);
@@ -152,7 +142,6 @@ class Classareaacara extends CI_Controller_Modified {
 	//Optimized
 	//memeperoleh eegala macam kegiatan dari ruang Sidangg TA 2
 	public function getJSONAcaraRuangTA2(){
-		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlAcara');
 		$this->loadLib('ControlPinjam');
@@ -238,7 +227,6 @@ class Classareaacara extends CI_Controller_Modified {
 	//Optimized
 	//memeperoleh eegala macam kegiatan dari ruang puspital
 	public function getJSONAcaraRuangPUS(){
-		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlAcara');
 		$this->loadLib('ControlPinjam');
@@ -369,7 +357,6 @@ class Classareaacara extends CI_Controller_Modified {
 		$this->loadLib('ControlMahasiswa');
 		$tempData = (new ControlMahasiswa($this->gateControlModel))->getAllData($this->loginFilter->getIdentifiedActive());
 		$tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
-		//exit("0Tanggal format tidak dipenuhi");
 		$tempResult = (new ControlAdmin($this->gateControlModel))->isAvailableroomOnThisSemester($mulai,$berakhir,$tahunAk,$ruang,1);
 		if($tempResult[0] == '0') exit("0".$tempResult[1]);
 		
@@ -389,9 +376,7 @@ class Classareaacara extends CI_Controller_Modified {
 	//optimized
 	//get data of acara that has been add before
 	public function getJSONDataAcara(){
-		//$_POST['id'] ="AC20171_2017-06-13.09:17:001";
 		$id = $this->isNullPost('id');
-		
 		$kode = substr($id,0,2);
 		$tempString = substr($id,2,strlen($id)-2);
 		$tempString = explode("_",$tempString);
@@ -411,7 +396,6 @@ class Classareaacara extends CI_Controller_Modified {
 		if($ruang > 4 || $ruang < 1){
 			exit("0data tidak ditemukan");
 		}
-		//echo $ruang." ".$mulai;
 		$this->loadLib('ControlPinjam');
 		$tempObjectDB = (new ControlPinjam($this->gateControlModel))->getAllData($tahunAk,$ruang,$mulai);
 		if($tempObjectDB->getNextCursor() && $tempObjectDB->getPenanggungJawab() == $this->loginFilter->getIdentifiedActive()){	

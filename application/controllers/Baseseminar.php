@@ -14,8 +14,8 @@ class Baseseminar extends CI_Controller_Modified {
 	-ControlSeminar
 	-ControlSidang
 	-ControlTime
-	-Inputjaservfilter
-	-GateControlModel(+)
+	-Inputjaservfilter(-)
+	-GateControlModel(-)
 	*/
 	//optimized
 	//get page layout seminar
@@ -27,19 +27,14 @@ class Baseseminar extends CI_Controller_Modified {
 	//get content list of ta registration 
 	public function getTableSeminarTA1InfoPublic(){
 		$keyword = "*";
-		if($this->input->post("keyword")!==NULL){
-			$keyword = $this->input->post("keyword");
-			if(!$this->inputjaservfilter->titleFiltering($keyword)[0]){
-				$keyword = "*";
-			}
+		if($this->input->post("keyword")!==NULL && $this->input->post("keyword")!= "" && $this->input->post("keyword")!= " "){
+			$keyword = $this->input->post("keyword")."";
 		}
 		$this->loadLib('ControlSeminar');
 		$this->loadLib('ControlTime');
-		$this->loadMod('GateControlModel');
-		$gateControlModel = new GateControlModel();
 		$kode = 1;
 		$string = "";
-		$tempSeminarS = (new ControlSeminar($gateControlModel))->getAllDataWithMahasiswa((new ControlTime($gateControlModel))->getYearNow(),1,2,true);
+		$tempSeminarS = (new ControlSeminar($this->gateControlModel))->getAllDataWithMahasiswa((new ControlTime($this->gateControlModel))->getYearNow(),1,2,true);
 		if($tempSeminarS){
 			while($tempSeminarS->getNextCursor()){
 				$tempSeminar = $tempSeminarS->getTableStack(0);
@@ -47,7 +42,13 @@ class Baseseminar extends CI_Controller_Modified {
 				$tempRuang = $tempSeminarS->getTableStack(2);
 				$tempRegistrasi = $tempSeminarS->getTableStack(5);
 				$tempDosen = $tempSeminarS->getTableStack(7);
-				if($keyword == "*" || strpos($tempRegistrasi->getJudulTa(),$keyword) !== false){	
+				if(
+					$keyword == "*" || 
+					strpos($tempMahasiswa->getNim(),$keyword) !== false ||
+					strpos(strtolower($tempMahasiswa->getNama()),strtolower($keyword)) !== false ||
+					strpos(strtolower($tempDosen->getNama()),strtolower($keyword)) !== false ||
+					strpos(strtolower($tempRegistrasi->getJudulTA()),strtolower($keyword)) !== false
+				){	
 					if(strlen($tempRuang->getDetail()) > 0){
 						$string .=
 						"<tr>
@@ -81,19 +82,14 @@ class Baseseminar extends CI_Controller_Modified {
 	//get content list of final exam step 2 registration 
 	public function getTableSeminarTA2InfoPublic(){
 		$keyword = "*";
-		if($this->input->post("keyword")!==NULL){
-			$keyword = $this->input->post("keyword");
-			if(!$this->inputjaservfilter->titleFiltering($keyword)[0]){
-				$keyword = "*";
-			}
+		if($this->input->post("keyword")!==NULL && $this->input->post("keyword")!= "" && $this->input->post("keyword")!= " "){
+			$keyword = $this->input->post("keyword")."";
 		}
 		$kode = 1;
 		$string = "";
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlTime');
-		$this->loadMod('GateControlModel');
-		$gateControlModel = new GateControlModel();
-		$tempSidangS = (new ControlSidang($gateControlModel))->getAllDataWithMahasiswa((new ControlTime($gateControlModel))->getYearNow(),1,2,true);
+		$tempSidangS = (new ControlSidang($this->gateControlModel))->getAllDataWithMahasiswa((new ControlTime($this->gateControlModel))->getYearNow(),1,2,true);
 		if($tempSidangS){
 			while($tempSidangS->getNextCursor()){
 				$tempSidang = $tempSidangS->getTableStack(0);
@@ -101,7 +97,13 @@ class Baseseminar extends CI_Controller_Modified {
 				$tempRuang = $tempSidangS->getTableStack(2);
 				$tempRegistrasi = $tempSidangS->getTableStack(4);
 				$tempDosen = $tempSidangS->getTableStack(6);
-				if($keyword == "*" || !is_bool(strpos(strtolower($tempRegistrasi->getJudulTA()),strtolower($keyword)))){	
+				if(
+					$keyword == "*" || 
+					strpos($tempMahasiswa->getNim(),$keyword) !== false ||
+					strpos(strtolower($tempMahasiswa->getNama()),strtolower($keyword)) !== false ||
+					strpos(strtolower($tempDosen->getNama()),strtolower($keyword)) !== false ||
+					strpos(strtolower($tempRegistrasi->getJudulTA()),strtolower($keyword)) !== false
+				){	
 					if(strlen($tempRuang->getDetail()) > 0){
 						$string .=
 						"<tr>

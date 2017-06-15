@@ -2,11 +2,10 @@
 if(!defined('BASEPATH')) exit("you don't have permission to access");
 
 /*
--LoginFilter
+-LoginFilter(-)
 -Admin
--Datejaservfilter
--Inputjaservfilter
--GateControlModel
+-Datejaservfilter(-)
+-Inputjaservfilter(-)
 -ControlAdmin
 -ControlDosen
 */
@@ -15,15 +14,6 @@ class Palacepengaturan extends CI_Controller_Modified {
 	function __CONSTRUCT(){
 		parent::__CONSTRUCT();
 		$this->load->library('Aktor/Admin');
-		$this->load->library('Session');
-		$this->loadLib('Datejaservfilter');
-		$this->loadLib('Inputjaservfilter');
-		$this->dateJaservFilter = new Datejaservfilter();
-		$this->inputJaservFilter = new Inputjaservfilter();
-		$this->loadLib('LoginFilter');
-		$this->loadMod('GateControlModel');
-		$this->gateControlModel = new GateControlModel();
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->admin))
@@ -111,7 +101,6 @@ class Palacepengaturan extends CI_Controller_Modified {
 		if($data['tasd'] < 0 || $data['tasd'] > 300){
 			exit('0Durasi TA 2 tidak benar');
 		}
-	//	exit("0tryit".$data['tasd']." ".$data['tadd']);
 		$this->loadLib('ControlAdmin');
 		if((new ControlAdmin($this->gateControlModel))->updateInformasiAdmin(array(
 			"email" =>$data['email'],

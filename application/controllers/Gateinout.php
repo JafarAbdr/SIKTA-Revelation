@@ -25,13 +25,7 @@ class Gateinout extends CI_Controller_Modified {
 		$this->load->library('Aktor/Mahasiswa');
 		$this->load->library('Aktor/Dosen');
 		$this->load->library('Aktor/Admin');
-		$this->load->library('Inputjaservfilter');
 		$this->load->library('Aktor/Koordinator');
-		$this->loadLib('LoginFilter');
-		$session = $this->loadLib('Session',true);
-		$this->loadMod("GateControlModel");
-		$this->loginFilter = new LoginFilter($session, new GateControlModel());
-		
 	}
 	// default - valid
 	public function index($tempInput=null){
@@ -72,7 +66,7 @@ class Gateinout extends CI_Controller_Modified {
 		exit("0Akun anda tidak terdaftar dimanapun");
 	}
 	public function resetPassword(){
-		$this->mahasiswa->initial($this->inputjaservfilter);
+		$this->mahasiswa->initial($this->inputJaservFilter);
 		$nim = $this->isNullPost('nim');
 		if(!$this->mahasiswa->getCheckNim($nim,1)[0]) exit('0Nim Tidak Valid');
 		$this->loadLib("ControlMahasiswa");
@@ -146,7 +140,7 @@ class Gateinout extends CI_Controller_Modified {
 		);
 		//enable fitur
 		$this->loadLib("ControlMahasiswa");
-		$this->mahasiswa->initial($this->inputjaservfilter);
+		$this->mahasiswa->initial($this->inputJaservFilter);
 		//filtering
 		$error = 0;	
 		$errorMessage = "";	
@@ -234,10 +228,10 @@ class Gateinout extends CI_Controller_Modified {
 	}
 	//check Type of input - valid
 	public function getCheck(){
-		$this->mahasiswa->initial($this->inputjaservfilter);
-		$this->dosen->initial($this->inputjaservfilter);
-		$this->koordinator->initial($this->inputjaservfilter);
-		$this->admin->initial($this->inputjaservfilter);
+		$this->mahasiswa->initial($this->inputJaservFilter);
+		$this->dosen->initial($this->inputJaservFilter);
+		$this->koordinator->initial($this->inputJaservFilter);
+		$this->admin->initial($this->inputJaservFilter);
 		$tempNameVariable = $this->isNullPost('variabel');
 		$tempNameValue = $this->isNullPost('value');
 		switch ($tempNameVariable){
