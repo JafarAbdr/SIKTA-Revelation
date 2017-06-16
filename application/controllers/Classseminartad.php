@@ -69,7 +69,8 @@ class Classseminartad extends CI_Controller_Modified {
 					}
 				}else{
 					$this->kodeForm = 2;	
-				}else{
+				}
+			}else{
 				if(intval($tempObjectDBD->getDataProsesS()) == 2){
 					if(strlen($tempObjectDBD->getFujDP()) > 6 && strlen($tempObjectDBD->getFujDL()) > 6){
 						if(intval($tempObjectDBD->getDataProsesD()) == 1){

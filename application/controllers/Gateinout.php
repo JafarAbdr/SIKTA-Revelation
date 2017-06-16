@@ -26,16 +26,16 @@ class Gateinout extends CI_Controller_Modified {
 	// default - valid
 	public function index($tempInput=null){
 		if($this->loginFilter->isLogin($this->mahasiswa))
-			redirect(base_url()."Classroom.jsp");
+			redirect(base_url()."Classroom");
 		
 		if($this->loginFilter->isLogin($this->koordinator))
-			redirect(base_url()."Controlroom.jsp");
+			redirect(base_url()."Controlroom");
 		
 		if($this->loginFilter->isLogin($this->dosen))
-			redirect(base_url()."Kingroom.jsp");
+			redirect(base_url()."Kingroom");
 		
 		if($this->loginFilter->isLogin($this->admin))
-			redirect(base_url()."Palaceroom.jsp");
+			redirect(base_url()."Palaceroom");
 		$tempArray['url_script'] = array(
 				"resources/mystyle/js/gateinout.js",
 				"resources/LibraryJaserv/js/jaserv.min.dev.js"
@@ -58,7 +58,7 @@ class Gateinout extends CI_Controller_Modified {
 		$nickName = $this->isNullPost('login-nim');
 		$keyWord = $this->isNullPost('login-password');
 		if($this->loginFilter->setLogIn($nickName,$keyWord))
-			exit("1Gateinout.jsp");
+			exit("1Gateinout");
 		exit("0Akun anda tidak terdaftar dimanapun");
 	}
 	public function resetPassword(){
@@ -75,13 +75,12 @@ class Gateinout extends CI_Controller_Modified {
 		$tempArray = array(
 			'nim' => $nim,
 			'hari' => $waktuCookie,
-			'url' => base_url()."Resetpassword/Akun/".$kodeCookie.".jsp"
+			'url' => base_url()."Resetpassword/Akun/".$kodeCookie.""
 		);
         foreach($tempArray as $key=>$value){
             $tempHtml = str_ireplace("@".$key.";",$value,$tempHtml);
         }
 		//disable this when on internet
-		//exit("1".base_url()."Resetpassword/Akun/".$kodeCookie.".jsp");
 		// The mail sending protocol.
 		$config['protocol'] = 'smtp';
 		// SMTP Server Address for Gmail.

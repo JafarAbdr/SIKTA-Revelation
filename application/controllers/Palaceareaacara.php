@@ -803,6 +803,7 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$tempAdmin = $controlAdmin->getDataByIdentified($this->loginFilter->getIdentifiedActive());
 		$tempAdmin->getNextCursor();
 		$typeKetua = true;
+		$typeWakil = true;
 		#Dosen seksi
 		$dosPenS = $controlDosen->getAllData($tempObjectDBD->getDosenS());
 		$nipChoice = false;
@@ -810,6 +811,9 @@ class Palaceareaacara extends CI_Controller_Modified {
 			$TEMP_ARRAY['pengujiS'] = $dosPenS->getNama();
 			if($tempAdmin->getKajur() == $dosPenS->getIdentified()){
 				$typeKetua = false;
+			}
+			if($tempAdmin->getWakil() == $dosPenS->getIdentified()){
+				$typeWakil = false;
 			}
 			if($dosPenS->getNip() == $data['nip']){
 				$TEMP_ARRAY['kodeDosenYangDituju'] = 1;
@@ -827,6 +831,9 @@ class Palaceareaacara extends CI_Controller_Modified {
 			if($tempAdmin->getKajur() == $dosPenS->getIdentified()){
 				$typeKetua = false;
 			}
+			if($tempAdmin->getWakil() == $dosPenS->getIdentified()){
+				$typeWakil = false;
+			}
 			if($dosPenS->getNip() == $data['nip']){
 				$TEMP_ARRAY['kodeDosenYangDituju'] = 2;
 				if($dosPenS->getKelamin() == '0' || $dosPenS->getKelamin() == '1'){
@@ -843,6 +850,9 @@ class Palaceareaacara extends CI_Controller_Modified {
 			if($tempAdmin->getKajur() == $dosPenS->getIdentified()){
 				$typeKetua = false;
 			}
+			if($tempAdmin->getWakil() == $dosPenS->getIdentified()){
+				$typeWakil = false;
+			}
 			if($dosPenS->getNip() == $data['nip']){
 				$TEMP_ARRAY['kodeDosenYangDituju'] = 3;
 				if($dosPenS->getKelamin() == '0' || $dosPenS->getKelamin() == '1'){
@@ -855,6 +865,9 @@ class Palaceareaacara extends CI_Controller_Modified {
 			$TEMP_ARRAY['pengujiE'] = $dosenPembimbing->getNama();
 			if($tempAdmin->getKajur() == $dosenPembimbing->getIdentified()){
 				$typeKetua = false;
+			}
+			if($tempAdmin->getWakil() == $dosenPembimbing->getIdentified()){
+				$typeWakil = false;
 			}
 			if($dosenPembimbing->getNip() == $data['nip']){
 				$TEMP_ARRAY['kodeDosenYangDituju'] = 4;
@@ -870,6 +883,9 @@ class Palaceareaacara extends CI_Controller_Modified {
 				$TEMP_ARRAY['pengujiT'] = $dosenPembimbing->getNama();
 				if($tempAdmin->getKajur() == $dosenPembimbing->getIdentified()){
 					$typeKetua = false;
+				}
+				if($tempAdmin->getWakil() == $dosenPembimbing->getIdentified()){
+					$typeWakil = false;
 				}
 				if($dosenPembimbing->getNip() == $data['nip']){
 					$TEMP_ARRAY['kodeDosenYangDituju'] = 3;
@@ -892,12 +908,21 @@ class Palaceareaacara extends CI_Controller_Modified {
 			$TEMP_ARRAY["penandaTangan"]= $dosPenS->getNama();
 			$TEMP_ARRAY["nipPenandaTangan"]=$dosPenS->getNip();
 		}else{
-			$TEMP_ARRAY['statusPenandaTangan']="A.n Ketua";
-			$TEMP_ARRAY['statusPenandaTanganPrefix']="Sekretaris,";
-			$dosPenS = $controlDosen->getAllData($tempAdmin->getWakil());
-			$dosPenS->getNextCursor();
-			$TEMP_ARRAY["penandaTangan"]= $dosPenS->getNama();
-			$TEMP_ARRAY["nipPenandaTangan"]=$dosPenS->getNip();
+			if($typeWakil){
+				$TEMP_ARRAY['statusPenandaTangan']="A.n Ketua";
+				$TEMP_ARRAY['statusPenandaTanganPrefix']="Sekretaris,";
+				$dosPenS = $controlDosen->getAllData($tempAdmin->getWakil());
+				$dosPenS->getNextCursor();
+				$TEMP_ARRAY["penandaTangan"]= $dosPenS->getNama();
+				$TEMP_ARRAY["nipPenandaTangan"]=$dosPenS->getNip();
+			}else{
+				$TEMP_ARRAY['statusPenandaTangan']="Ketua";
+				$TEMP_ARRAY['statusPenandaTanganPrefix']="";
+				$dosPenS = $controlDosen->getAllData($tempAdmin->getKajur());
+				$dosPenS->getNextCursor();
+				$TEMP_ARRAY["penandaTangan"]= $dosPenS->getNama();
+				$TEMP_ARRAY["nipPenandaTangan"]=$dosPenS->getNip();
+			}
 		}
 		$TEMP_ARRAY['namaPeserta'] = $data['mahasiswa']->getNama();
 		$TEMP_ARRAY['nimPeserta'] = $data['mahasiswa']->getNim();

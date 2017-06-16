@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 			echo '
 			<div class="form-row"> 
 				<div class="col-md-12"> 
-					<a href="Gateinout.jsp" class="btn btn-default btn-block btn-clean">Masuk</a> 
+					<a href="Gateinout" class="btn btn-default btn-block btn-clean">Masuk</a> 
 				</div> 
 			</div>'; 
 			}

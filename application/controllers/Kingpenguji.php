@@ -337,7 +337,7 @@ class Kingpenguji extends CI_Controller_Modified{
 					}
 					$tempObjectDBE = $this->controlDetail->getDetail('ruang',$tempObjectDB->getRuang());
 					$tempObjectDBE->getNextCursor();
-					$tempObjectDBT = $this->controlRegistrasi-> getAllData($this->tahunAk,$tempObjectDB->getMahasiswa(),1, 0,null);
+					$tempObjectDBT = $this->controlRegistrasi-> getAllData($this->tahunAk,$tempObjectDB->getMahasiswa(),1,null);
 					$tempObjectDBT->getNextCursor();
 					$onclick = true;
 					if(strlen($tempObjectDB->getFujDP()) > 10 && strlen($tempObjectDB->getFujDL()) > 10){
