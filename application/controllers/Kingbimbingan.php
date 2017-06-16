@@ -3,12 +3,6 @@ if(!defined('BASEPATH')) exit("You dont have permission");
 require_once APPPATH.'controllers/CI_Controller_Modified.php';
 /*
 dependencies:
--Dosen
--LoginFilter(-)
--Mahasiswa
--GateControlModel(-)
--Inputjaservfilter(-)
--ControlDetail
 -ControlDosen
 -ControlMahasiswa
 -ControlRegistrasi
@@ -19,21 +13,22 @@ dependencies:
 class Kingbimbingan extends CI_Controller_Modified{
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library('Aktor/Dosen');
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->dosen))
 			redirect(base_url().'Gateinout.jsp');
-		$this->loadLib('Aktor/Mahasiswa');
-		$this->loadLib('Inputjaservfilter');
-		$this->mahasiswa = new Mahasiswa($this->inputJaservFilter);
+		$this->mahasiswa->initial($this->inputJaservFilter);
 		$this->loadLib('ControlTime');
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlRegistrasi');
 		$this->loadLib('ControlSeminar');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlDosen');
-		$this->loadLib('ControlDetail');
+		$this->controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
+		$this->controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
+		$this->controlSeminar = new ControlSeminar($this->gateControlModel);
+		$this->controlSidang = new ControlSidang($this->gateControlModel);
+		$this->controlDosen = new ControlDosen($this->gateControlModel);
 		$this->tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
 	}
 	//fix
@@ -53,10 +48,8 @@ class Kingbimbingan extends CI_Controller_Modified{
 		}else{
 			$keyword = "";
 		}
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		$controlDosen = new ControlDosen($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNama($keyword,1,$this->loginFilter->getIdentifiedActive());
-		$tempObjectDBD = $controlDosen->getAllData($this->loginFilter->getIdentifiedActive());
+		$tempObjectDB = $this->controlMahasiswa->getDataByNama($keyword,1,$this->loginFilter->getIdentifiedActive());
+		$tempObjectDBD = $this->controlDosen->getAllData($this->loginFilter->getIdentifiedActive());
 		$string = "";
 		$kode = 1;
 		if($tempObjectDB){
@@ -104,9 +97,7 @@ class Kingbimbingan extends CI_Controller_Modified{
 		}else{
 			$keyword = "";
 		}
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		$controlDosen = new ControlDosen($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNama($keyword,1,$this->loginFilter->getIdentifiedActive());
+		$tempObjectDB = $this->controlMahasiswa->getDataByNama($keyword,1,$this->loginFilter->getIdentifiedActive());
 		$string = "";
 		$kode = 1;
 		if($tempObjectDB){
@@ -148,25 +139,21 @@ class Kingbimbingan extends CI_Controller_Modified{
 		$string = "";
 		
 		$bool = false;
-		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
-		$controlSeminar = new ControlSeminar($this->gateControlModel);
-		$controlSidang = new ControlSidang($this->gateControlModel);
-		$controlDetail = new ControlDetail($this->gateControlModel);
-		$tempObjectDBs = $controlRegistrasi->getAllDataByDosen($this->tahunAk,$this->loginFilter->getIdentifiedActive(),1,true);
+		$tempObjectDBs = $this->controlRegistrasi->getAllDataByDosen($this->tahunAk,$this->loginFilter->getIdentifiedActive(),1,true);
 		if($tempObjectDBs){
 			while($tempObjectDBs->getNextCursor()){
 				$tempObjectDBD = $tempObjectDBs->getTableStack(2);
 				$tempObjectDB = $tempObjectDBs->getTableStack(1);
 				if($keyword == "*" || !is_bool(strpos(strtolower($tempObjectDBD->getNama()),strtolower($keyword)))){
 					$error = 0;
-					$tempObjectDBT = $controlSeminar->getDataByMahasiswa($this->tahunAk,$tempObjectDBD->getIdentified());
+					$tempObjectDBT = $this->controlSeminar->getDataByMahasiswa($this->tahunAk,$tempObjectDBD->getIdentified());
 					if($tempObjectDBT->getNextCursor()){
 						$error += 1;
 						$TA1 = "style='font-size : 17px; color : red;' disabled";
 					}else{
 						$TA1 = "style='font-size : 17px; color : green; cursor : pointer;' onclick='recomTA1ThisGuys(".'"'.$tempObjectDBD->getNim().'"'.")'";	
 					}
-					$tempObjectDBT = $controlSidang->getDataByMahasiswa($this->tahunAk,$tempObjectDBD->getIdentified());
+					$tempObjectDBT = $this->controlSidang->getDataByMahasiswa($this->tahunAk,$tempObjectDBD->getIdentified());
 					if($tempObjectDBT->getNextCursor()){
 						$error += 1;
 						$TA2 = "style='font-size : 17px; color : red;' disabled";
@@ -180,7 +167,7 @@ class Kingbimbingan extends CI_Controller_Modified{
 					}
 					$color = "blue";
 					$message = "seeThisGuysFullOfIt(".$tempObjectDBD->getNim().',"sudah memasuki sesi seminar, dalam sistem tidak dapat melakukan penolakan"'.")";
-					$tempObjectDBT = $controlDetail->getDetail('kategori',$tempObjectDB->getKategori());
+					$tempObjectDBT = $this->controlDetail->getDetail('kategori',$tempObjectDB->getKategori());
 					$tempObjectDBT->getNextCursor();
 					$string .=
 					"<tr>
@@ -218,23 +205,20 @@ class Kingbimbingan extends CI_Controller_Modified{
 		$nim = $this->isNullPost("Nim");
 		if(!$this->mahasiswa->getCheckNim($nim,1)[0])
 			exit("0nim tidak sesuai, anda melakukan debugging");
-		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		$controlDetail = new ControlDetail($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNim($nim);
+		$tempObjectDB = $this->controlMahasiswa->getDataByNim($nim);
 		if(!$tempObjectDB || !$tempObjectDB->getNextCursor()){
 			exit("0anda melakukan debugging terhadap system");
 		}
-		$tempObjectDBD = $controlRegistrasi->getAllData($this->tahunAk,$tempObjectDB->getIdentified(),1,null);
+		$tempObjectDBD = $this->controlRegistrasi->getAllData($this->tahunAk,$tempObjectDB->getIdentified(),1,null);
 		if(!$tempObjectDBD || !$tempObjectDBD->getNextCursor())
 			exit("0anda melakukan debugging terhadap system");
-		$tempDosbing = $controlRegistrasi->getDosenPembimbing($tempObjectDBD->getIdentified());
-		$tempDosbing->getNextCursor();
+		$tempDosbing = $this->controlRegistrasi->getDosenPembimbing($tempObjectDBD->getIdentified());
+		if(!$tempDosbing || !$tempDosbing->getNextCursor())
+			exit("0anda melakukan debugging terhadap system");
 		if($tempDosbing->getDosen() != $this->loginFilter->getIdentifiedActive()) exit("0anda melakukan debugging terhadap system");
-		$controlDosen = new ControlDosen($this->gateControlModel);
-		$tempObjectDBS = $controlDosen->getAllData($this->loginFilter->getIdentifiedActive());
+		$tempObjectDBS = $this->controlDosen->getAllData($this->loginFilter->getIdentifiedActive());
 		$tempObjectDBS->getNextCursor();
-		if($controlRegistrasi->setDospemForTA($tempObjectDB->getIdentified(),"0",$this->tahunAk,$tempObjectDBS->getNama())[0]) 
+		if($this->controlRegistrasi->setDospemForTA($tempObjectDB->getIdentified(),"0",$this->tahunAk,$tempObjectDBS->getNama())[0]) 
 			exit('1berhasil merubah data');
 		else exit("0gagal melakukan perubahan data");
 	}
@@ -245,17 +229,16 @@ class Kingbimbingan extends CI_Controller_Modified{
 		if(!$this->mahasiswa->getCheckNim($nim,1)[0]){
 			exit("nim tidak valid");
 		}
-		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNim($nim);
+		$tempObjectDB = $this->controlMahasiswa->getDataByNim($nim);
 		if(!$tempObjectDB || !$tempObjectDB->getNextCursor()){
 			exit("0anda melakukan debugging terhadap system");
 		}
-		$tempObjectDBD = $controlRegistrasi->getAllData($this->tahunAk,$tempObjectDB->getIdentified(),1,null);
+		$tempObjectDBD = $this->controlRegistrasi->getAllData($this->tahunAk,$tempObjectDB->getIdentified(),1,null);
 		if(!$tempObjectDBD || !$tempObjectDBD->getNextCursor())
 			exit("0anda melakukan debugging terhadap system");
-		$tempDosbing = $controlRegistrasi->getDosenPembimbing($tempObjectDBD->getIdentified());
-		$tempDosbing->getNextCursor();
+		$tempDosbing = $this->controlRegistrasi->getDosenPembimbing($tempObjectDBD->getIdentified());
+		if(!$tempDosbing || !$tempDosbing->getNextCursor())
+			exit("0anda melakukan debugging terhadap system");
 		if($tempDosbing->getDosen() != $this->loginFilter->getIdentifiedActive()) exit("0anda melakukan debugging terhadap system");
 		
 		if(intval($tempObjectDBD->getDataProses()) != 2){
@@ -266,8 +249,7 @@ class Kingbimbingan extends CI_Controller_Modified{
 			exit("0Kode TA anda tidak valid");
 		$error = 0;
 		if($TA == 1){
-			$controlSeminar = new ControlSeminar($this->gateControlModel);
-			$tempObjectDBT = $controlSeminar->getDataByMahasiswa($this->tahunAk,$tempObjectDB->getIdentified());
+			$tempObjectDBT = $this->controlSeminar->getDataByMahasiswa($this->tahunAk,$tempObjectDB->getIdentified());
 			if($tempObjectDBT && $tempObjectDBT->getNextCursor()){
 				exit('0mahasiswa ini sudah mendaftar seminar TA 1');
 			}
@@ -276,10 +258,9 @@ class Kingbimbingan extends CI_Controller_Modified{
 			$tempObjectDBT->setStatus(1);
 			$tempObjectDBT->setRekomendasi(1);
 			$tempObjectDBT->setWaktu("1000-01-01 00:00:00");
-			$tempResult = $controlSeminar->addNew($tempObjectDBT);
+			$tempResult = $this->controlSeminar->addNew($tempObjectDBT);
 		}else{
-			$controlSidang = new ControlSidang($this->gateControlModel);
-			$tempObjectDBT = $controlSidang->getDataByMahasiswa($this->tahunAk,$tempObjectDB->getIdentified());
+			$tempObjectDBT = $this->controlSidang->getDataByMahasiswa($this->tahunAk,$tempObjectDB->getIdentified());
 			if($tempObjectDBT && $tempObjectDBT->getNextCursor()){
 				exit('0mahasiswa ini sudah mendaftar seminar TA 1');
 			}
@@ -288,7 +269,7 @@ class Kingbimbingan extends CI_Controller_Modified{
 			$tempObjectDBT->setStatus(1);
 			$tempObjectDBT->setRekomendasi(1);
 			$tempObjectDBT->setWaktu("1000-01-01 00:00:00");
-			$tempResult = $controlSidang->addNew($tempObjectDBT);
+			$tempResult = $this->controlSidang->addNew($tempObjectDBT);
 		}
 		if($tempResult) exit("1Berhasil merujuk dosen rekomendasi mahasiswa ini");
 		else exit("0Gagal melakukan perubahan");
@@ -302,22 +283,20 @@ class Kingbimbingan extends CI_Controller_Modified{
 			exit('0anda melakukan debugging terhadap system');
 		if(!$this->mahasiswa->getCheckNim($nim,1)[0])
 			exit('0anda melakukan debugging terhadap system');
-		$controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		$controlDetail = new ControlDetail($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNim($nim);
+		$tempObjectDB = $this->controlMahasiswa->getDataByNim($nim);
 		if(!$tempObjectDB || !$tempObjectDB->getNextCursor()){
 			exit("0anda melakukan debugging terhadap system");
 		}
-		$tempObjectDBD = $controlRegistrasi->getAllData($this->tahunAk,$tempObjectDB->getIdentified(),1,null);
+		$tempObjectDBD = $this->controlRegistrasi->getAllData($this->tahunAk,$tempObjectDB->getIdentified(),1,null);
 		if(!$tempObjectDBD || !$tempObjectDBD->getNextCursor())
 			exit("0anda melakukan debugging terhadap system");
-		$tempDosbing = $controlRegistrasi->getDosenPembimbing($tempObjectDBD->getIdentified());
-		$tempDosbing->getNextCursor();
+		$tempDosbing = $this->controlRegistrasi->getDosenPembimbing($tempObjectDBD->getIdentified());
+		if(!$tempDosbing || !$tempDosbing->getNextCursor())
+			exit("0anda melakukan debugging terhadap system");
 		if($tempDosbing->getDosen() != $this->loginFilter->getIdentifiedActive()) exit("0anda melakukan debugging terhadap system");
-		$tempObjectDBT = $controlDetail->getDetail("kategori",$tempObjectDBD->getKategori());
+		$tempObjectDBT = $this->controlDetail->getDetail("kategori",$tempObjectDBD->getKategori());
 		$tempObjectDBT->getNextCursor();
-		$tempObjectDBE = $controlDetail->getDetail("minat",$tempObjectDB->getMinat());
+		$tempObjectDBE = $this->controlDetail->getDetail("minat",$tempObjectDB->getMinat());
 		$tempObjectDBE->getNextCursor();
 		$data = array(
 				'nim' => $tempObjectDB->getNim(),
@@ -354,8 +333,7 @@ class Kingbimbingan extends CI_Controller_Modified{
 	}
 	protected function setThisMyCupProcess($nim=null){
 		if($nim == null) return false;
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNim($nim);
+		$tempObjectDB = $this->controlMahasiswa->getDataByNim($nim);
 		if(!$tempObjectDB || !$tempObjectDB->getNextCursor()) return false;
 		if(strlen($tempObjectDB->getDosenRespon()) == 40) return false;	
 		$exit = true;
@@ -364,16 +342,15 @@ class Kingbimbingan extends CI_Controller_Modified{
 		if($tempObjectDB->getDosenT() == $this->loginFilter->getIdentifiedActive()) $exit = false;
 		if($exit) return false;
 		$tempObjectDB->setDosenRespon($this->loginFilter->getIdentifiedActive());
-		return $controlMahasiswa->tryUpdate($tempObjectDB);
+		return $this->controlMahasiswa->tryUpdate($tempObjectDB);
 	}
 	protected function setThisUnMyCupProcess($nim=null){
 		if($nim == null) return false;
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNim($nim);
+		$tempObjectDB = $this->controlMahasiswa->getDataByNim($nim);
 		if(!$tempObjectDB || !$tempObjectDB->getNextCursor()) return false;
 		if($tempObjectDB->getDosenRespon() != $this->loginFilter->getIdentifiedActive()) return false;	
 		$tempObjectDB->setDosenRespon("");
-		return $controlMahasiswa->tryUpdate($tempObjectDB);
+		return $this->controlMahasiswa->tryUpdate($tempObjectDB);
 	}
 	
 }
