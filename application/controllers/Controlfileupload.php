@@ -1,9 +1,7 @@
 <?php
 /*
 dependencies:
--LoginFilter
 -Koordinator
--GateControlModel
 -ControlFile
 */
 if(!defined('BASEPATH')) exit('you dont have permition');
@@ -11,7 +9,6 @@ if(!defined('BASEPATH')) exit('you dont have permition');
 class Controlfileupload extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Koordinator");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->koordinator)){

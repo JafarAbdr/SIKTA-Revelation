@@ -5,12 +5,6 @@ Author By : Jafar Abdurrahman Albasyir
 Since : 17/5/2016
 Work : Home on 08:05 PM
 dependencie:
--Mahasiswa
--Dosen
--GateControlModel
--LoginFilter
--Inputjaservfilter
--ControlDetail
 -ControlDosen
 -ControlMahasiswa
 -ControlRegistrasi
@@ -21,13 +15,11 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Classregistrasilama extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Mahasiswa");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){
 			redirect(base_url()."Gateinout.jsp");
 		}
-		$this->loadLib("Aktor/Dosen");
 		$this->loadLib('ControlDosen');		
 		$this->loadLib('ControlRegistrasi');		
 		$this->loadLib('ControlMahasiswa');		
@@ -132,7 +124,6 @@ class Classregistrasilama extends CI_Controller_Modified {
 		
 		$TEMP_BOOLEAN = $tempObjectDBD->getNextCursor();
 		$controlDosen = new ControlDosen($this->gateControlModel);
-		//$controlDetail = new ControlDetail($this->gateControlModel);
 		//filltering code
 		if(!$ARRAY_CODE[0] && !$TEMP_BOOLEAN){
 			SWITCH(intval($CODE_PERMISSION)){

@@ -3,17 +3,12 @@ if(!defined('BASEPATH')) exit("");
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 /*
 dependencies:
--LoginFilter(-)
--Admin
--Inputjaservfilter (-)
--Datejaservfilter(-)
 -ControlAcara
 -ControlAdmin
 -ControlMahasiswa
 -ControlSeminar
 -ControlSidang
 -ControlTime
--GateControlModel(-)
 */
 /*
 ControlDosen
@@ -22,7 +17,6 @@ ControlRegistrasi
 class Palaceareaacara extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library('Aktor/Admin');
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->admin))
@@ -743,14 +737,10 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$TEMP_ARRAY['judulTAPeserta'] = $tempObjectDB->getJudulTA();
 		$TEMP_ARRAY['hariSeminar'] = $this->dateJaservFilter->setDate($tempObjectDBD->getWaktu(),true)->getDate("WDD / L WMM Y",false);
 		$TEMP_ARRAY['jamSeminar'] = $this->dateJaservFilter->nice_date($tempObjectDBD->getWaktu(), "H:i")." - ".$this->dateJaservFilter->nice_date($tempObjectDBD->getWaktuEnd(), "H:i")." WIB";
-		if($tempObjectDBD->getRuang() == '1'){
-			$TEMP_ARRAY['tempatSeminar'] = "Ruang Sidang 1, Lt.3, Gedung E, Departemen Ilmu Komputer / Informatika";
-		}else if($tempObjectDBD->getRuang() == '1'){
-			$TEMP_ARRAY['tempatSeminar'] = "Ruang Sidang 2, Lt.3, Gedung E, Departemen Ilmu Komputer / Informatika";
-		}else if($tempObjectDBD->getRuang() == '1'){
-			$TEMP_ARRAY['tempatSeminar'] = "Ruang Sidang 1, Lt.2, Gedung A, Departemen Matematika";
-		}else{
-			$TEMP_ARRAY['tempatSeminar'] = "Ruang Puspital, Lt.3, Gedung E, Departemen Ilmu Komputer / Informatika";
+		$tempRuang = $this->controlDetail->getDetail('ruang',$tempObjectDBD->getRuang());
+		$TEMP_ARRAY['tempatSeminar']= "Belum Memilih Ruang"; 
+		if($tempRuang->getNextCursor()){
+			$TEMP_ARRAY['tempatSeminar']= $tempRuang->getDetail(); 
 		}
 		$this->loadLib("FPDF/Printcontrol",true);
 		$print = new Printcontrol();
@@ -916,15 +906,13 @@ class Palaceareaacara extends CI_Controller_Modified {
 		$TEMP_ARRAY['judulTAPeserta'] = $tempObjectDB->getJudulTA();
 		$TEMP_ARRAY['hariSeminar'] = $this->dateJaservFilter->setDate($tempObjectDBD->getWaktu(),true)->getDate("WDD / L WMM Y",false);
 		$TEMP_ARRAY['jamSeminar'] = $this->dateJaservFilter->nice_date($tempObjectDBD->getWaktu(), "H:i")." - ".$this->dateJaservFilter->nice_date($tempObjectDBD->getWaktuEnd(), "H:i")." WIB";
-		if($tempObjectDBD->getRuang() == '1'){
-			$TEMP_ARRAY['tempatSeminar'] = "Ruang Sidang 1, Lt.3, Gedung E, Departemen Ilmu Komputer / Informatika";
-		}else if($tempObjectDBD->getRuang() == '1'){
-			$TEMP_ARRAY['tempatSeminar'] = "Ruang Sidang 2, Lt.3, Gedung E, Departemen Ilmu Komputer / Informatika";
-		}else if($tempObjectDBD->getRuang() == '1'){
-			$TEMP_ARRAY['tempatSeminar'] = "Ruang Sidang 1, Lt.2, Gedung A, Departemen Matematika";
-		}else{
-			$TEMP_ARRAY['tempatSeminar'] = "Ruang Puspital, Lt.3, Gedung E, Departemen Ilmu Komputer / Informatika";
+		
+		$tempRuang = $this->controlDetail->getDetail('ruang',$tempObjectDBD->getRuang());
+		$TEMP_ARRAY['tempatSeminar']= "Belum Memilih Ruang"; 
+		if($tempRuang->getNextCursor()){
+			$TEMP_ARRAY['tempatSeminar']= $tempRuang->getDetail(); 
 		}
+		
 		$this->loadLib("FPDF/Printcontrol",true);
 		$print = new Printcontrol();
 		$print->printUndanganTAD($TEMP_ARRAY); 

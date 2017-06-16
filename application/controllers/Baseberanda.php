@@ -1,8 +1,7 @@
 <?php if(!defined('BASEPATH')) exit("");
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 /*
-dependencie
--GateControlModel(-)
+dependencie:
 -ControlEvent
 -ControlFile
 Revelation : success

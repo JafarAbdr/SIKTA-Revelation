@@ -1,11 +1,9 @@
 <?php
 /*
 dependencies:
--LoginFilter(-)
 -Dosen
 -Koordinator
 -Mahasiswa
--Inputjaservfilter(-)
 -ControlDetail
 -ControlDosen
 -ControlMahasiswa
@@ -20,8 +18,7 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Controlresultregistrasi extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->loadLib("Aktor/Koordinator");
-		$this->koordinator = new Koordinator($this->inputJaservFilter);
+		$this->koordinator->initial($this->inputJaservFilter);
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->koordinator)){

@@ -2,14 +2,11 @@
 defined('BASEPATH') OR exit('What Are You Looking For ?');
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 /*
--LoginFilter
 -Koordinator
--GateControlModel
 */
 class Controlroom extends CI_Controller_Modified {
 	function __construct(){
 		parent::__construct();
-		$this->load->library("Aktor/Koordinator");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->koordinator)){

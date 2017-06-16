@@ -1,10 +1,6 @@
 <?php
 /*
 dependencies:
--LoginFilter
--Dosen
--GateControlModel
--Inputjaservfilter
 -ControlDosen
 */
 	if(!defined('BASEPATH'))
@@ -13,20 +9,10 @@ require_once APPPATH."controllers/CI_Controller_Modified.php";
 class Kingpengaturan extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library('Aktor/Dosen');
-		$this->load->library('Session');
-		$this->loadMod('GateControlModel');
-		$this->gateControlModel = new GateControlModel();
-		$this->loadLib('LoginFilter');
-		$this->loginFilter = new LoginFilter($this->session,$this->gateControlModel);
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->dosen))
 			redirect(base_url().'Gateinout.jsp');
-		$this->loadLib('Aktor/Mahasiswa');
-		$this->mahasiswa = new Mahasiswa(new Inputjaservfilter());
-		$this->loadLib('Inputjaservfilter');
-		$this->inputJaservFilter = new Inputjaservfilter();
 		$this->dosen->initial($this->inputJaservFilter);
 		$this->loadLib('ControlDosen');
 		$this->controlDosen = new ControlDosen($this->gateControlModel);

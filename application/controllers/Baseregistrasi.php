@@ -3,11 +3,8 @@
 	/*
 	dependencies
 	-ControlDetail
-	-ControlDosen(-)
-	-ControlMahasiswa(-)
 	-ControlRegistrasi
 	-ControlTime
-	-inputjaservfilter(-)
 	*/
 class Baseregistrasi extends CI_Controller_Modified {
 	public function __CONSTRUCT(){

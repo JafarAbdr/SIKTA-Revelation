@@ -2,17 +2,14 @@
 if(!defined('BASEPATH')) exit("you dont have permission to see this site");
 /*
 dependencies:
--LoginFilter
 -Dosen
 -Mahasiswa
--GateControlModel(-)
 -ControlDosen
 */
 require_once APPPATH.'controllers/CI_Controller_Modified.php';
 class Kingroom extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library('Aktor/Dosen');
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->dosen))
@@ -35,20 +32,10 @@ class Kingroom extends CI_Controller_Modified {
 				"resources/taurus/js/plugins/jquery/jquery-migrate.min.js",
 				"resources/taurus/js/plugins/jquery/globalize.js",
 				"resources/taurus/js/plugins/bootstrap/bootstrap.min.js",
-				//"resources/taurus/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js",
 				"resources/taurus/js/plugins/uniform/jquery.uniform.min.js",
-/* 				"resources/taurus/js/plugins/knob/jquery.knob.js",
-				"resources/taurus/js/plugins/sparkline/jquery.sparkline.min.js",
-				"resources/taurus/js/plugins/flot/jquery.flot.js",
-				"resources/taurus/js/plugins/flot/jquery.flot.resize.js", */
 				"resources/taurus/js/plugins/select2/select2.min.js",
 				"resources/taurus/js/plugins/tagsinput/jquery.tagsinput.min.js",
 				"resources/taurus/js/plugins/jquery/jquery-ui-timepicker-addon.js",
-/* 				"resources/taurus/js/plugins/ibutton/jquery.ibutton.js",
-				"resources/taurus/js/plugins/validationengine/languages/jquery.validationEngine-en.js",
-				"resources/taurus/js/plugins/validationengine/jquery.validationEngine.js",
-				"resources/taurus/js/plugins/maskedinput/jquery.maskedinput.min.js",
-				"resources/taurus/js/plugins/stepy/jquery.stepy.min.js", */
 				"resources/taurus/js/plugins/uniform/jquery.uniform.min.js",
 				"resources/taurus/js/plugins/noty/jquery.noty.js",
 				"resources/taurus/js/plugins/noty/layouts/topCenter.js",

@@ -6,10 +6,6 @@ Since : 17/5/2016
 Work : Home on 08:05 PM
 dependencies:
 -Mahasiswa
--GateControlModel
--LoginFilter
--Inputjaservfilter
--ControlDetail
 -ControlMahasiswa
 -ControlRegistrasi
 -ControlTime
@@ -21,7 +17,6 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Classregistrasibaru extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Mahasiswa");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){
@@ -95,8 +90,7 @@ class Classregistrasibaru extends CI_Controller_Modified {
 		//check if is registerer on this Academic Year
 		$tempObjectDBD = $controlRegistrasi->getAllData($tahunAk,$tempObjectDB->getIdentified(),1,null);
 		$TEMP_BOOLEAN = $tempObjectDBD->getNextCursor();
-		$this->loadLib('ControlDetail');
-		$controlDetail = new ControlDetail($this->gateControlModel);
+		
 		//var_dump($ARRAY_CODE);
 		if(!$ARRAY_CODE[0] && !$TEMP_BOOLEAN){
 			SWITCH(intval($CODE_PERMISSION)){
@@ -104,7 +98,7 @@ class Classregistrasibaru extends CI_Controller_Modified {
 				case 122 :
 				//registerasi baru
 				$TEMP_ARRAY = NULL;
-				$tempObjectDBT = $controlDetail->getDetail('minat');
+				$tempObjectDBT = $this->controlDetail->getDetail('minat');
 				$i=0;
 				while($tempObjectDBT->getNextCursor()){
 					$TEMP_ARRAY['peminatan'][$i]['id'] = $tempObjectDBT->getId();
@@ -141,7 +135,7 @@ class Classregistrasibaru extends CI_Controller_Modified {
 				case 112 :
 				//registerasi baru
 				$TEMP_ARRAY = NULL;
-				$tempObjectDBT = $controlDetail->getDetail('minat');
+				$tempObjectDBT = $this->controlDetail->getDetail('minat');
 				$i=0;
 				while($tempObjectDBT->getNextCursor()){
 					$TEMP_ARRAY['peminatan'][$i]['id'] = $tempObjectDBT->getId();
@@ -168,7 +162,7 @@ class Classregistrasibaru extends CI_Controller_Modified {
 				case 112 :
 				//registrasi baru
 				$TEMP_ARRAY = NULL;
-				$tempObjectDBT = $controlDetail->getDetail('minat');
+				$tempObjectDBT = $this->controlDetail->getDetail('minat');
 				$i=0;
 				while($tempObjectDBT->getNextCursor()){
 					$TEMP_ARRAY['peminatan'][$i]['id'] = $tempObjectDBT->getId();
@@ -189,7 +183,7 @@ class Classregistrasibaru extends CI_Controller_Modified {
 				case 112 :
 				//registerasi baru
 				$TEMP_ARRAY = NULL;
-				$tempObjectDBT = $controlDetail->getDetail('minat');
+				$tempObjectDBT = $this->controlDetail->getDetail('minat');
 				$i=0;
 				while($tempObjectDBT->getNextCursor()){
 					$TEMP_ARRAY['peminatan'][$i]['id'] = $tempObjectDBT->getId();

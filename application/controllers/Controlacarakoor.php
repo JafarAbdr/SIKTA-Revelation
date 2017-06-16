@@ -1,10 +1,7 @@
 <?php
 /*
--LoginFilter
+dependencies:
 -Koordinator
--GateControlModel
--Inputjaservfilter
--Datejaservfilter
 -ControlEvent
 -ControlTime
 */
@@ -14,10 +11,10 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 Class Controlacarakoor extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Koordinator");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		$this->loadLib('ControlTime');
+		$this->koordinator->initial($this->inputJaservFilter);
 		if(!$this->loginFilter->isLogin($this->koordinator)){
 			redirect(base_url()."Gateinout.jsp");
 		}
@@ -117,7 +114,6 @@ Class Controlacarakoor extends CI_Controller_Modified {
 	}
 	//exist on javascript
 	public function getTableAcaraNonDefault(){
-		$this->koordinator->initial($this->inputJaservFilter);
 		$year = $this->input->post('year');
 		$kode = $this->isNullPost('kode');
 		if(strlen($year) <= 0) 
@@ -254,7 +250,6 @@ Class Controlacarakoor extends CI_Controller_Modified {
 		if($cat == null){
 			$cat = $this->isNullPost('cat');
 		}
-			$this->koordinator->initial($this->inputJaservFilter);
 		switch ($kode){
 			case 'SUMMARY' :
 				return $this->koordinator->getCheckSummary($value,$cat);
@@ -347,19 +342,6 @@ Class Controlacarakoor extends CI_Controller_Modified {
 		$summary = htmlspecialchars($this->isNullPost('summary'));
 		if(md5($kode) != md5("JASERVTECH-CODE-CREATE-NEW-EVENT-AKADEMIK"))
 			exit("0maaf, anda tidak berhak mengakses kedalam halaman ini");
-		/* $this->loadLib('Datejaservfilter');
-		$dateJaservFilter = new Datejaservfilter();
-		if(!$this->getCheck($start,"DATE",1))
-			exit("0maaf, input data mulai hari ini");
-		if(!$this->getCheck($end,"DATE",1))
-			exit("0maaf, input data mulai hari ini");
-		if(intval($dateJaservFilter->nice_date($start,"Y")) > intval($dateJaservFilter->nice_date($end,"Y")))
-			exit("0tanggal mulai harus lebih awal dari tanggal akhir");
-		if(intval($dateJaservFilter->nice_date($start,"m")) > intval($dateJaservFilter->nice_date($end,"m")))
-			exit("0tanggal mulai harus lebih awal dari tanggal akhir");
-		if(intval($dateJaservFilter->nice_date($start,"m")) == intval($dateJaservFilter->nice_date($end,"m")))
-			if(intval($dateJaservFilter->nice_date($start,"d")) > intval($dateJaservFilter->nice_date($end,"d")))
-				exit("0tanggal mulai harus lebih awal dari tanggal akhir"); */
 		$this->loadLib('ControlEvent');
 		$this->loadLib('ControlTime');
 		if((new ControlEvent($this->gateControlModel))->setNewAktifAkademikEvent($start,$end,$title,$summary,(new ControlTime($this->gateControlModel))->getYearNow())) exit('1berhasil memasukan data waktu registrasi akademik');

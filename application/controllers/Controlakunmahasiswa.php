@@ -3,10 +3,7 @@ if(!defined('BASEPATH')) exit("");
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 /*
 dependencies:
--LoginFilter
 -Koordinator
--GateControlModel
--Inputjaservfilter
 -ControlMahasiswa
 -ControlRegistrasi
 -ControlSeminar
@@ -16,9 +13,9 @@ dependencies:
 class Controlakunmahasiswa extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Koordinator");
 		$this->load->helper('url');
 		$this->load->helper('html');
+		$this->mahasiswa->initial($this->inputJaservFilter);
 		if(!$this->loginFilter->isLogin($this->koordinator)){
 			redirect(base_url()."Gateinout.jsp");
 		}
@@ -29,9 +26,7 @@ class Controlakunmahasiswa extends CI_Controller_Modified {
 	}
 	public function tryNoTime(){
 		$nim = $this->isNullPost('nim');
-		$this->loadLib('Aktor/Mahasiswa');
-		$mahasiswa = new Mahasiswa($this->inputJaservFilter);
-		if(!$mahasiswa->getCheckNim($nim,1)[0]){
+		if(!$this->mahasiswa->getCheckNim($nim,1)[0]){
 			exit("0nim tidak valid");
 		}
 		$this->loadLib('ControlMahasiswa');
@@ -40,9 +35,7 @@ class Controlakunmahasiswa extends CI_Controller_Modified {
 	}
 	public function setAktifOrNon(){
 		$nim = $this->isNullPost('nim');
-		$this->loadLib('Aktor/Mahasiswa');
-		$mahasiswa = new Mahasiswa($this->inputJaservFilter);
-		if(!$mahasiswa->getCheckNim($nim,1)[0]){
+		if(!$this->mahasiswa->getCheckNim($nim,1)[0]){
 			exit("0nim tidak valid");
 		}
 		$this->loadLib('ControlMahasiswa');
@@ -51,9 +44,7 @@ class Controlakunmahasiswa extends CI_Controller_Modified {
 	}
 	public function setNormalNewOrOld(){
 		$nim = $this->isNullPost('nim');
-		$this->loadLib('Aktor/Mahasiswa');
-		$mahasiswa = new Mahasiswa($this->inputJaservFilter);
-		if(!$mahasiswa->getCheckNim($nim,1)[0]){
+		if(!$this->mahasiswa->getCheckNim($nim,1)[0]){
 			exit("0nim tidak valid");
 		}
 		$this->loadLib('ControlMahasiswa');
@@ -113,71 +104,6 @@ class Controlakunmahasiswa extends CI_Controller_Modified {
 			exit("1data berhasil di rubah");
 		}
 		else exit("0Terjadi kesalahan saat merupah data");
-	}
-	public function setOneOrTwo(){
-		$nim = $this->isNullPost('nim');
-		$this->loadLib('Aktor/Mahasiswa');
-		$mahasiswa = new Mahasiswa($this->inputJaservFilter);
-		if(!$mahasiswa->getCheckNim($nim,1)[0]){
-			exit("0nim tidak valid");
-		}
-		$this->loadLib('ControlMahasiswa');
-		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		$tempObjectDB = $controlMahasiswa->getDataByNim($nim);
-		if(!$tempObjectDB || !$tempObjectDB->getNextCursor()){
-			exit("0Nim tidak terdaftar");
-		}
-		if(intval($tempObjectDB->getStatus()) != 1){
-			exit("0Nim tidak memiliki izin karena mahasiswa non aktif");
-		}
-		
-		
-		
-		
-		
-		$this->load->model("Sc_st");
-		$TEMP_SC_ST = new Sc_st();
-		$TEMP_SC_ST->resetValue();
-		$TEMP_SC_ST->setNim($nim);
-		if(!$TEMP_SC_ST->isRegisteredNow()){
-			exit("0maaf anda sbelum melakukan registrasi pada semester ini");
-		}
-		$TEMP_SC_SM->resetValue();
-		$TEMP_SC_SM->setNim($nim);
-		$TEMP_SC_SM->getDataNim();
-		$ERROR = 0;
-		if($TEMP_SC_SM->getSeminarTA1() == "1")
-			$ERROR+=1;
-		if($TEMP_SC_SM->getSeminarTA2() == "1")
-			$ERROR+=1;
-		if($ERROR > 0){
-			exit("0Mahasiswa memiliki scedule yang aktif");
-		}
-		$kode = intval($this->isNullPost("kode"));
-		if($kode < 1 || $kode > 2){
-			exit("0Kode tidak tepat");
-		}
-		$TEMP_SC_SM->resetValue();
-		$TEMP_SC_SM->setNim($nim);
-		$TEMP_SC_SM->setSeminarTA1(1);
-		$TEMP_SC_SM->setSeminarTA2(1);
-		if($kode == 1){
-			$REST = $TEMP_SC_SM->setSeminarTA1CloseOrOpen();
-		}else{
-			$REST = $TEMP_SC_SM->setSeminarTA2CloseOrOpen();
-		}
-		if($REST) {
-			$this->load->model("Sc_std");
-			$this->load->library("Mahasiswa");
-			$TEMP_SC_STD = new Sc_std();
-			$TEMP_SC_STD->resetValue();
-			$TEMP_SC_STD->setNim($nim);
-			$TEMP_SC_STD->setKode($this->mahasiswa->getYearNow());
-			$TEMP_SC_STD->setToLog();
-			
-			exit("1data berhasil di rubah");
-		
-		}else exit("0  Terjadi kesalahan saat merupah data");
 	}
 	public function getTableAllAcountMahasiswa(){
 		if($this->input->post('page') === NULL)

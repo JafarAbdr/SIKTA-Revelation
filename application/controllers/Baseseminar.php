@@ -7,15 +7,9 @@ class Baseseminar extends CI_Controller_Modified {
 	}
 	/*
 	dependencies:
-	-ControlDosen(-)
-	-ControlDetail(-)
-	-ControlMahasiswa(-)
-	-ControlRegistrasi(-)
 	-ControlSeminar
 	-ControlSidang
 	-ControlTime
-	-Inputjaservfilter(-)
-	-GateControlModel(-)
 	*/
 	//optimized
 	//get page layout seminar

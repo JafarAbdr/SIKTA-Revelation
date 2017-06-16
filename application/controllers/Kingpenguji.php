@@ -3,12 +3,6 @@ if(!defined('BASEPATH')) exit("You dont have permission");
 require_once APPPATH.'controllers/CI_Controller_Modified.php';
 /*
 dependencie:
--LoginFilter(-)
--Dosen
--Mahasiswa
--GateControlModel(-)
--Inputjaservfilter(-)
--ControlDetail
 -ControlDosen
 -ControlMahasiswa
 -ControlRegistrasi
@@ -19,26 +13,22 @@ dependencie:
 class Kingpenguji extends CI_Controller_Modified{
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library('Aktor/Dosen');
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->dosen))
 			redirect(base_url().'Gateinout.jsp');
-		$this->loadLib('Aktor/Mahasiswa');
-		$this->mahasiswa = new Mahasiswa($this->inputJaservFilter);
+		$this->mahasiswa->initial($this->inputJaservFilter);
 		$this->loadLib('ControlTime');
 		$this->loadLib('ControlMahasiswa');
 		$this->loadLib('ControlRegistrasi');
 		$this->loadLib('ControlSeminar');
 		$this->loadLib('ControlSidang');
 		$this->loadLib('ControlDosen');
-		$this->loadLib('ControlDetail');
 		$this->controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
 		$this->controlSeminar = new ControlSeminar($this->gateControlModel);
 		$this->controlRegistrasi = new ControlRegistrasi($this->gateControlModel);
 		$this->controlSidang = new ControlSidang($this->gateControlModel);
 		$this->controlDosen = new ControlDosen($this->gateControlModel);
-		$this->controlDetail = new ControlDetail($this->gateControlModel);
 		$this->tahunAk = (new ControlTime($this->gateControlModel))->getYearNow();
 	}
 	public function getLayoutPenguji(){

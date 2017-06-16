@@ -1,9 +1,7 @@
 <?php
 /*
 dependencies:
--LoginFilter
 -Koordinator
--GateControlModel
 -ControlDosen
 -ControlKoordinator
 */
@@ -12,7 +10,6 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Controlpengaturan extends CI_Controller_Modified {
 	function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Koordinator");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->koordinator)){
@@ -22,8 +19,7 @@ class Controlpengaturan extends CI_Controller_Modified {
 	
 	public function changeNipKoor(){
 		$nip = $this->isNullPost('nip');
-		$this->loadLib('Inputjaservfilter');
-		$this->koordinator->initial(new Inputjaservfilter());
+		$this->koordinator->initial($this->inputJaservFilter);
 		if(!$this->koordinator->getCheckNip($nip,1)[0]){
 			exit('0format nip tidak sesuai');
 		}
@@ -45,8 +41,7 @@ class Controlpengaturan extends CI_Controller_Modified {
 	}
 	public function changePasswordKoor(){
 		$oldPass = $this->isNullPost('oldpass');
-		$this->loadLib('Inputjaservfilter');
-		$this->koordinator->initial(new Inputjaservfilter());
+		$this->koordinator->initial($this->inputJaservFilter);
 		if($oldPass == "")
 			exit("0password lama tidak boleh kosong");
 		if(!$this->koordinator->getCheckPassword($oldPass,1)[0])

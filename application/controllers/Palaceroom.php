@@ -1,8 +1,6 @@
 <?php
 /*
-dependencies
--LoginFilter
--GateControlModel
+dependencies:
 -Admin
 -ControlDosen
 */
@@ -11,7 +9,6 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Palaceroom extends CI_Controller_Modified{
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library('Aktor/Admin');
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->admin))

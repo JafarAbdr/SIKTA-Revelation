@@ -8,15 +8,12 @@ class Baseroom extends CI_Controller_Modified {
 		-Dosen
 		-Koordinator
 		-Admin
-		-LoginFilter
 		-ControlDosen
 		-ControlMahasiswa
 		*/
 		parent::__CONSTRUCT();
-		$this->loadLib('LoginFilter');
 		$this->load->helper("Html");
 		$this->load->helper("Url");
-		$this->load->library('Session');
 	}
 	//optimized
 	//filter login account in this current device
@@ -25,11 +22,10 @@ class Baseroom extends CI_Controller_Modified {
 		$this->load->library('Aktor/Koordinator');
 		$this->load->library('Aktor/Dosen');
 		$this->load->library('Aktor/Admin');
-		$loginFilter = new LoginFilter($this->session);
-		if($loginFilter->isLogin($this->mahasiswa)){
+		if($this->loginFilter->isLogin($this->mahasiswa)){
 			$this->loadLib('ControlMahasiswa');
 			$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-			$tempObjectDB = $controlMahasiswa->getAllData($loginFilter->getIdentifiedActive());
+			$tempObjectDB = $controlMahasiswa->getAllData($this->loginFilter->getIdentifiedActive());
 			$tempObjectDB->getNextCursor();
 			$image = 'filesupport/getPhotoMahasiswaProfil/'.$tempObjectDB->getNim().".aspx";
 			return array("Mahasiswa",array(
@@ -39,7 +35,7 @@ class Baseroom extends CI_Controller_Modified {
 				"title" => "Mahasiswa | SIKTA halaman utama"
 			));
 		}
-		if($loginFilter->isLogin($this->koordinator)){
+		if($this->loginFilter->isLogin($this->koordinator)){
 			return array("Koordinator",array(
 				"nim" => "",
 				"nama" => "Koordinator TA",
@@ -47,7 +43,7 @@ class Baseroom extends CI_Controller_Modified {
 				"title" => "Koordinator | SIKTA halaman utama"
 			));
 		}
-		if($loginFilter->isLogin($this->admin)){
+		if($this->loginFilter->isLogin($this->admin)){
 			return array("Administrator",array(
 				"nim" => "",
 				"nama" => "Administrator TA",
@@ -55,11 +51,11 @@ class Baseroom extends CI_Controller_Modified {
 				"title" => "Administrator | SIKTA halaman utama"
 			));
 		}
-		if($loginFilter->isLogin($this->dosen)){
+		if($this->loginFilter->isLogin($this->dosen)){
 			$this->loadLib('ControlDosen');
 			$this->loadMod('GateControlModel');
 			$controlDosen = new ControlDosen($this->gateControlModel);
-			$tempObjectDB = $controlDosen->getAllData($loginFilter->getIdentifiedActive());
+			$tempObjectDB = $controlDosen->getAllData($this->loginFilter->getIdentifiedActive());
 			$tempObjectDB->getNextCursor();
 			return array("Dosen",array(
 				"nim" => "",

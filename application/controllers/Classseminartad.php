@@ -4,13 +4,13 @@ This Class has been rebuild revision build v3.0 Gateinout.php
 Author By : Jafar Abdurrahman Albasyir
 Since : 17/5/2016
 Work : Home on 08:05 PM
+dependencies:
 */
 defined('BASEPATH') OR exit('What Are You Looking For ?');
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Classseminartad extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Mahasiswa");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){
@@ -46,9 +46,7 @@ class Classseminartad extends CI_Controller_Modified {
 		$this->fuj25 = false;
 		$this->fuj11U = true;
 		$tempObjectDBD = $this->controlSidang->getDataByMahasiswa($this->tahunAk,$this->loginFilter->getIdentifiedActive());
-		//var_dump($tempObjectDBD->getCountData());
 		if($tempObjectDBD && $tempObjectDBD->getNextCursor()){
-			//echo $tempObjectDBD->getRekomendasi()." ".$tempObjectDBD->getDataProsesD()."<br>";
 			if(intval($tempObjectDBD->getRekomendasi()) == 1 && $tempObjectDBD->getWaktu() == "1000-01-01 00:00:00"){
 				if(intval($tempObjectDBD->getDataProsesS()) == 2){
 					if(strlen($tempObjectDBD->getFujDP()) > 6 && strlen($this->sc_sta_d->getFujDL()) > 6){
@@ -71,10 +69,7 @@ class Classseminartad extends CI_Controller_Modified {
 					}
 				}else{
 					$this->kodeForm = 2;	
-				}
-			}/* else if(intval($tempObjectDBD->getRekomendasi()) == 1 && intval($tempObjectDBD->getDataProsesD()) == 3){
-				$this->kodeForm = 2;	
-			} */else{
+				}else{
 				if(intval($tempObjectDBD->getDataProsesS()) == 2){
 					if(strlen($tempObjectDBD->getFujDP()) > 6 && strlen($tempObjectDBD->getFujDL()) > 6){
 						if(intval($tempObjectDBD->getDataProsesD()) == 1){
@@ -205,7 +200,6 @@ class Classseminartad extends CI_Controller_Modified {
 		$TEMP_ARRAY['moderator'] = $tempObjectDB->getNama();
 		$TEMP_ARRAY['moderatorNip'] = $tempObjectDB->getNip();
 		
-		//exit($pdfKode);
 		switch(intval($pdfKode)){
 			case 22 :
 			case 23 :
@@ -262,11 +256,10 @@ class Classseminartad extends CI_Controller_Modified {
 				$TEMP_ARRAY["hari"] = $this->dateJaservFilter->setDate($tempObjectDB->getWaktu(),true)->getDate("WDD, VDD WMM Y",false);
 				$TEMP_ARRAY["dayStartPeserta"] = "";
 				$TEMP_ARRAY["prodiPeserta"] = "Ilmu Komputer / Informatika";
-				switch($tempObjectDB->getRuang()){
-					case '1' : $TEMP_ARRAY["tempat"]= "Ruang Seminar TA 1 Informatika"; break;
-					case '2' : $TEMP_ARRAY["tempat"]= "Ruang Sidang TA 2 Informatika"; break;
-					case '3' : $TEMP_ARRAY["tempat"]= "Ruang Sidang Matematika"; break;
-					case '4' : $TEMP_ARRAY["tempat"]= "Ruang Puspital"; break;
+				$tempRuang = $this->controlDetail->getDetail('ruang',$tempObjectDB->getRuang());
+				$TEMP_ARRAY["tempat"]= "Belum Memilih Ruang"; 
+				if($tempRuang->getNextCursor()){
+					$TEMP_ARRAY["tempat"]= $tempRuang->getDetail(); 
 				}
 				$tempObjectDBT = $controlDosen->getAllData($tempObjectDB->getDosenS());
 				$tempObjectDBT->getNextCursor();
@@ -357,11 +350,7 @@ class Classseminartad extends CI_Controller_Modified {
 		
 		$this->loadLib('ControlSeminar');
 		$this->loadLib('ControlSidang');
-/* 		$this->loadLib('ControlAdmin');
-		$controlAdmin = new ControlAdmin($this->gateControlModel); */
 		$controlMahasiswa = new ControlMahasiswa($this->gateControlModel);
-		/* $tasD = $controlAdmin->getTADurasi(1);
-		$tadD = $controlAdmin->getTADurasi(2); */
 		$this->loadLib('ControlTime');
 		$this->loadLib('ControlAcara');
 		$this->loadLib('ControlPinjam');
@@ -620,7 +609,6 @@ class Classseminartad extends CI_Controller_Modified {
 		$tempObjectDBD->setRuang($tempArray['ruang']);
 		$tempObjectDBD->setWaktu($tempArray['tanggal']);
 		$tempObjectDBD->setWaktuEnd($tempArray['tanggalend']);
-		//exit("0okay".$tempObjectDB->getCaseData());
 		if($this->controlSidang->tryUpdate($tempObjectDBD)){
 			return array(true,'Data berhasil dimasukan');
 		}
@@ -662,36 +650,7 @@ class Classseminartad extends CI_Controller_Modified {
 	
 	
 	
-	
-	//<<--DISABLE
-	public function setSeminarTA2next2(){
-		exit("this link has been disabled for developer");
-		if(!$this->prosesOpen){
-			$DATA['message'] = "Anda tidak memiliki izin untuk registrasi seminar ta 2, dikarenakan anda sudah pernah registrasi. atau anda bukan mahasiswa aktif. Terima kasih";
-			echo "03";
-			$this->load->view("Classroom_room/Body_right/warning-no-button-seminar-ta",$DATA);
-			exit();
-		}
-		if($this->kodeForm != 5){
-			$DATA['message'] = "Anda tidak memiliki izin untuk registrasi seminar ta 2, dikarenakan anda sudah pernah registrasi. atau anda bukan mahasiswa aktif. Terima kasih";
-			echo "03";
-			$this->load->view("Classroom_room/Body_right/warning-no-button-seminar-ta",$DATA);
-			exit();
-		}
-		$temp = $this->mahasiswa->setSeminarTA2next2(array(
-			'kartbim'=>"s-k-bimbingan",
-			'kartbim'=>"s-k-peserta"
-		));
-		if(!$temp[0]){
-			exit("0".$temp[1]);
-		}
-		echo "1";
-		$this->load->view("Classroom_room/Body_right/success_registrasi",array("data"=> "Terima kasih, Data Anda berhasil dimasukan")); 
-	}
-	//<<--
 	public function getCheck($variabel=null,$value=null,$type=false){
-		/* $_POST['variabel']="TA2";
-		$_POST['value']="2017-04-22 10:00:00"; */
 		if($variabel == null){
 			$this->isNullPost('variabel');
 			$variabel = $this->input->post('variabel');
@@ -701,7 +660,6 @@ class Classseminartad extends CI_Controller_Modified {
 			$this->isNullPost('value');
 			$value = $this->input->post('value');
 		}
-		//exit("0".$variabel." ".$value);
 		$value.="";
 		if(!$this->dateJaservFilter->setDate($value)){
 			exit('0Tanggal tidak valid');

@@ -3,10 +3,7 @@ if(!defined('BASEPATH')) exit("");
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 /*
 dependencie:
--LoginFilter
 -Koordinator
--GateControlModel
--Inputjaservfilter
 -ControlDosen
 -ControlRegistrasi
 -ControlSidang
@@ -15,7 +12,6 @@ dependencie:
 class Controlrekap extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Koordinator");
 		$this->load->helper('url');
 		$this->loadLib('ControlTime');
 		$this->koordinator->initial($this->inputJaservFilter);

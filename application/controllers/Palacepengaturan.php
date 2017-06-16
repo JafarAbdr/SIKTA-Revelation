@@ -2,10 +2,7 @@
 if(!defined('BASEPATH')) exit("you don't have permission to access");
 
 /*
--LoginFilter(-)
--Admin
--Datejaservfilter(-)
--Inputjaservfilter(-)
+depedencies:
 -ControlAdmin
 -ControlDosen
 */
@@ -13,7 +10,6 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Palacepengaturan extends CI_Controller_Modified {
 	function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library('Aktor/Admin');
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->admin))
