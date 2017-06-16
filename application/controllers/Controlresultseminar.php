@@ -19,8 +19,6 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Controlresultseminar extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		parent::__construct();
-		$this->load->library("Aktor/Koordinator");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->koordinator)){

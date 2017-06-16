@@ -4,10 +4,6 @@ defined('BASEPATH') OR exit('What Are You Looking For ?');
 require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 /*
 dependencies:
--Mahasiswa
--LoginFilter
--Inputjaservfilter
--ControlDetail
 -ControlDosen
 -ControlMahasiswa
 -ControlRegistrasi
@@ -16,7 +12,6 @@ dependencies:
 class Classroom extends CI_Controller_Modified {
 	function __construct(){
 		parent::__construct();
-		$this->load->library("Aktor/Mahasiswa");
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){
@@ -141,10 +136,11 @@ class Classroom extends CI_Controller_Modified {
 				$data['lokasi'] = $tempObjectDBD->getLokasi();
 				$data['metode'] = $tempObjectDBD->getMetode();
 				$data['tombolsavetoasnew'] .= $tempObjectDBD->getKategori();
-				if(intval($tempObjectDBD->getKategori()) == 1)
-					$data['kategori'] = 'Baru';
-				else
-					$data['kategori'] = 'Lama';
+				$tempObjectDBT = $this->controlDetail->getDetail('kategori',$tempObjectDBD->getDataProses());
+				if($tempObjectDBT->getNextCursor() && $tempObjectDBT){
+					$data['kategori'] = $tempObjectDBT->getDetail();
+					
+				}
 				if(intval($tempObjectDBD->getDataProses()) == 2)
 					$data['kodeubah'] = "01";
 				else
@@ -159,8 +155,7 @@ class Classroom extends CI_Controller_Modified {
 					$tempObjectDBT->getNextCursor();
 					$data['dosen'] = $tempObjectDBT->getNama();
 				}
-				$this->loadLib('ControlDetail');
-				$tempObjectDBT = (new ControlDetail($this->gateControlModel))->getDetail('dataproses',$tempObjectDBD->getDataProses());
+				$tempObjectDBT = $this->controlDetail->getDetail('dataproses',$tempObjectDBD->getDataProses());
 				if($tempObjectDBT->getNextCursor() && $tempObjectDBT){
 					$data['statusta'] = $tempObjectDBT->getDetail();
 					
@@ -183,8 +178,6 @@ class Classroom extends CI_Controller_Modified {
 	
 	
 	public function setReferences(){
-		/* $_POST['kode'] = '5';
-		$_POST['referensi'] = 'asasas as a s'; */
 		if($this->input->post('kode') === null)
 			exit('0kode tidak diterima');
 		if($this->input->post('referensi') === null)

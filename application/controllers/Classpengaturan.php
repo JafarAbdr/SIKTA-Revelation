@@ -1,9 +1,6 @@
 <?php
 /*
 dependecies:
--Mahasiswa
--LoginFilter
--Inputjaservfilter
 -ControlMahasiswa
 */
 	if(!defined('BASEPATH'))
@@ -12,7 +9,6 @@ dependecies:
 	class Classpengaturan extends CI_Controller_Modified {
 		public function __CONSTRUCT(){
 			parent::__CONSTRUCT();
-			$this->load->library("Aktor/Mahasiswa");
 			$this->load->helper('url');
 			$this->load->helper('html');
 			if(!$this->loginFilter->isLogin($this->mahasiswa)){

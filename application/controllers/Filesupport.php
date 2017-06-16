@@ -18,10 +18,6 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Filesupport extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library('Aktor/Mahasiswa');
-		$this->load->library('Aktor/Koordinator');
-		$this->load->library('Aktor/Dosen');
-		$this->load->library('Aktor/Admin');
 		$this->load->helper("Download");
 		$this->load->helper("Url");
 	}

@@ -15,7 +15,6 @@ dependencies:
 	class Controldosens extends CI_Controller_Modified {
 		public function __CONSTRUCT(){
 			parent::__CONSTRUCT();
-			$this->load->library("Aktor/Koordinator");
 			$this->load->helper('url');
 			$this->loadLib('ControlTime');
 			$this->load->helper('html');

@@ -6,8 +6,6 @@ Since : 17/5/2016
 Work : Home on 08:05 PM
 dependencies :
 -LoginFilter
--Mahasiswa
--GateControlModel
 -ControlAcara
 -ControlAdmin
 -ControlDosen
@@ -23,8 +21,6 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Classseminartas extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Mahasiswa");
-		$this->load->library('Session');
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){

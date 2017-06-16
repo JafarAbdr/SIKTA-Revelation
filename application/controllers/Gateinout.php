@@ -22,10 +22,6 @@ class Gateinout extends CI_Controller_Modified {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->helper('html');
-		$this->load->library('Aktor/Mahasiswa');
-		$this->load->library('Aktor/Dosen');
-		$this->load->library('Aktor/Admin');
-		$this->load->library('Aktor/Koordinator');
 	}
 	// default - valid
 	public function index($tempInput=null){

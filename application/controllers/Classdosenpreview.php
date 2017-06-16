@@ -5,10 +5,6 @@ Author By : Jafar Abdurrahman Albasyir
 Since : 17/5/2016
 Work : Home on 08:05 PM
 dependencie:
--Mahasiswa
--Inputjaservfilter
--Dosen
--LoginFilter
 -ControlDosen
 -ControlMahasiswa
 */
@@ -18,9 +14,7 @@ require_once(APPPATH.'controllers/CI_Controller_Modified.php');
 class Classdosenpreview extends CI_Controller_Modified {
 	public function __CONSTRUCT(){
 		parent::__CONSTRUCT();
-		$this->load->library("Aktor/Mahasiswa");
-		$this->loadLib("Aktor/Dosen");
-		$this->dosen = new Dosen($this->inputJaservFilter);
+		$this->dosen->initial($this->inputJaservFilter);
 		$this->load->helper('url');
 		$this->load->helper('html');
 		if(!$this->loginFilter->isLogin($this->mahasiswa)){

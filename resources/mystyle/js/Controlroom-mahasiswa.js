@@ -105,51 +105,7 @@ function tryNoTime(aa){
 		}
 	});
 	//alert("aktifkan "+a);
-}
-function setSeminarTA1(aa){
-	//alert("semiar ta 2 "+a);
-	openLoadingBar("memproses permintaan");
-	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setOneOrTwo",
-		methode : 'post',
-		bool : true,
-		content : "nim="+aa+"&kode=1",
-		sucOk : function(a){
-			setLoadingBarMessage(a.substr(1,a.length-1));
-			setTimeout(function(){
-				closeLoadingBar();
-				if(a[0]=="1"){
-					reloadTableRegistrasiMahasiswa();
-				}
-			},400);
-		},
-		sucEr : function(a,b){
-			template(a,b,"sesi mahasiswa seminar ta 1");
-		}
-	});
-}
-function setSeminarTA2(aa){
-	//alert("seminar ta 2 "+a);
-	openLoadingBar("memproses permintaan");
-	j("#setAjax").setAjax({
-		url : base_url+"Controlakunmahasiswa/setOneOrTwo",
-		methode : 'post',
-		bool : true,
-		content : "nim="+aa+"&kode=2",
-		sucOk : function(a){
-			setLoadingBarMessage(a.substr(1,a.length-1));
-			setTimeout(function(){
-				closeLoadingBar();
-				if(a[0]=="1"){
-					reloadTableRegistrasiMahasiswa();
-				}
-			},400);
-		},
-		sucEr : function(a,b){
-			template(a,b,"sesi mahasiswa seminar ta 2");
-		}
-	});
-}
+}/*  */
 function nonAktifkanThisGuysAccount(aa){
 	openLoadingBar("memproses permintaan");
 	j("#setAjax").setAjax({
